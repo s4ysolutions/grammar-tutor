@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "allowJs": false,
+    "baseUrl": "./src",
+    "declaration": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "noImplicitAny": true,
+    "paths": {
+
+    },
+    "outDir": "./dist-ts/",
+    "removeComments": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "target": "es5",
+    "downlevelIteration": true,
+    "typeRoots": [
+      "./@types",
+      "./node_modules/@types",
+      "tests/mocha/@types"
+    ]
+  },
+  "include": [
+    "./tests/**/*.ts",
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
+  "exclude": ["./dist-ts", "./dist"]
+}
