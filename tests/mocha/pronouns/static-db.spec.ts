@@ -26,7 +26,7 @@ describe('Test static data implementation of pronouns db', () => {
     const db = new DefaultPronounsDB();
     const words = await db.words;
     expect(words).to.be.array;
-    expect(words).to.be.eql(['ја', 'ти']);
+    expect(words).to.be.eql(['ја', 'ти', 'он, она, оно']);
   });
   it('jа attributes', async () => {
     const word = 'ја';
@@ -36,6 +36,7 @@ describe('Test static data implementation of pronouns db', () => {
     expect(entry).has.property('cases');
     const forms = (await entry.cases())
       .filter(c => c.case === GrammarCase.Nominative && c.plurality === GrammarPlurality.SINGULAR);
+    // noinspection BadExpressionStatementJS
     expect(forms).to.be.array;
     expect(forms).to.be.ofSize(1);
     const yaForm = forms[0];

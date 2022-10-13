@@ -85,15 +85,13 @@ export interface LearningDB {
   addWrong(word: string): Promise<void>
 }
 
-export interface NounCaseQuestion {
+export interface NounCaseExercise {
   mainForm: string,
-  grammarCase: GrammarCase,
-  grammarPlurality: GrammarPlurality,
-  grammarGender?: GrammarGender,
-  grammarForm?: GrammarForm,
+  exerciseCase: NounCase,
+  possibleVariants: string[],
 }
 
 export interface Tutor {
-  nextPronounQuestion(): Promise<NounCaseQuestion>
-  checkNounCaseAnswer(answer: string, question: NounCaseQuestion): Promise<boolean>;
+  nextPronounExersizeSelectWord(): Promise<NounCaseExercise>
+  checkNounCaseAnswer(answer: string, question: NounCaseExercise): Promise<boolean>;
 }

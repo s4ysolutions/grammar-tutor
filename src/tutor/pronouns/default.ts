@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {GrammarCase, GrammarForm, GrammarPlurality, Noun, NounCase, NounsDB} from '../index';
+import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Noun, NounCase, NounsDB} from '../index';
 
 const staticPronouns: Record<string, NounCase[]> = {
   'ја': [
@@ -209,6 +209,192 @@ const staticPronouns: Record<string, NounCase[]> = {
       word: 'вама',
       plurality: GrammarPlurality.PLURAL,
       case: GrammarCase.Locative,
+    },
+  ],
+  'он, она, оно': [
+    {
+      word: 'он',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Nominative,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'она',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Nominative,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'оно',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Nominative,
+      gender: GrammarGender.NEUTER,
+    },
+    {
+      word: 'га',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Genitive,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'је',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Genitive,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'га',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Genitive,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.NEUTER,
+    },
+    {
+      word: 'њега',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Genitive,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'ње',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Genitive,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'њега',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Genitive,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.NEUTER,
+    },
+    // dative
+    {
+      word: 'му',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Dative,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'јој',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Dative,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'му',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Dative,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.NEUTER,
+    },
+    {
+      word: 'њему',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Dative,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'њој',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Dative,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'њему',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Dative,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.NEUTER,
+    },
+    // accuszativ
+    {
+      word: 'га',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Accusative,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'ју, је',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Accusative,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'га',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Accusative,
+      form: GrammarForm.SHORT,
+      gender: GrammarGender.NEUTER,
+    },
+    {
+      word: 'њега',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Accusative,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'њу',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Accusative,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'њега',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Accusative,
+      form: GrammarForm.LONG,
+      gender: GrammarGender.NEUTER,
+    },
+    // instr
+    {
+      word: 'њим',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Instrumental,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'њом',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Instrumental,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'њим',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Instrumental,
+      gender: GrammarGender.NEUTER,
+    },
+    // loc
+    {
+      word: 'њему',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Locative,
+      gender: GrammarGender.MASCULINE,
+    },
+    {
+      word: 'њој',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Locative,
+      gender: GrammarGender.FEMININE,
+    },
+    {
+      word: 'њему',
+      plurality: GrammarPlurality.SINGULAR,
+      case: GrammarCase.Locative,
+      gender: GrammarGender.NEUTER,
     },
   ],
 };
