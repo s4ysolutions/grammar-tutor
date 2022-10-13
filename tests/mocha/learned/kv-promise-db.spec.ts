@@ -17,8 +17,8 @@
 import {use as chaiUse, expect} from 'chai';
 import chaiString from 'chai-string';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
-import {KvPromiseLearningDB} from '../../../src/teacher/learned/kv-promise-db';
-import {LearnedWordStatistics} from '../../../src/teacher';
+import {KvPromiseLearningDB} from '../../../src/tutor/learned/kv-promise-db';
+import {LearnedWordStatistics} from '../../../src/tutor';
 
 chaiUse(chaiString);
 
@@ -34,7 +34,8 @@ describe('Test rv-promise implementation of learned db', () => {
     expect(stat1.last.getTime()).to.be.eq(new Date(0).getTime());
     expect(stat1).to.has.property('weight', 10);
   });
-  it('Update statistics', async () => {
+
+  it('statistics', async () => {
     const kv = await memoryStoragePromiseFactory();
     const db = new KvPromiseLearningDB(kv);
 
@@ -75,7 +76,7 @@ describe('Test rv-promise implementation of learned db', () => {
     expect(stat).to.has.property('wrongCount', 2);
     expect(stat).to.has.property('last');
     expect(stat.last.getTime()).to.be.gt(prevDate);
-    expect(stat).to.has.property('weight', 1);
+    expect(stat).to.has.property('weight', 2);
 
     prevDate = new Date().getTime();
     await db.addWrong('word2');

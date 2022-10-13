@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {GrammarCase, GrammarForm, GrammarPlurality, Noun, NounEntry, NounsDB} from '../index';
+import {GrammarCase, GrammarForm, GrammarPlurality, Noun, NounCase, NounsDB} from '../index';
 
-const staticPronouns: Record<string, Noun[]> = {
+const staticPronouns: Record<string, NounCase[]> = {
   'ја': [
     // singular
     {
@@ -213,23 +213,19 @@ const staticPronouns: Record<string, Noun[]> = {
   ],
 };
 
-class StaticPronounEntry implements NounEntry {
+class StaticPronounEntry implements Noun {
   mainForm: string;
 
   constructor(mainForm: string) {
     this.mainForm = mainForm;
   }
 
-  forms(grammarCase: GrammarCase, grammarPlurality: GrammarPlurality): Promise<Noun[]> {
-    const entry = staticPronouns[this.mainForm];
-    if (!entry) {
-      return Promise.resolve([]);
-    }
-    return Promise.resolve(entry.filter(e => e.case === grammarCase && e.plurality === grammarPlurality));
+  cases(): Promise<NounCase[]> {
+    return Promise.resolve(staticPronouns[this.mainForm]);
   }
 }
 
-export class StaticPronounsDB implements NounsDB {
+export class DefaultPronounsDB implements NounsDB {
   private wordsSet: string[] | null = null;
 
   get words(): Promise<string[]> {
@@ -240,7 +236,7 @@ export class StaticPronounsDB implements NounsDB {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getWordEntry(word: string): Promise<NounEntry> {
+  getNoun(word: string): Promise<Noun> {
     return Promise.resolve(new StaticPronounEntry(word));
   }
 

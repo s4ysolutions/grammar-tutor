@@ -16,7 +16,7 @@
 
 import {LearnedWordStaticsBean, LearnedWordStatistics, LearningDB} from '../index';
 import {KvPromise} from '../../kv/promise';
-import {DefaultLearnedWordStatistics} from './default-statistics';
+import {DefaultLearnedWordStatistics} from './default';
 
 const PREFIX = 'ldb@';
 const NEVER = new Date(0);
@@ -51,6 +51,9 @@ export class KvPromiseLearningDB implements LearningDB {
 
   getWordStatistics(word: string): Promise<LearnedWordStatistics> {
     return this.getStats(word)
+      // TODO: should be DI
+      //       either factory passed to constructor
+      //       or intermediate store interface
       .then(bean => DefaultLearnedWordStatistics.fromBean(bean));
   }
 

@@ -45,7 +45,7 @@ export class DefaultLearnedWordStatistics implements LearnedWordStatistics {
       return MAX_WEIGHT;
     }
     if (this.wrongCount === 0) {
-      const daysAgo = ((new Date().getTime()) - this.last.getTime()) / DAY_MILLISECONDS;
+      const daysAgo = Math.ceil(((new Date().getTime()) - this.last.getTime()) / DAY_MILLISECONDS);
       return daysAgo > MAX_WEIGHT ? MAX_WEIGHT : daysAgo;
     }
     return this.wrongCount > MAX_WEIGHT ? MAX_WEIGHT : this.wrongCount;

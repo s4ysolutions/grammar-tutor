@@ -15,9 +15,53 @@
  */
 
 import React from 'react';
-import {Container, Typography} from '@mui/material';
+import {AppBar, Box, IconButton, Toolbar, Typography} from '@mui/material';
 import T from '../../../l10n';
+import {getRouter} from '../../../di';
+import useObservable from '../../hooks/useObservable';
 
-const Workspace: React.FunctionComponent = (): React.ReactElement =>
+import {Route} from '../../../router';
+import {map} from 'rxjs/operators';
 
-export default Workspace;
+const router = getRouter();
+const mr2 = {mr: 2};
+const flexGrow1 = {flexGrow: 1};
+const appTitle = T`App title`;
+
+const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
+  const routerTitle = useObservable(
+    router.observableCurrentRoute.pipe(map((route: Route) => route.title)),
+    router.currentRoute.title,
+  );
+
+  return <Box sx={flexGrow1} >
+    <AppBar position="static" >
+      <Toolbar >
+        <IconButton
+          aria-label="menu"
+          color="inherit"
+          edge="start"
+          size="large"
+          sx={mr2}
+        >
+          {
+            // <MenuIcon />
+          }
+        </IconButton >
+
+        <Typography component="h1" sx={flexGrow1} variant="h6" >
+          {`${appTitle} - ${routerTitle}`}
+        </Typography >
+
+        {/*
+          <Button color="inherit" >
+            Login
+          </Button >
+          */
+        }
+      </Toolbar >
+    </AppBar >
+  </Box >;
+};
+
+export default TopNavigator;

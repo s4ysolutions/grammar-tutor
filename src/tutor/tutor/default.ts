@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
+// noinspection RedundantIfStatementJS
+
 import {
   GrammarCase,
   GrammarForm,
   GrammarGender,
   GrammarPlurality,
   LearningDB,
-  NounEntry,
+  Noun,
+  NounCase,
+  NounCaseQuestion,
   NounsDB,
-  Teacher,
-} from './index';
+  Tutor,
+} from '../index';
 
-export class DefaultTeacher implements Teacher {
+const tutorRandom = (upTo: number): number => Math.floor(Math.random() * upTo);
+
+export class DefaultTutor implements Tutor {
   private readonly pronounsDB: NounsDB;
 
   private readonly learningDB: LearningDB;
@@ -35,49 +41,162 @@ export class DefaultTeacher implements Teacher {
     this.learningDB = learningDB;
   }
 
-  nextPronoun(): Promise<NounEntry> {
-    return this.pronounsDB.words.then(wordsSet => {
-      const statPromises: Promise<[string, number]>[] = wordsSet.map(word => this.learningDB.getWordStatistics(word).then(stat => [word, stat.weight]));
-      return Promise.all(statPromises)
-        .then(wordweights => {
-          const weighted: string[] = wordweights.map(([word, weight]) => Array(weight).fill(word)).flat();
-          const i = Math.floor(Math.random() * weighted.length);
-          const word = weighted[i];
-          return this.pronounsDB.getWordEntry(word);
-        });
-    });
+  private static availablePluratlities(cases: NounCase[]): GrammarPlurality[] {
+    return Array.from<GrammarPlurality>(cases
+      .reduce((set: Set<GrammarPlurality>, nounCase: NounCase) => {
+        set.add(nounCase.plurality);
+        return set;
+      }, new Set()));
   }
 
-  checkPronoun(wordToCheck: string, grammarCase: GrammarCase, grammarPlurality: GrammarPlurality, grammaGender: GrammarGender, grammarForm?: GrammarForm): Promise<boolean> {
-    return this.pronounsDB.getWordEntry(wordToCheck).then(entry =>
-      entry.forms(grammarCase, grammarPlurality).then(cases => {
-        if (cases.length === 0) {
-          return false;
-        }
-        if (cases.length === 1) {
-          return (cases[0].word === wordToCheck);
-        }
-        const filterd = cases.filter(c => {
-          if (grammaGender && (grammaGender !== c.gender)) {
-            return false;
-          }
-          if (grammarForm && (grammarForm !== c.form)) {
-            return false;
-          }
-          return true;
-        });
-        if (filterd.length === 0) {
-          return false;
-        }
-        if (filterd.length === 1) {
-          return filterd[0].word === wordToCheck;
-        }
-        for (const f of filterd) {
-          if (f.word === wordToCheck) {
-            return true;
-          }
-        }
+  private static availableCasesForPlurality(
+    cases: NounCase[],
+    grammarPlurality: GrammarPlurality,
+  ): GrammarCase[] {
+    return Array.from<GrammarCase>(cases
+      .filter(noun => noun.plurality === grammarPlurality)
+      .reduce((set: Set<GrammarCase>, nounCase: NounCase) => {
+        set.add(nounCase.case);
+        return set;
+      }, new Set()));
+  }
+
+  private static availableGendersForPluralityAndCase(
+    cases: NounCase[],
+    grammarPlurality: GrammarPlurality,
+    grammarCase: GrammarCase,
+  ): GrammarGender[] {
+    return Array.from<GrammarGender>(cases
+      .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase)
+      .reduce((set: Set<GrammarGender>, nounCase: NounCase) => {
+        set.add(nounCase.gender);
+        return set;
+      }, new Set()));
+  }
+
+  private static availableFormsForPluralityAndCase(
+    cases: NounCase[],
+    grammarPlurality: GrammarPlurality,
+    grammarCase: GrammarCase,
+  ): GrammarForm[] {
+    return Array.from<GrammarForm>(cases
+      .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase)
+      .reduce((set: Set<GrammarForm>, nounCase: NounCase) => {
+        set.add(nounCase.form);
+        return set;
+      }, new Set()));
+  }
+
+  private static availableFormsForPluralityAndCaseAndGender(
+    cases: NounCase[],
+    grammarPlurality: GrammarPlurality,
+    grammarCase: GrammarCase,
+    grammarGender: GrammarGender,
+  ): GrammarForm[] {
+    return Array.from<GrammarForm>(cases
+      .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase && noun.gender === grammarGender)
+      .reduce((set: Set<GrammarForm>, nounCase: NounCase) => {
+        set.add(nounCase.form);
+        return set;
+      }, new Set()));
+  }
+
+  async nextPronounQuestion(): Promise<NounCaseQuestion> {
+    const wordsSet = await this.pronounsDB.words;
+    const statPromises: Promise<[string, number]>[] = wordsSet.map(word => this.learningDB.getWordStatistics(word).then(stat => [word, stat.weight]));
+    const wordweights = await Promise.all(statPromises);
+
+    const weighted: string[] = wordweights.map(([word, weight]) => Array(weight).fill(word)).flat();
+    const i = tutorRandom(weighted.length);
+    const word = weighted[i];
+
+    const noun: Noun = await this.pronounsDB.getNoun(word);
+
+    const cases: NounCase[] = await noun.cases();
+
+    const availablePluralities = DefaultTutor.availablePluratlities(cases);
+    const grammarPlurality: GrammarPlurality = cases[tutorRandom(availablePluralities.length)].plurality;
+
+    const availableCases = DefaultTutor.availableCasesForPlurality(cases, grammarPlurality);
+    const grammarCase: GrammarCase = cases[tutorRandom(availableCases.length)].case;
+
+    const availableGenders = DefaultTutor.availableGendersForPluralityAndCase(cases, grammarPlurality, grammarCase);
+
+    if (availableGenders.length === 0) {
+      const availableForms = DefaultTutor.availableFormsForPluralityAndCase(cases, grammarPlurality, grammarCase);
+      if (availableForms.length === 0) {
+        return {
+          mainForm: noun.mainForm,
+          grammarCase,
+          grammarPlurality,
+        };
+      }
+      const grammarForm: GrammarForm = cases[tutorRandom(availableForms.length)].form;
+      return {
+        mainForm: noun.mainForm,
+        grammarCase,
+        grammarPlurality,
+        grammarForm,
+      };
+
+    }
+    const grammarGender: GrammarGender = cases[tutorRandom(availableGenders.length)].gender;
+    const availableForms =
+      DefaultTutor.availableFormsForPluralityAndCaseAndGender(cases, grammarPlurality, grammarCase, grammarGender);
+    if (availableForms.length === 0) {
+      return {
+        mainForm: noun.mainForm,
+        grammarCase,
+        grammarPlurality,
+        grammarGender,
+      };
+    }
+    const grammarForm: GrammarForm = cases[tutorRandom(availableForms.length)].form;
+    return {
+      mainForm: noun.mainForm,
+      grammarCase,
+      grammarPlurality,
+      grammarGender,
+      grammarForm,
+    };
+  }
+
+  async checkNounCaseAnswer(answer: string, question: NounCaseQuestion): Promise<boolean> {
+    const {grammarPlurality, grammarCase, grammarGender, grammarForm} = question;
+
+    const noun: Noun = await this.pronounsDB.getNoun(answer);
+    const cases: NounCase[] = (await noun.cases())
+      .filter((nounCase: NounCase) => nounCase.case === grammarCase && nounCase.plurality === grammarPlurality);
+
+    if (cases.length === 0) {
+      return false;
+    }
+    if (cases.length === 1) {
+      return (cases[0].word === answer);
+    }
+
+
+    const filtered = cases.filter(c => {
+      if (grammarGender && (grammarGender !== c.gender)) {
         return false;
-      }));
+      }
+      // noinspection RedundantIfStatementJS
+      if (grammarForm && (grammarForm !== c.form)) {
+        return false;
+      }
+      return true;
+    });
+    if (filtered.length === 0) {
+      return false;
+    }
+    if (filtered.length === 1) {
+      return filtered[0].word === answer;
+    }
+    for (const f of filtered) {
+      if (f.word === answer) {
+        return true;
+      }
+    }
+    return false;
   }
 }

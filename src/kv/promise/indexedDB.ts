@@ -1,11 +1,11 @@
 /*
- * Copyright 2019 s4y.solutions
+ * Copyright 2022 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,13 +31,13 @@ interface IndexedDB {
 const DB_VERSION = 8;
 
 const indexedDbFactory = (dbname: string, store = 'default'): KvPromise & IndexedDB => ({
-  _db: null,
+  _db: null as IDBPDatabase,
   subject: new Subject<{ key: string; value: unknown }>(),
   subjectDelete: new Subject<{ key: string; value: unknown }>(),
   get db(): Promise<IDBPDatabase> {
     return this._db === null ? openDB(dbname, DB_VERSION, {
       // eslint-disable-next-line no-unused-vars
-      upgrade(database: IDBPDatabase, oldVersion: number, newVersion: number | null, transaction) {
+      upgrade(database: IDBPDatabase, oldVersion: number, newVersion: number | null) {
         log.debug('indexedDb upgrade');
         try {
           database.deleteObjectStore(store);
@@ -60,17 +60,14 @@ const indexedDbFactory = (dbname: string, store = 'default'): KvPromise & Indexe
       terminated() {
         log.debug('indexedDb terminated');
       },
-    }).then(db => {
+    }).then((db: IDBPDatabase) => {
       log.debug('indexedDb init done');
       this._db = db;
       return db;
     }) : Promise.resolve(this._db);
   },
-  get<T>(key: string, defaultValue: T, forcedJSON?: string): Promise<T> {
+  get<T>(key: string, defaultValue?: T): Promise<T> {
     log.debug(`indexedDb get ${key}`);
-    if (forcedJSON) {
-      return Promise.resolve<T>(JSON.parse(forcedJSON));
-    }
     return this.db
       .then((db: IDBPDatabase) => db.get(store, key))
       .then((v?: T) =>
@@ -91,8 +88,8 @@ const indexedDbFactory = (dbname: string, store = 'default'): KvPromise & Indexe
     });
   },
   delete<T>(key: string): Promise<T | null> {
-    return this.get<T | undefined>(key, undefined).then(existing => this.db.then((db: IDBPDatabase) => db.delete(store, key))
-      .then(() => {
+    return this.get(key).then((existing: T | undefined) =>
+      this.db.then((db: IDBPDatabase) => db.delete(store, key)).then(() => {
         const ret: T | null = existing === undefined ? null : existing as T;
         this.subject.next({key, value: ret});
         return ret;

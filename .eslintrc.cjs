@@ -1,11 +1,11 @@
 /*
- * Copyright 2019 s4y.solutions
+ * Copyright 2022 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -57,9 +57,9 @@ module.exports = {
     'react/jsx-max-depth': 'off',
     'react/jsx-no-bind': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'react/jsx-filename-extension': [1, { 'extensions': ['.tsx'] }],
+    'react/jsx-filename-extension': [1, {'extensions': ['.tsx']}],
     'react/jsx-sort-default-props': 'error',
-    'react/jsx-max-props-per-line': [1, { 'when': 'multiline' }],
+    'react/jsx-max-props-per-line': [1, {'when': 'multiline'}],
     'react/jsx-indent-props': ['error', 2],
     'react/jsx-indent': 'off',
     'react/require-default-props': 'off',
@@ -123,10 +123,9 @@ module.exports = {
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
     'no-console': ['warn'],
-    'no-unused-vars': ['warn'],
     'comma-dangle': ['error', 'always-multiline'],
-    'comma-spacing': ['warn', { 'before': false, 'after': true }],
-    'key-spacing': ['warn', { }],
+    'comma-spacing': ['warn', {'before': false, 'after': true}],
+    'key-spacing': ['warn', {}],
     'consistent-return': 'error',
     'object-curly-spacing': 'off',
     'no-underscore-dangle': ['off'],
@@ -141,6 +140,13 @@ module.exports = {
     'new-cap': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    // https://stackoverflow.com/questions/63961803/eslint-says-all-enums-in-typescript-app-are-already-declared-in-the-upper-scope
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    // https://stackoverflow.com/questions/55280555/typescript-eslint-eslint-plugin-error-route-is-defined-but-never-used-no-un
+    // 'no-unused-vars': ['warn'],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
   },
   'globals': {
     '_': true,
@@ -177,5 +183,15 @@ module.exports = {
      * a function will be skipped.
      */
   },
+  "overrides": [
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "no-magic-numbers" : "off",
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-non-null-assertion": "off"
+      }
+    }
+  ]
 };
 // set filetype=javascript

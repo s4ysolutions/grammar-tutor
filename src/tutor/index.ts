@@ -40,7 +40,7 @@ export enum GrammarCase {
   Vocative = 'Voc',
 }
 
-export interface Noun {
+export interface NounCase {
   word: string,
   case: GrammarCase,
   plurality: GrammarPlurality,
@@ -48,16 +48,15 @@ export interface Noun {
   form?: GrammarForm,
 }
 
-export interface NounEntry {
+export interface Noun {
   readonly mainForm: string;
-
-  forms(grammarCase: GrammarCase, grammarPlurality: GrammarPlurality): Promise<Noun[]>;
+  cases(): Promise<NounCase[]>;
 }
 
 export interface NounsDB {
   readonly words: Promise<string[]>
 
-  getWordEntry(word: string): Promise<NounEntry>
+  getNoun(word: string): Promise<Noun>
 }
 
 /**
@@ -71,8 +70,13 @@ export interface LearnedWordStaticsBean {
   readonly last: Date;
 }
 
+/**
+ * The calculated properties of LearnedWordStatics
+ * @see LearnedWordStaticsBean for more
+ */
+
 export interface LearnedWordStatistics extends LearnedWordStaticsBean{
-  readonly weight: number;
+  weight: number;
 }
 
 export interface LearningDB {
@@ -81,8 +85,15 @@ export interface LearningDB {
   addWrong(word: string): Promise<void>
 }
 
-export interface Teacher {
-  nextPronoun(): Promise<NounEntry>
+export interface NounCaseQuestion {
+  mainForm: string,
+  grammarCase: GrammarCase,
+  grammarPlurality: GrammarPlurality,
+  grammarGender?: GrammarGender,
+  grammarForm?: GrammarForm,
+}
 
-  checkPronoun(wordToCheck: string, grammarCase: GrammarCase, grammarPlurality: GrammarPlurality, grammaGender: GrammarGender, grammarForm?: GrammarForm): Promise<boolean>;
+export interface Tutor {
+  nextPronounQuestion(): Promise<NounCaseQuestion>
+  checkNounCaseAnswer(answer: string, question: NounCaseQuestion): Promise<boolean>;
 }
