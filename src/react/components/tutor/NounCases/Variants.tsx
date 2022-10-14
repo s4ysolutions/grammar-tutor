@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
+import {Container} from '@mui/material';
 import React from 'react';
-import {createRoot} from 'react-dom/client';
-import App from './react/components/App';
-import './array/shuffle';
+import Variant from './Variant';
+import log from '../../../../log';
 
-const container = document.getElementById('reactMount');
-const root = createRoot(container);
-root.render(<App />);
+const Variants: React.FunctionComponent<{ variants: string[], onSelect: (variant: string) => void }> =
+  ({variants, onSelect}): React.ReactElement => {
+    log.render('Variants');
+    return <Container >
+      {variants.shuffle().map(variant => <Variant
+        key={variant}
+        onClick={() => onSelect(variant)}
+        variant={variant} />)}
+    </Container >;
+  };
+
+export default Variants;

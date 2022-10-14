@@ -15,10 +15,20 @@
  */
 
 import React from 'react';
-import {createRoot} from 'react-dom/client';
-import App from './react/components/App';
-import './array/shuffle';
+import {Container} from '@mui/material';
+import {RouteId} from '../../../router';
+import NounCases from '../tutor/NounCases';
+import useRouter from '../../hooks/useRouter';
+import log from '../../../log';
 
-const container = document.getElementById('reactMount');
-const root = createRoot(container);
-root.render(<App />);
+const Workspace: React.FunctionComponent = (): React.ReactElement => {
+  log.render('Workspace');
+  const [route] = useRouter();
+  return <Container
+    className="workspace"
+    maxWidth="sm" >
+    {route.id === RouteId.PRONOUNS_CASES && <NounCases />}
+  </Container >;
+};
+
+export default Workspace;

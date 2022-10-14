@@ -16,9 +16,9 @@
 
 import React from 'react';
 import {CssBaseline, ThemeProvider, createTheme} from '@mui/material';
-import Workspace from './workspace';
+import Workspace from './Workspace';
 import {ThemeOptions} from '@mui/material/styles';
-import TopNavigator from './top-navigator';
+import TopNavigator from './TopNavigator';
 import log from '../../log';
 
 export const themeOptions: ThemeOptions = {};

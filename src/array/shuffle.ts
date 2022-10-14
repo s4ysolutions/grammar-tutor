@@ -14,11 +14,23 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {createRoot} from 'react-dom/client';
-import App from './react/components/App';
-import './array/shuffle';
 
-const container = document.getElementById('reactMount');
-const root = createRoot(container);
-root.render(<App />);
+// declare this is module
+export {};
+
+declare global {
+  interface Array<T> {
+    shuffle(): Array<T>;
+  }
+}
+
+// eslint-disable-next-line no-extend-native
+Array.prototype.shuffle = function shuffle<T>(): T[] {
+  const array = this.slice();
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+

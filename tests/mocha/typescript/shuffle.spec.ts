@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {createRoot} from 'react-dom/client';
-import App from './react/components/App';
-import './array/shuffle';
+import '../../../src/array/shuffle';
+import {expect} from 'chai';
 
-const container = document.getElementById('reactMount');
-const root = createRoot(container);
-root.render(<App />);
+describe('`shuffle` extension of array', () => {
+  it('oiriginal and shuffled are not the same', () => {
+    const src = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+    const shuffled = src.shuffle();
+    expect(src).to.be.eql(src.slice()); // precaution of eql
+    expect(src).to.be.not.eql(shuffled);
+  });
+});

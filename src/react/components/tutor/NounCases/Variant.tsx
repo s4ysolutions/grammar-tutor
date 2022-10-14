@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
+import {Button} from '@mui/material';
 import React from 'react';
-import {Container} from '@mui/material';
-import {RouteId} from '../../../router';
-import NounCases from '../tutor/noun-cases';
-import useRouter from '../../hooks/useRouter';
-import log from '../../../log';
 
-const Workspace: React.FunctionComponent = (): React.ReactElement => {
-  log.render('Workspace');
-  const [route] = useRouter();
-  return <Container
-    className="workspace"
-    maxWidth="sm" >
-    {route.id === RouteId.PRONOUNS_CASES && <NounCases />}
-  </Container >;
-};
+const Variant: React.FunctionComponent<{variant: string, onClick: () => void}> = ({variant, onClick}): React.ReactElement =>
+  <Button onClick={onClick}>
+    {variant}
+  </Button >;
 
-export default Workspace;
+export default Variant;

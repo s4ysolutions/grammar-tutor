@@ -19,18 +19,26 @@ import {Button, Container} from '@mui/material';
 import {getTutor} from '../../../../di';
 import usePromise from '../../../hooks/usePromise';
 import {NounCaseExercise} from '../../../../tutor';
-import Noun from './noun';
+import Noun from './Noun';
+import Variants from './Variants';
+import log from '../../../../log';
 
 const tutor = getTutor();
 const exerciseIssuer = tutor.nextPronounExersizeSelectWord.bind(tutor);
 
 const NounCases: React.FunctionComponent = (): React.ReactElement => {
+  log.render('NounCases');
 
   const [currentExercise, nextExercise] =
     usePromise<NounCaseExercise | null>(exerciseIssuer, null, 'NounCases');
 
   return <Container >
-    {currentExercise ? <Noun noun={currentExercise.mainForm} /> : null}
+    {currentExercise ? <React.Fragment>
+      <Noun noun={currentExercise.mainForm} />
+
+      <Variants onSelect={console.log} variants={currentExercise.possibleVariants} />
+    </React.Fragment>
+      : null}
 
     <Button onClick={nextExercise as MouseEventHandler} >
       Text
