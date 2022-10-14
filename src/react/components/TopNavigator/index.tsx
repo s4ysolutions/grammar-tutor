@@ -17,18 +17,31 @@
 import React from 'react';
 import {AppBar, Box, IconButton, Toolbar, Typography} from '@mui/material';
 import T from '../../../l10n';
-import {getRouter} from '../../../di';
+import {getLearningDb, getRouter, getTutor} from '../../../di';
 import useObservable from '../../hooks/useObservable';
-
 import {Route} from '../../../router';
 import {map} from 'rxjs/operators';
+import MenuIcon from '@mui/icons-material/Menu';
+import {LessonStatistics} from '../../../tutor';
+import usePromise from '../../hooks/usePromise';
+import Statistics from './Statistics';
 
 const router = getRouter();
 const mr2 = {mr: 2};
 const flexGrow1 = {flexGrow: 1};
 const appTitle = T`App title`;
 
+const tutor = getTutor();
+const learningDb = getLearningDb();
+
+const getLessonStatisticsPromise = (): Promise<LessonStatistics> => learningDb.getLessonStatistics(tutor.currentLesson);
+
+const NO_DATA = -1;
+
 const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
+
+  const [currentLessonStatistic] = usePromise<LessonStatistics>(getLessonStatisticsPromise, {total: NO_DATA, wrong: 0});
+
   const routerTitle = useObservable(
     router.observableCurrentRoute.pipe(map((route: Route) => route.title)),
     router.currentRoute.title,
@@ -44,21 +57,14 @@ const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
           size="large"
           sx={mr2}
         >
-          {
-            // <MenuIcon />
-          }
+          <MenuIcon />
         </IconButton >
 
         <Typography component="h1" sx={flexGrow1} variant="h6" >
           {`${appTitle} - ${routerTitle}`}
         </Typography >
 
-        {/*
-          <Button color="inherit" >
-            Login
-          </Button >
-          */
-        }
+        {currentLessonStatistic.total !== NO_DATA && <Statistics initial={currentLessonStatistic} />}
       </Toolbar >
     </AppBar >
   </Box >;

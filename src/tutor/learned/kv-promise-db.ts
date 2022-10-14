@@ -14,54 +14,92 @@
  * limitations under the License.
  */
 
-import {LearnedWordStaticsBean, LearnedWordStatistics, LearningDB} from '../index';
+import {LearnedWordStaticsBean, LearnedWordStatistics, LearningDb, Lesson, LessonStatistics} from '../index';
 import {KvPromise} from '../../kv/promise';
 import {DefaultLearnedWordStatistics} from './default';
+import {Observable, Subject} from 'rxjs';
 
 const PREFIX = 'ldb@';
+const PREFIX_LESSON_STATS = 'ldbs@';
 const NEVER = new Date(0);
 
-export class KvPromiseLearningDB implements LearningDB {
+export class KvPromiseLearningDb implements LearningDb {
   private readonly kv: KvPromise;
+
+  private readonly subjectLessonStatistics = new Subject<LessonStatistics>();
 
   constructor(kvPromise: KvPromise) {
     this.kv = kvPromise;
   }
 
-  private getStats(word: string): Promise<LearnedWordStaticsBean> {
-    return this.kv.get<LearnedWordStaticsBean | null>(`${PREFIX}${word}`, null)
+  private getStats(lesson: Lesson, word: string): Promise<LearnedWordStaticsBean> {
+    return this.kv.get<LearnedWordStaticsBean | null>(`${PREFIX}${lesson.toString()}-${word}`, null)
       .then(s => s === null ? {shownCount: 0, wrongCount: 0, last: NEVER} : s);
   }
 
-  private setStats(word: string, bean: LearnedWordStaticsBean): Promise<void> {
-    return this.kv.set<LearnedWordStaticsBean>(`${PREFIX}${word}`, bean);
+  private setStats(lesson: Lesson, word: string, bean: LearnedWordStaticsBean): Promise<void> {
+    return this.kv.set<LearnedWordStaticsBean>(`${PREFIX}${lesson.toString()}-${word}`, bean);
   }
 
-  private updateStats(word: string, wrongInc: number): Promise<void> {
-    return this.getWordStatistics(word).then(stats =>
-      this.setStats(
-        word,
-        {
-          shownCount: stats.shownCount + 1,
-          wrongCount: stats.wrongCount + wrongInc,
-          last: new Date(),
-        },
-      ));
+  private getLessonStats(lesson: Lesson): Promise<LessonStatistics> {
+    return this.kv.get<LessonStatistics | null>(`${PREFIX_LESSON_STATS}${lesson.toString()}`, null)
+      .then(s => s === null ? {total: 0, wrong: 0} : s);
   }
 
-  getWordStatistics(word: string): Promise<LearnedWordStatistics> {
-    return this.getStats(word)
+  private setLessonStats(lesson: Lesson, stat: LessonStatistics): Promise<void> {
+    return this.kv.set<LessonStatistics>(`${PREFIX_LESSON_STATS}${lesson.toString()}`, stat)
+      .then(() => {
+        if (lesson === Lesson.PronounCases) {
+          this.subjectLessonStatistics.next(stat);
+        }
+      });
+  }
+
+  private async updateStats(lesson: Lesson, word: string, wrong: boolean): Promise<void> {
+    const stats = await this.getWordStatistics(lesson, word);
+    /* eslint-disable-next-line no-magic-numbers */
+    const wrongCount = stats.wrongCount + (wrong ? 1 : stats.wrongCount > 0 ? -1 : 0);
+    const promise1 = this.setStats(
+      lesson, word,
+      {
+        shownCount: stats.shownCount + 1,
+        wrongCount,
+        last: new Date(),
+      },
+    );
+
+    const lessonStats = await this.getLessonStats(lesson);
+    const newLessonStats = {total: lessonStats.total + 1, wrong: lessonStats.wrong - stats.wrongCount + wrongCount};
+    const promise2 = this.setLessonStats(lesson, newLessonStats);
+
+    // noinspection ES6MissingAwait
+    return Promise.all([promise1, promise2]) as unknown as Promise<void>;
+  }
+
+  getWordStatistics(lesson: Lesson, word: string): Promise<LearnedWordStatistics> {
+    return this.getStats(lesson, word)
       // TODO: should be DI
       //       either factory passed to constructor
       //       or intermediate store interface
       .then(bean => DefaultLearnedWordStatistics.fromBean(bean));
   }
 
-  addCorrect(word: string): Promise<void> {
-    return this.updateStats(word, 0);
+  addCorrect(lesson: Lesson, word: string): Promise<void> {
+    return this.updateStats(lesson, word, false);
   }
 
-  addWrong(word: string): Promise<void> {
-    return this.updateStats(word, 1);
+  addWrong(lesson: Lesson, word: string): Promise<void> {
+    return this.updateStats(lesson, word, true);
+  }
+
+  getLessonStatistics(lesson: Lesson): Promise<LessonStatistics> {
+    return this.getLessonStats(lesson);
+  }
+
+  observableLessonStatistics(lesson: Lesson): Observable<LessonStatistics> {
+    if (lesson === Lesson.PronounCases) {
+      return this.subjectLessonStatistics;
+    }
+    throw Error(`Unknow lesson ${lesson}`);
   }
 }

@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {CssBaseline, ThemeProvider} from '@mui/material';
-import Workspace from './Workspace';
-import TopNavigator from './TopNavigator';
-import log from '../../log';
-import theme from '../theme';
+import {ThemeOptions} from '@mui/material/styles';
+import {createTheme} from '@mui/material';
 
-const App: React.FunctionComponent = (): React.ReactElement => {
-  log.render('App');
-  return <React.StrictMode >
-    <CssBaseline />
+declare module '@mui/material/styles' {
+  /*
+  interface Theme {
+  }
 
-    <ThemeProvider theme={theme} >
-      <TopNavigator />
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+  }
+   */
+}
 
-      <Workspace />
-    </ThemeProvider >
-  </React.StrictMode >;
+export const themeOptions: ThemeOptions = {
 };
 
-export default App;
+const theme = createTheme(themeOptions);
+
+export default theme;

@@ -21,7 +21,8 @@ import {
   GrammarForm,
   GrammarGender,
   GrammarPlurality,
-  LearningDB,
+  LearningDb,
+  Lesson,
   Noun,
   NounCase,
   NounCaseExercise,
@@ -29,17 +30,22 @@ import {
   Tutor,
 } from '../index';
 import log from '../../log';
+import {Observable, Subject} from 'rxjs';
 
 
 export class DefaultTutor implements Tutor {
   private readonly pronounsDB: NounsDB;
 
-  private readonly learningDB: LearningDB;
+  private readonly learningDB: LearningDb;
 
-  constructor(pronounsDB: NounsDB, learningDB: LearningDB) {
+  private readonly subjectCurrentLesson = new Subject<Lesson>();
+
+  constructor(pronounsDB: NounsDB, learningDB: LearningDb) {
     this.pronounsDB = pronounsDB;
     this.learningDB = learningDB;
   }
+
+  currentLesson: Lesson = Lesson.PronounCases;
 
   private static random = (upTo: number): number => Math.floor(Math.random() * upTo);
 
@@ -175,7 +181,7 @@ export class DefaultTutor implements Tutor {
     log.d(`tutor nextWord enter prevWord=${this.prevWord}`);
     const wordsSet = await this.pronounsDB.words;
     const statPromises: Promise<{word: string, weight: number}>[] =
-      wordsSet.map(word => this.learningDB.getWordStatistics(word).then(stat => ({word, weight: stat.weight})));
+      wordsSet.map(word => this.learningDB.getWordStatistics(this.currentLesson, word).then(stat => ({word, weight: stat.weight})));
     const wordWeights = await Promise.all(statPromises);
 
     const weighted: string[] = DefaultTutor.getWeightedArray(wordWeights);
@@ -256,8 +262,17 @@ export class DefaultTutor implements Tutor {
     };
   }
 
+  // question should be internal state?
   // eslint-disable-next-line class-methods-use-this
   checkNounCaseAnswer(answer: string, question: NounCaseExercise): Promise<boolean> {
-    return Promise.resolve(answer === question.exerciseCase.word);
+    const correct = answer === question.exerciseCase.word;
+    const promise = correct
+      ? this.learningDB.addCorrect(this.currentLesson, answer)
+      : this.learningDB.addWrong(this.currentLesson, answer);
+    return promise.then(() => correct);
+  }
+
+  observableCurrentLeson(): Observable<Lesson> {
+    return this.subjectCurrentLesson;
   }
 }

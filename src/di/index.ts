@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-import {DefaultPronounsDB} from '../tutor/pronouns/default';
+import {DefaultPronounsDb} from '../tutor/pronouns/default';
 import indexedDbFactory from '../kv/promise/indexedDB';
 import {DefaultTutor} from '../tutor/tutor/default';
-import {Tutor} from '../tutor';
-import {KvPromiseLearningDB} from '../tutor/learned/kv-promise-db';
+import {LearningDb, Tutor} from '../tutor';
+import {KvPromiseLearningDb} from '../tutor/learned/kv-promise-db';
 import {DefaultRouter} from '../router/default';
 import {Router} from '../router';
 
 const singletonPromiseKV = indexedDbFactory('sluchaj-zamenica');
-const singletonPronounsDB = new DefaultPronounsDB();
-const singletonLearnedDB = new KvPromiseLearningDB(singletonPromiseKV);
-const singletonTutor = new DefaultTutor(singletonPronounsDB, singletonLearnedDB);
+const singletonPronounsDb = new DefaultPronounsDb();
+const singletonLearningDb = new KvPromiseLearningDb(singletonPromiseKV);
+const singletonTutor = new DefaultTutor(singletonPronounsDb, singletonLearningDb);
 
 const singletonRouter = new DefaultRouter();
 
+export const getLearningDb = (): LearningDb => singletonLearningDb;
 export const getTutor = (): Tutor => singletonTutor;
 export const getRouter = (): Router => singletonRouter;

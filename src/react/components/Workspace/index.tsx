@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {Container} from '@mui/material';
+import React, {useMemo} from 'react';
+import {Container, useTheme} from '@mui/material';
 import {RouteId} from '../../../router';
 import NounCases from '../tutor/NounCases';
 import useRouter from '../../hooks/useRouter';
 import log from '../../../log';
 
+const topSpace = 2;
+
 const Workspace: React.FunctionComponent = (): React.ReactElement => {
   log.render('Workspace');
+  const theme = useTheme();
+  const sx = useMemo(() => ({
+    mt: theme.spacing(topSpace),
+  }), [theme]);
+
   const [route] = useRouter();
+
   return <Container
     className="workspace"
-    maxWidth="sm" >
+    maxWidth="sm"
+    sx={sx} >
     {route.id === RouteId.PRONOUNS_CASES && <NounCases />}
   </Container >;
 };

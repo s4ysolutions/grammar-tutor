@@ -21,14 +21,14 @@ import {
   GrammarForm,
   GrammarGender,
   GrammarPlurality,
-  LearningDB,
+  LearningDb,
   NounsDB,
   Tutor,
 } from '../../../src/tutor';
 import {KvPromise} from '../../../src/kv/promise';
-import {DefaultPronounsDB} from '../../../src/tutor/pronouns/default';
+import {DefaultPronounsDb} from '../../../src/tutor/pronouns/default';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
-import {KvPromiseLearningDB} from '../../../src/tutor/learned/kv-promise-db';
+import {KvPromiseLearningDb} from '../../../src/tutor/learned/kv-promise-db';
 import {DefaultTutor} from '../../../src/tutor/tutor/default';
 import sinonApi, {SinonSandbox} from 'sinon';
 
@@ -37,15 +37,15 @@ chaiUse(chaiString);
 describe('Tutor', () => {
   let promiseKV: KvPromise;
   let pronounsDB: NounsDB;
-  let learnedDB: LearningDB;
+  let learnedDB: LearningDb;
   let tutor: Tutor;
   let sinon: SinonSandbox;
 
   beforeEach(() => {
     sinon = sinonApi.createSandbox();
     promiseKV = memoryStoragePromiseFactory({});
-    pronounsDB = new DefaultPronounsDB();
-    learnedDB = new KvPromiseLearningDB(promiseKV);
+    pronounsDB = new DefaultPronounsDb();
+    learnedDB = new KvPromiseLearningDb(promiseKV);
     tutor = new DefaultTutor(pronounsDB, learnedDB);
   });
 
@@ -62,7 +62,7 @@ describe('Tutor', () => {
     sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.SINGULAR));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.Instrumental));
+    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.INSTRUMENTAL));
 
     const exercise = await tutor.nextPronounExersizeSelectWord();
     expect(exercise).is.not.null;
@@ -70,7 +70,7 @@ describe('Tutor', () => {
     expect(exercise).to.has.property('exerciseCase');
     expect(exercise.exerciseCase).to.has.property('word', 'мном');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
-    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.Instrumental);
+    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.INSTRUMENTAL);
     expect(exercise.exerciseCase).to.not.has.property('gender');
     expect(exercise.exerciseCase).to.not.has.property('form');
 
@@ -87,7 +87,7 @@ describe('Tutor', () => {
     sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.SINGULAR));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.Genitive));
+    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.GENITIVE));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomForm', sinon.fake.returns(GrammarForm.LONG));
@@ -98,7 +98,7 @@ describe('Tutor', () => {
     expect(exercise).to.has.property('exerciseCase');
     expect(exercise.exerciseCase).to.has.property('word', 'мене');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
-    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.Genitive);
+    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.GENITIVE);
     expect(exercise.exerciseCase).to.has.property('form', GrammarForm.LONG);
     expect(exercise.exerciseCase).to.not.has.property('gender');
 
@@ -115,7 +115,7 @@ describe('Tutor', () => {
     sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.SINGULAR));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.Instrumental));
+    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.INSTRUMENTAL));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomGender', sinon.fake.returns(GrammarGender.FEMININE));
@@ -129,7 +129,7 @@ describe('Tutor', () => {
     expect(exercise).to.has.property('exerciseCase');
     expect(exercise.exerciseCase).to.has.property('word', 'њом');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
-    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.Instrumental);
+    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.INSTRUMENTAL);
     expect(exercise.exerciseCase).to.not.has.property('form');
     expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
 
@@ -146,7 +146,7 @@ describe('Tutor', () => {
     sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.SINGULAR));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.Genitive));
+    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.GENITIVE));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomForm', sinon.fake.returns(GrammarForm.LONG));
@@ -163,7 +163,7 @@ describe('Tutor', () => {
     expect(exercise).to.has.property('exerciseCase');
     expect(exercise.exerciseCase).to.has.property('word', 'ње');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
-    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.Genitive);
+    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.GENITIVE);
     expect(exercise.exerciseCase).to.has.property('form', GrammarForm.LONG);
     expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
 

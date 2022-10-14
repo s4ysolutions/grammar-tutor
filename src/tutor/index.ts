@@ -14,30 +14,32 @@
  * limitations under the License.
  */
 
+import {Observable} from 'rxjs';
+
 export enum GrammarGender {
-  MASCULINE,
-  FEMININE,
-  NEUTER,
+  MASCULINE= 'Masculine',
+  FEMININE = 'Feminine',
+  NEUTER = 'Neuter',
 }
 
 export enum GrammarForm {
-  SHORT,
-  LONG,
+  SHORT='Short',
+  LONG='Long',
 }
 
 export enum GrammarPlurality {
-  SINGULAR,
-  PLURAL,
+  SINGULAR='Singular',
+  PLURAL='Plural',
 }
 
 export enum GrammarCase {
-  Nominative = 'Nom',
-  Genitive = 'Gen',
-  Accusative = 'Acc',
-  Locative = 'Loc',
-  Dative = 'Dat',
-  Instrumental = 'Inst',
-  Vocative = 'Voc',
+  NOMINATIVE = 'Nominative',
+  GENITIVE = 'Genitive',
+  ACCUSATIVE = 'Accusative',
+  LOCATIVE = 'Locative',
+  DATIVE = 'Dative',
+  INSTRUMENTAL = 'Instrumental',
+  VOCATIVE = 'Vocative',
 }
 
 export interface NounCase {
@@ -79,10 +81,21 @@ export interface LearnedWordStatistics extends LearnedWordStaticsBean{
   weight: number;
 }
 
-export interface LearningDB {
-  getWordStatistics(word: string): Promise<LearnedWordStatistics>
-  addCorrect(word: string): Promise<void>
-  addWrong(word: string): Promise<void>
+export enum Lesson {
+  PronounCases,
+}
+
+export interface LessonStatistics {
+  readonly total: number
+  readonly wrong: number
+}
+
+export interface LearningDb {
+  getWordStatistics(lesson: Lesson, word: string): Promise<LearnedWordStatistics>
+  addCorrect(lesson: Lesson, word: string): Promise<void>
+  addWrong(lesson: Lesson, word: string): Promise<void>
+  getLessonStatistics(lesson: Lesson): Promise<LessonStatistics>
+  observableLessonStatistics(lesson: Lesson): Observable<LessonStatistics>
 }
 
 export interface NounCaseExercise {
@@ -92,6 +105,8 @@ export interface NounCaseExercise {
 }
 
 export interface Tutor {
+  readonly currentLesson: Lesson
+  observableCurrentLeson(): Observable<Lesson>
   nextPronounExersizeSelectWord(): Promise<NounCaseExercise>
-  checkNounCaseAnswer(answer: string, question: NounCaseExercise): Promise<boolean>;
+  checkNounCaseAnswer(answer: string, exercise: NounCaseExercise): Promise<boolean>;
 }

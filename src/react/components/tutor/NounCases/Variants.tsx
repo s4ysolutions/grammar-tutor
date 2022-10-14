@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-import {Container} from '@mui/material';
-import React from 'react';
+import {Container, useTheme} from '@mui/material';
+import React, {useMemo} from 'react';
 import Variant from './Variant';
 import log from '../../../../log';
+
+const topSpace = 2;
 
 const Variants: React.FunctionComponent<{ variants: string[], onSelect: (variant: string) => void }> =
   ({variants, onSelect}): React.ReactElement => {
     log.render('Variants');
-    return <Container >
+
+    const theme = useTheme();
+    const sx = useMemo(() => ({
+      mt: theme.spacing(topSpace),
+    }), [theme]);
+
+    return <Container sx={sx}>
       {variants.shuffle().map(variant => <Variant
         key={variant}
         onClick={() => onSelect(variant)}
