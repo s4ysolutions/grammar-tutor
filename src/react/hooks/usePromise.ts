@@ -15,21 +15,40 @@
  */
 
 import log from '../../log';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
-const usePromise = <T>(promise: Promise<T>, initialValue: T, key?: string): [T, (nextPromise: Promise<T>) => void] => {
+const usePromise = <T>(promiseIssuer: ()=>Promise<T>, initialValue: T, key?: string): [T, () => void] => {
   if (key) {
     log.promiseUse(key);
   }
   const [state, setState] = useState<T>(initialValue);
 
-
   useEffect(() => {
-    promise.then(value => {
+    if (key) {
+      log.promiseEffect(key);
+    }
+    promiseIssuer().then(value => {
       setState(value);
     });
-  }, []);
-  return [state, (nextPromise: Promise<T>) => nextPromise.then(value => setState(value))];
+  }, [key, promiseIssuer]);
+
+  const memoizedNext = useCallback(() => {
+    if (key) {
+      log.promiseNext(key);
+    }
+    return promiseIssuer().then(value => {
+      if (key) {
+        log.promiseValue(key, value);
+      }
+      setState(value);
+    });
+  }, [key, setState, promiseIssuer]);
+
+  if (key) {
+    log.promiseState(key, state);
+  }
+
+  return [state, memoizedNext];
 };
 
 export default usePromise;

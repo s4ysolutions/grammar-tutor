@@ -28,6 +28,7 @@ import {
   NounsDB,
   Tutor,
 } from '../index';
+import log from '../../log';
 
 
 export class DefaultTutor implements Tutor {
@@ -168,15 +169,36 @@ export class DefaultTutor implements Tutor {
   private static getWeightedArray =
     (wordWeights: Array<{word: string, weight: number}>):string[] => wordWeights.map(({word, weight}) => Array(weight).fill(word)).flat();
 
-  async nextPronounExersizeSelectWord(): Promise<NounCaseExercise> {
+  private prevWord: string | null = null;
+
+  private async nextWord(): Promise<string> {
+    log.d(`tutor nextWord enter prevWord=${this.prevWord}`);
     const wordsSet = await this.pronounsDB.words;
     const statPromises: Promise<{word: string, weight: number}>[] =
       wordsSet.map(word => this.learningDB.getWordStatistics(word).then(stat => ({word, weight: stat.weight})));
     const wordWeights = await Promise.all(statPromises);
 
     const weighted: string[] = DefaultTutor.getWeightedArray(wordWeights);
-    const i = DefaultTutor.random(weighted.length);
-    const word = weighted[i];
+
+    let word: string;
+    if (weighted.length === 1) {
+      word = weighted[0];
+    } else {
+      log.d(`tutor nextWord loop start prevWord=${this.prevWord}`);
+      do {
+        const i = DefaultTutor.random(weighted.length);
+        word = weighted[i];
+        log.d(`tutor nextWord get word=${word} (${i})`);
+      } while (word === this.prevWord);
+      log.d(`tutor nextWord loop end with word=${word}`);
+    }
+    this.prevWord = word;
+    log.d(`tutor nextWord exit ${word}`);
+    return word;
+  }
+
+  async nextPronounExersizeSelectWord(): Promise<NounCaseExercise> {
+    const word = await this.nextWord();
 
     const noun: Noun = await this.pronounsDB.getNoun(word);
 
@@ -194,7 +216,6 @@ export class DefaultTutor implements Tutor {
     const grammarCase: GrammarCase = DefaultTutor.randomCase(availableCases);
 
     const availableGenders = DefaultTutor.availableGendersForPluralityAndCase(cases, grammarPlurality, grammarCase);
-
 
     if (availableGenders.length === 0) {
       const availableForms = DefaultTutor.availableFormsForPluralityAndCase(cases, grammarPlurality, grammarCase);

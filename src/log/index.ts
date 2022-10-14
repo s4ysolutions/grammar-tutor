@@ -28,7 +28,7 @@ const log = {
    * d: (a?: any, b?: any, c?: any) => undefined, //console.debug,
    * debug: (a?: any, b?: any, c?: any) => undefined, //console.debug,
    */
-  d: console.debug,
+  d: console.log,
   debug: console.log,
   error: console.error,
   info: console.info,
@@ -69,8 +69,17 @@ const log = {
   promiseUse(id: string): void {
     this.debug(`promise: use ${id}`);
   },
-  promiseThen(id: string): void {
-    this.debug(`promise: then ${id}`);
+  promiseEffect(id: string): void {
+    this.debug(`promise: effect ${id}`);
+  },
+  promiseNext(id: string): void {
+    this.debug(`promise: next ${id}`);
+  },
+  promiseValue(id: string, value: unknown): void {
+    this.debug(`promise: value ${id}`, value);
+  },
+  promiseState(id: string, state: unknown): void {
+    this.debug(`promise: state ${id}`, state);
   },
   rxUse(id: string): void {
     this.debug(`rx: use ${id}`);

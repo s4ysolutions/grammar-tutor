@@ -15,15 +15,20 @@
  */
 
 import React from 'react';
-import {Container, Typography} from '@mui/material';
-import T from '../../../l10n';
+import {Container} from '@mui/material';
+import {RouteId} from '../../../router';
+import NounCases from '../tutor/noun-cases';
+import useRouter from '../../hooks/useRouter';
+import log from '../../../log';
 
-const Workspace: React.FunctionComponent = (): React.ReactElement => <Container
-  className="workspace"
-  maxWidth="sm" >
-  <Typography align="center" component="h1" variant="h3">
-    {T`App name`}
-  </Typography>
-</Container >;
+const Workspace: React.FunctionComponent = (): React.ReactElement => {
+  log.render('Workspace');
+  const [route] = useRouter();
+  return <Container
+    className="workspace"
+    maxWidth="sm" >
+    {route.id === RouteId.PRONOUNS_CASES && <NounCases />}
+  </Container >;
+};
 
 export default Workspace;

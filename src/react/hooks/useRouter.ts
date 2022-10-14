@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-import {Observable} from 'rxjs';
 
-export enum RouteId {
-  PRONOUNS_CASES,
-}
+import {Route, RouteId} from '../../router';
+import useObservable from './useObservable';
+import {getRouter} from '../../di';
 
-export interface Route {
-  readonly id: RouteId;
-  readonly title: string;
-}
+const router = getRouter();
 
-export interface Router {
-  readonly currentRoute: Route;
-  readonly observableCurrentRoute: Observable<Route>;
-  go(route: RouteId): void;
-}
+const useRouter = (): [Route, (route: RouteId) => void] => {
+  const route = useObservable(router.observableCurrentRoute, router.currentRoute);
+  return [route, (routeId) => router.go(routeId)];
+};
+
+export default useRouter;

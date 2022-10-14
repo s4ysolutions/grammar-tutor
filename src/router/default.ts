@@ -30,4 +30,9 @@ export class DefaultRouter implements Router {
   readonly currentRoute: Route = routerPronounsCases;
 
   readonly observableCurrentRoute = observableCurrentRouter;
+
+  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
+  go(route: RouteId): void {
+    observableCurrentRouter.next(routerPronounsCases);
+  }
 }

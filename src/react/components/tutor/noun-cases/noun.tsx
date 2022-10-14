@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {Container, Typography} from '@mui/material';
-import T from '../../../../l10n';
-import {getTutor} from '../../../../di';
-import usePromise from '../../../hooks/usePromise';
-import {Noun} from '../../../../tutor';
+import {Typography} from '@mui/material';
+import React, {memo} from 'react';
 
-const tutor = getTutor();
+const Noun: React.FunctionComponent<{noun: string}> = ({noun}): React.ReactElement => <Typography align="center" variant="h4">
+  {noun}
+</Typography >;
 
-const Cases: React.FunctionComponent = (): React.ReactElement => {
-  const [currentNoun, nextNoun] = usePromise<Noun | null>(tutor.nextPronoun(), null)
-  <Container >
-
-  </Container >;
-}
-
-export default Cases;
+export default memo(Noun);

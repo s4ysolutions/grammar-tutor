@@ -23,6 +23,7 @@ import {Observable, Subject} from 'rxjs';
 
 interface IndexedDB {
   _db: IDBPDatabase | null,
+  _dbPromise: Promise<IDBPDatabase> | null,
   readonly db: Promise<IDBPDatabase>
   readonly subject: Subject<{ key: string; value: unknown }>
   readonly subjectDelete: Subject<{ key: string; value: unknown }>
@@ -32,39 +33,47 @@ const DB_VERSION = 8;
 
 const indexedDbFactory = (dbname: string, store = 'default'): KvPromise & IndexedDB => ({
   _db: null as IDBPDatabase,
+  _dbPromise: null as Promise<IDBPDatabase>,
   subject: new Subject<{ key: string; value: unknown }>(),
   subjectDelete: new Subject<{ key: string; value: unknown }>(),
   get db(): Promise<IDBPDatabase> {
-    return this._db === null ? openDB(dbname, DB_VERSION, {
-      // eslint-disable-next-line no-unused-vars
-      upgrade(database: IDBPDatabase, oldVersion: number, newVersion: number | null) {
-        log.debug('indexedDb upgrade');
-        try {
-          database.deleteObjectStore(store);
-        } catch (e) {
-          log.debug('indexedDb can not delete database', e);
-        }
-        try {
-          database.createObjectStore(store, {});
-        } catch (e) {
-          log.error('indexedDb createObjectStore', e);
-          throw (e);
-        }
-      },
-      blocked() {
-        log.debug('indexedDb blocked');
-      },
-      blocking() {
-        log.debug('indexedDb blocking');
-      },
-      terminated() {
-        log.debug('indexedDb terminated');
-      },
-    }).then((db: IDBPDatabase) => {
-      log.debug('indexedDb init done');
-      this._db = db;
-      return db;
-    }) : Promise.resolve(this._db);
+    if (this._db === null) {
+      if (this._dbPromise === null) {
+        log.debug('indexedDb open');
+        this._dbPromise = openDB(dbname, DB_VERSION, {
+          // eslint-disable-next-line no-unused-vars
+          upgrade(database: IDBPDatabase, oldVersion: number, newVersion: number | null) {
+            log.debug('indexedDb upgrade');
+            try {
+              database.deleteObjectStore(store);
+            } catch (e) {
+              log.debug('indexedDb can not delete database', e);
+            }
+            try {
+              database.createObjectStore(store, {});
+            } catch (e) {
+              log.error('indexedDb createObjectStore', e);
+              throw (e);
+            }
+          },
+          blocked() {
+            log.debug('indexedDb blocked');
+          },
+          blocking() {
+            log.debug('indexedDb blocking');
+          },
+          terminated() {
+            log.debug('indexedDb terminated');
+          },
+        }).then((db: IDBPDatabase) => {
+          log.debug('indexedDb init done');
+          this._db = db;
+          return db;
+        });
+      }
+      return this._dbPromise;
+    }
+    return Promise.resolve(this._db);
   },
   get<T>(key: string, defaultValue?: T): Promise<T> {
     log.debug(`indexedDb get ${key}`);
