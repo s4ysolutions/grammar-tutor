@@ -3,9 +3,9 @@
   "engines" : {
     "node" : ">=16.0.0"
   },
-  "name": "slucaj-zamenica",
+  "name": "grammar-tutor",
   "version": "1.0.0",
-  "description": "Проучавање падежа српских заменица. https://sr.birmiss.com/како-одредити-случај-заменица-мењају/",
+  "description": "Проучавање падежа српских заменица.",
   "main": "index.js",
   "type": "module",
   "scripts": {
