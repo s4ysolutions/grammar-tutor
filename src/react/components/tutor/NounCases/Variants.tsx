@@ -25,7 +25,7 @@ import {getDi} from '../../../../di/default';
 const topSpace = 2;
 const tutor = getDi().tutor;
 
-const DELAY_WRONG = 1000;
+const DELAY_WRONG = 2000;
 const DELAY_CORRECT = 500;
 
 const Variants: React.FunctionComponent<{ exercise: NounCaseExercise, possibleVariants: string[], nextExercise: () => void }> =
