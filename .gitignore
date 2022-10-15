@@ -11,3 +11,4 @@ session.vim
 .firebase
 old
 .DS_Store
+firebase-debug.log
