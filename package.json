@@ -1,7 +1,7 @@
 {
   "packageManager": "pnpm@7.13.4",
-  "engines" : {
-    "node" : ">=16.0.0"
+  "engines": {
+    "node": ">=16.0.0"
   },
   "name": "grammar-tutor",
   "version": "1.0.0",
@@ -58,6 +58,7 @@
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-perf": "^3.3.1",
+    "firebase-tools": "^11.14.4",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",

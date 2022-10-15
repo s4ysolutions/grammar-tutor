@@ -43,6 +43,6 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: service.json
         run: |
           echo $FIREBASE_SERVICE_PK > $GOOGLE_APPLICATION_CREDENTIALS
-          firebase projects:list
-          # firebase use grammar-tutor-510b2 -- is it desirable to make sure the project?
-          firebase deploy --only hosting 
+          ./node_modules/.bin/firebase projects:list
+          # ./node_modules/.bin/firebase use grammar-tutor-510b2 -- is it desirable to make sure the project?
+          ./node_modules/.bin/firebase deploy --only hosting 
