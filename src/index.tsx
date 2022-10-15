@@ -18,6 +18,34 @@ import React from 'react';
 import {createRoot} from 'react-dom/client';
 import App from './react/components/App';
 import './array/shuffle';
+import log from './log';
+
+declare global {
+  interface ImportMeta {
+    env?: {DEV: boolean};
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', async () => {
+    try {
+      let reg;
+
+      if (import.meta.env?.DEV) {
+        reg = await navigator.serviceWorker.register('/service-worker.js', {
+          type: 'module',
+        });
+      } else {
+        // In production, use the normal service worker registration
+        reg = await navigator.serviceWorker.register('/service-worker.js');
+      }
+
+      log.info('Service worker registered! 😎', reg);
+    } catch (err) {
+      log.info('😥 Service worker registration failed: ', err);
+    }
+  });
+}
 
 const container = document.getElementById('reactMount');
 const root = createRoot(container);

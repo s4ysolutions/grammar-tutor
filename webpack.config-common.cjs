@@ -1,11 +1,11 @@
 /*
- * Copyright 2019 s4y.solutions
+ * Copyright 2022 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
 const ReactRefreshTypeScript = require('react-refresh-typescript');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const TARGET = process.env.npm_lifecycle_event;
 const PATH_SRC = path.resolve(__dirname, 'src');
@@ -188,6 +189,7 @@ const config = {
     fallback: { 'stream': require.resolve('stream-browserify'), 'buffer': require.resolve('buffer/') }, // required by saz
   },
   plugins: [
+    new CopyPlugin({patterns: [{ from: `${PATH_SRC}/service-worker.js`, to: `${PATH_DIST}/service-worker.js` }]}),
     new ForkTsCheckerWebpackPlugin({ }),
     new HtmlWebpackPlugin({
       template: `${PATH_SRC}/index.ejs`,
