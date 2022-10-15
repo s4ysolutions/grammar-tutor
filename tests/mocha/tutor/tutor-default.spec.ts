@@ -68,13 +68,13 @@ describe('Tutor', () => {
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'ја');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'мном');
+    expect(exercise.exerciseCase).to.has.property('word', 'мно̑м, мно́ме');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
     expect(exercise.exerciseCase).to.has.property('case', GrammarCase.INSTRUMENTAL);
     expect(exercise.exerciseCase).to.not.has.property('gender');
     expect(exercise.exerciseCase).to.not.has.property('form');
 
-    expect(await tutor.checkNounCaseAnswer('мном', exercise)).to.be.true;
+    expect(await tutor.checkNounCaseAnswer('мно̑м, мно́ме', exercise)).to.be.true;
     expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
   });
 
@@ -96,13 +96,13 @@ describe('Tutor', () => {
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'ја');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'мене');
+    expect(exercise.exerciseCase).to.has.property('word', 'ме̏не');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
     expect(exercise.exerciseCase).to.has.property('case', GrammarCase.GENITIVE);
     expect(exercise.exerciseCase).to.has.property('form', GrammarForm.LONG);
     expect(exercise.exerciseCase).to.not.has.property('gender');
 
-    expect(await tutor.checkNounCaseAnswer('мене', exercise)).to.be.true;
+    expect(await tutor.checkNounCaseAnswer('ме̏не', exercise)).to.be.true;
     expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
   });
 
@@ -127,13 +127,13 @@ describe('Tutor', () => {
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'он, она, оно');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'њом');
+    expect(exercise.exerciseCase).to.has.property('word', 'њо̑м, њо́ме');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
     expect(exercise.exerciseCase).to.has.property('case', GrammarCase.INSTRUMENTAL);
     expect(exercise.exerciseCase).to.not.has.property('form');
     expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
 
-    expect(await tutor.checkNounCaseAnswer('њом', exercise)).to.be.true;
+    expect(await tutor.checkNounCaseAnswer('њо̑м, њо́ме', exercise)).to.be.true;
     expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
   });
 
@@ -161,13 +161,13 @@ describe('Tutor', () => {
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'он, она, оно');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'ње');
+    expect(exercise.exerciseCase).to.has.property('word', 'ње̑');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
     expect(exercise.exerciseCase).to.has.property('case', GrammarCase.GENITIVE);
     expect(exercise.exerciseCase).to.has.property('form', GrammarForm.LONG);
     expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
 
-    expect(await tutor.checkNounCaseAnswer('ње', exercise)).to.be.true;
+    expect(await tutor.checkNounCaseAnswer('ње̑', exercise)).to.be.true;
     expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
   });
 });

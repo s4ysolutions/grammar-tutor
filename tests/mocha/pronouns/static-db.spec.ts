@@ -63,7 +63,7 @@ describe('Test static data implementation of pronouns db', () => {
     expect(yaFormShort).has.property('form', GrammarForm.SHORT);
     expect(yaFormShort).has.not.property('gender', GrammarForm);
     const yaFormLong = forms[1];
-    expect(yaFormLong).has.property('word', 'тебе');
+    expect(yaFormLong).has.property('word', 'те̏бе');
     expect(yaFormLong).has.property('case', GrammarCase.GENITIVE);
     expect(yaFormLong).has.property('plurality', GrammarPlurality.SINGULAR);
     expect(yaFormLong).has.property('form', GrammarForm.LONG);
