@@ -27,6 +27,7 @@ interface IndexedDB {
   readonly db: Promise<IDBPDatabase>
   readonly subject: Subject<{ key: string; value: unknown }>
   readonly subjectDelete: Subject<{ key: string; value: unknown }>
+  readonly subjectReset: Subject<boolean>
 }
 
 const DB_VERSION = 8;
@@ -36,6 +37,7 @@ const indexedDbFactory = (dbname: string, store = 'default'): KvPromise & Indexe
   _dbPromise: null as Promise<IDBPDatabase>,
   subject: new Subject<{ key: string; value: unknown }>(),
   subjectDelete: new Subject<{ key: string; value: unknown }>(),
+  subjectReset: new Subject<boolean>(),
   get db(): Promise<IDBPDatabase> {
     if (this._db === null) {
       if (this._dbPromise === null) {
@@ -89,9 +91,9 @@ const indexedDbFactory = (dbname: string, store = 'default'): KvPromise & Indexe
   set<T>(key: string, value: T) {
     log.debug(`indexedDb set ${key}`, value);
     const prom =
-      (value === undefined)
-        ? this.db.then((db: IDBPDatabase) => db.delete(store, key))
-        : this.db.then((db: IDBPDatabase) => db.put(store, value, key));
+        (value === undefined)
+          ? this.db.then((db: IDBPDatabase) => db.delete(store, key))
+          : this.db.then((db: IDBPDatabase) => db.put(store, value, key));
     return prom.then(() => {
       this.subject.next({key, value});
     });
@@ -116,6 +118,13 @@ const indexedDbFactory = (dbname: string, store = 'default'): KvPromise & Indexe
       map<{ key: string; value: unknown }, T>((r) => r.value as T),
     );
   },
-});
+  reset(): Promise<void> {
+    return this.db.then((db: IDBPDatabase) => db.clear(store)).then(() => this.subjectReset.next(true));
+  },
+  observableReset(): Observable<boolean> {
+    return this.subjectReset;
+  },
+})
+;
 
 export default indexedDbFactory;

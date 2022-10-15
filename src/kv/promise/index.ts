@@ -22,5 +22,7 @@ export interface KvPromise {
   set: <T>(key: string, value: T) => Promise<void>;
   observable: <T>(key: string) => Observable<T>;
   observableDelete: <T>(key: string) => Observable<T | null>;
+  reset(): Promise<void>
+  observableReset: () => Observable<boolean>;
 }
 

@@ -19,6 +19,7 @@ import chaiString from 'chai-string';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
 import {KvPromiseLearningDb} from '../../../src/tutor/learned/kv-promise-db';
 import {LearnedWordStatistics, Lesson, LessonStatistics} from '../../../src/tutor';
+import {first} from 'rxjs';
 
 chaiUse(chaiString);
 
@@ -37,6 +38,27 @@ describe('Test rv-promise implementation of learned db', () => {
     const lessonStat = await db.getLessonStatistics(Lesson.PronounCases);
     expect(lessonStat).to.has.property('total', 0);
     expect(lessonStat).to.has.property('wrong', 0);
+  });
+
+  it('Reset', async () => {
+    const kv = await memoryStoragePromiseFactory();
+    const db = new KvPromiseLearningDb(kv);
+
+    await db.addWrong(Lesson.PronounCases, 'word1');
+    const stat = await db.getLessonStatistics(Lesson.PronounCases);
+    expect(stat.total).to.be.eq(1);
+    expect(stat.wrong).to.be.eq(1);
+
+    const stateReset = await new Promise<LessonStatistics>(rs => {
+      db.observableLessonStatistics(Lesson.PronounCases)
+        .pipe(first())
+        .subscribe(statReset => {
+          rs(statReset);
+        });
+      db.reset();
+    });
+    expect(stateReset.total).to.be.eq(0);
+    expect(stateReset.wrong).to.be.eq(0);
   });
 
   it('statistics', async () => {

@@ -31,8 +31,9 @@ const wrap = <T>(body: () => T) => new Promise<T>((rs) => {
 const memoryStoragePromiseFactory = (init: Record<string, string> = {}): MemoryStoragePromise => {
   const subject = new Subject<{ key: string, value: unknown }>();
   const subjectDeleted = new Subject<{ key: string, value: unknown }>();
+  const subjectReset = new Subject<boolean>();
   const mem: Record<string, unknown> = init;
-  const th: MemoryStoragePromise = {
+  return {
     get mem() {
       return mem;
     },
@@ -80,9 +81,16 @@ const memoryStoragePromiseFactory = (init: Record<string, string> = {}): MemoryS
         map<{ key: string; value: unknown }, T | null>((r) => r.value as T | null),
       );
     },
+    reset(): Promise<void> {
+      for (const m of Object.keys(mem)) {
+        delete mem[m];
+      }
+      return Promise.resolve(true).then(() => subjectReset.next(true));
+    },
+    observableReset(): Observable<boolean> {
+      return subjectReset;
+    },
   };
-
-  return th;
 };
 
 export default memoryStoragePromiseFactory;

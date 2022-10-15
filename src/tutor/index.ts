@@ -96,6 +96,7 @@ export interface LearningDb {
   addWrong(lesson: Lesson, word: string): Promise<void>
   getLessonStatistics(lesson: Lesson): Promise<LessonStatistics>
   observableLessonStatistics(lesson: Lesson): Observable<LessonStatistics>
+  reset(): Promise<void>
 }
 
 export interface NounCaseExercise {
@@ -106,7 +107,7 @@ export interface NounCaseExercise {
 
 export interface Tutor {
   readonly currentLesson: Lesson
-  observableCurrentLeson(): Observable<Lesson>
+  observableCurrentLesson(): Observable<Lesson>
   nextPronounExersizeSelectWord(): Promise<NounCaseExercise>
   checkNounCaseAnswer(answer: string, exercise: NounCaseExercise): Promise<boolean>;
 }

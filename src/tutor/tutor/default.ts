@@ -272,7 +272,7 @@ export class DefaultTutor implements Tutor {
     return promise.then(() => correct);
   }
 
-  observableCurrentLeson(): Observable<Lesson> {
+  observableCurrentLesson(): Observable<Lesson> {
     return this.subjectCurrentLesson;
   }
 }

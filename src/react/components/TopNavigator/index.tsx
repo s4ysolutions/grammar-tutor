@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import React from 'react';
+import React, {useRef} from 'react';
 import {AppBar, Box, IconButton, Toolbar, Typography} from '@mui/material';
 import T from '../../../l10n';
-import {getLearningDb, getRouter, getTutor} from '../../../di';
 import useObservable from '../../hooks/useObservable';
 import {Route} from '../../../router';
 import {map} from 'rxjs/operators';
@@ -25,20 +24,33 @@ import MenuIcon from '@mui/icons-material/Menu';
 import {LessonStatistics} from '../../../tutor';
 import usePromise from '../../hooks/usePromise';
 import Statistics from './Statistics';
+import MenuMain from './MenuMain';
+import {getDi} from '../../../di/default';
+import log from '../../../log';
 
-const router = getRouter();
+const di = getDi();
+const router = di.router;
+const learningDb = di.learningDb;
+const tutor = di.tutor;
+const uiState = di.uiState;
+
 const mr2 = {mr: 2};
 const flexGrow1 = {flexGrow: 1};
 const appTitle = T`App title`;
 
-const tutor = getTutor();
-const learningDb = getLearningDb();
+
+const handleMainMenuClick = () => {
+  uiState.mainMenuOpen = !uiState.mainMenuOpen;
+};
 
 const getLessonStatisticsPromise = (): Promise<LessonStatistics> => learningDb.getLessonStatistics(tutor.currentLesson);
 
 const NO_DATA = -1;
 
 const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
+  log.render('TopNavigator');
+
+  const menuOpen = useObservable<boolean>(uiState.observableMainMenuOpen, uiState.mainMenuOpen);
 
   const [currentLessonStatistic] = usePromise<LessonStatistics>(getLessonStatisticsPromise, {total: NO_DATA, wrong: 0});
 
@@ -47,18 +59,28 @@ const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
     router.currentRoute.title,
   );
 
+  const mainMenuButtonRef = useRef<HTMLButtonElement>(null);
+
   return <Box sx={flexGrow1} >
     <AppBar position="static" >
       <Toolbar >
         <IconButton
+          aria-controls={menuOpen ? 'main-menu' : undefined}
+          aria-expanded={menuOpen ? 'true' : undefined}
+          aria-haspopup="true"
           aria-label="menu"
           color="inherit"
           edge="start"
+          id="main-menu-buton"
+          onClick={handleMainMenuClick}
+          ref={mainMenuButtonRef}
           size="large"
           sx={mr2}
         >
           <MenuIcon />
         </IconButton >
+
+        <MenuMain anchorEl={mainMenuButtonRef.current} />
 
         <Typography component="h1" sx={flexGrow1} variant="h6" >
           {`${appTitle} - ${routerTitle}`}

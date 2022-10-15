@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-import {LearningDb, Tutor} from '../tutor';
-import {Router} from '../router';
-import {UiState} from '../ui-state';
+import {UiState} from './index';
+import {Observable, Subject} from 'rxjs';
 
-export interface Di {
-  readonly learningDb: LearningDb
-  readonly tutor: Tutor
-  readonly router: Router
-  readonly uiState: UiState
+export class DefaultUiState implements UiState {
+  private _mainMenuOpen = false;
+
+  private subjectMainMenuOpen = new Subject<boolean>();
+
+  get mainMenuOpen(): boolean {
+    return this._mainMenuOpen;
+  }
+
+  set mainMenuOpen(open: boolean) {
+    this._mainMenuOpen = open;
+    this.subjectMainMenuOpen.next(open);
+  }
+
+  get observableMainMenuOpen(): Observable<boolean> {
+    return this.subjectMainMenuOpen;
+  }
 }

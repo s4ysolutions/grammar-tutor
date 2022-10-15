@@ -20,16 +20,18 @@ import PercentIcon from '@mui/icons-material/Percent';
 import {LessonStatistics} from '../../../tutor';
 import useObservable from '../../hooks/useObservable';
 import React from 'react';
-import {getLearningDb, getTutor} from '../../../di';
+import {getDi} from '../../../di/default';
+import log from '../../../log';
 
-const learningDb = getLearningDb();
-const tutor = getTutor();
+const di = getDi();
+const learningDb = di.learningDb;
+const tutor = di.tutor;
 
 const PCT_100 = 100;
-
-const pct = (total: number, wrong: number): number => total === 0 ? 0 : 100 - Math.ceil(wrong * PCT_100 / total);
+const pct = (total: number, wrong: number): number => total === 0 ? 0 : PCT_100 - Math.ceil(wrong * PCT_100 / total);
 
 const Statistics: React.FunctionComponent<{initial: LessonStatistics}> = ({initial}): React.ReactElement => {
+  log.render('Statistics');
   const {total, wrong} = useObservable<LessonStatistics>(
     learningDb.observableLessonStatistics(tutor.currentLesson),
     initial,

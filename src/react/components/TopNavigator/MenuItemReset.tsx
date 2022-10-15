@@ -14,13 +14,27 @@
  * limitations under the License.
  */
 
-import {LearningDb, Tutor} from '../tutor';
-import {Router} from '../router';
-import {UiState} from '../ui-state';
+import React from 'react';
+import log from '../../../log';
+import T from '../../../l10n';
+import {MenuItem} from '@mui/material';
+import {getDi} from '../../../di/default';
 
-export interface Di {
-  readonly learningDb: LearningDb
-  readonly tutor: Tutor
-  readonly router: Router
-  readonly uiState: UiState
-}
+const di = getDi();
+
+const handleClick = (): void => {
+  di.learningDb.reset().then();
+  di.uiState.mainMenuOpen = false;
+};
+
+const MenuItemReset: React.FunctionComponent =
+  (): React.ReactElement => {
+
+    log.render('MenuItemReset');
+
+    return <MenuItem onClick={handleClick}>
+      {T`Reset`}
+    </MenuItem>;
+  };
+
+export default MenuItemReset;

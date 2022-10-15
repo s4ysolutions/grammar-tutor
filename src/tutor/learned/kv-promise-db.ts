@@ -17,7 +17,8 @@
 import {LearnedWordStaticsBean, LearnedWordStatistics, LearningDb, Lesson, LessonStatistics} from '../index';
 import {KvPromise} from '../../kv/promise';
 import {DefaultLearnedWordStatistics} from './default';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, merge} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
 
 const PREFIX = 'ldb@';
 const PREFIX_LESSON_STATS = 'ldbs@';
@@ -98,8 +99,18 @@ export class KvPromiseLearningDb implements LearningDb {
 
   observableLessonStatistics(lesson: Lesson): Observable<LessonStatistics> {
     if (lesson === Lesson.PronounCases) {
-      return this.subjectLessonStatistics;
+      return merge(
+        this.kv.observableReset().pipe(
+          filter(reset => reset),
+          map(() => ({total: 0, wrong: 0})),
+        ),
+        this.subjectLessonStatistics,
+      );
     }
     throw Error(`Unknow lesson ${lesson}`);
+  }
+
+  reset(): Promise<void> {
+    return this.kv.reset();
   }
 }

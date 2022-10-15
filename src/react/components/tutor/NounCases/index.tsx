@@ -16,15 +16,16 @@
 
 import React from 'react';
 import {Container} from '@mui/material';
-import {getTutor} from '../../../../di';
 import usePromise from '../../../hooks/usePromise';
 import {NounCaseExercise} from '../../../../tutor';
 import Noun from './Noun';
 import Variants from './Variants';
 import log from '../../../../log';
 import Case from './Case';
+import {getDi} from '../../../../di/default';
 
-const tutor = getTutor();
+const di = getDi();
+const tutor = di.tutor;
 const exerciseIssuer = tutor.nextPronounExersizeSelectWord.bind(tutor);
 
 const NounCases: React.FunctionComponent = (): React.ReactElement => {

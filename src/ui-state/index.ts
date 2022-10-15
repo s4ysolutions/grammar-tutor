@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-import {LearningDb, Tutor} from '../tutor';
-import {Router} from '../router';
-import {UiState} from '../ui-state';
+import {Observable} from 'rxjs';
 
-export interface Di {
-  readonly learningDb: LearningDb
-  readonly tutor: Tutor
-  readonly router: Router
-  readonly uiState: UiState
+export interface UiState {
+  mainMenuOpen: boolean
+  readonly observableMainMenuOpen: Observable<boolean>
 }
