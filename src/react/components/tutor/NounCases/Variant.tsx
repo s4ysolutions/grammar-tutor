@@ -14,12 +14,43 @@
  * limitations under the License.
  */
 
-import {Button} from '@mui/material';
-import React from 'react';
+import {Button, useTheme} from '@mui/material';
+import React, {useCallback, useMemo} from 'react';
 
-const Variant: React.FunctionComponent<{variant: string, onClick: () => void}> = ({variant, onClick}): React.ReactElement =>
-  <Button onClick={onClick}>
-    {variant}
-  </Button >;
+const space = 1;
+
+export enum Status {
+  NONE,
+  WRONG,
+  CORRECT,
+  HINT
+}
+
+const Variant: React.FunctionComponent<{variant: string, onClick: (answer: string) => void, status: Status}> =
+  ({onClick, variant, status}): React.ReactElement => {
+
+    const theme = useTheme();
+    const sx = useMemo(() => ({
+      ml: theme.spacing(space),
+      mr: theme.spacing(space),
+      mt: theme.spacing(space),
+      mb: theme.spacing(space),
+    }), [theme]);
+
+    const handleClick = useCallback(
+      () => onClick(variant)
+      , [variant, onClick],
+    );
+
+    return <Button
+      color={status === Status.CORRECT ? 'success' : status === Status.WRONG ? 'error' : 'primary'}
+      onClick={handleClick}
+      sx={sx}
+      variant={status === Status.NONE ? 'outlined' : 'contained'}
+    >
+
+      {variant}
+    </Button >;
+  };
 
 export default Variant;

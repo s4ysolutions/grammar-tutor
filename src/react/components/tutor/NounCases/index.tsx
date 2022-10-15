@@ -34,19 +34,16 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
   const [currentExercise, nextExercise] =
     usePromise<NounCaseExercise | null>(exerciseIssuer, null, 'NounCases');
 
-  const handleAnswer = (answer: string): void => {
-    tutor.checkNounCaseAnswer(answer, currentExercise).then((result) => {
-      nextExercise();
-    });
-  };
-
   return <Container >
     {currentExercise ? <React.Fragment >
       <Noun noun={currentExercise.mainForm} />
 
       <Case exerciseCase={currentExercise.exerciseCase} />
 
-      <Variants onSelect={handleAnswer} variants={currentExercise.possibleVariants} />
+      <Variants
+        exercise={currentExercise}
+        nextExercise={nextExercise}
+        possibleVariants={currentExercise.possibleVariants.shuffle()} />
     </React.Fragment >
       : null}
 

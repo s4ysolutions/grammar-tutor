@@ -37,7 +37,7 @@ const caseTitle = (exerciseCase: NounCase) => {
 
   if (exerciseCase.gender) {
     const genderName = exerciseCase.gender;
-    return `${casePlurality}, ${caseName}, ${genderName}`;
+    return `${casePlurality}, ${genderName}, ${caseName}`;
   }
 
   const formName = exerciseCase.form;

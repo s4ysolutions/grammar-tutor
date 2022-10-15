@@ -31,10 +31,11 @@ const PCT_100 = 100;
 const pct = (total: number, wrong: number): number => total === 0 ? 0 : PCT_100 - Math.ceil(wrong * PCT_100 / total);
 
 const Statistics: React.FunctionComponent<{initial: LessonStatistics}> = ({initial}): React.ReactElement => {
-  log.render('Statistics');
+  log.render('Statistics', initial);
   const {total, wrong} = useObservable<LessonStatistics>(
     learningDb.observableLessonStatistics(tutor.currentLesson),
     initial,
+    'Statistics',
   );
 
   return <Stack direction="row" spacing={2} >
