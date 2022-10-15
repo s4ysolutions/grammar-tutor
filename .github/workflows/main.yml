@@ -19,11 +19,14 @@ jobs:
         with:
           node-version: 16
 
-      - name: npm install
-        run: npm install
+      - name: enable corepack
+        run: corepack enable
+
+      - name: install dependencies
+        run: pnpm install
 
       - name: build
-        run: npm run build
+        run: pnpm run build
 
       - name: install firebase-tools 
         run: npm install -g firebase-tools
