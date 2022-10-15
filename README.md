@@ -1,37 +1,11 @@
-# webpack-starter
+# Grammar Tutorial
+React 17 Demo app
 
-## Concept
-```shell
-git clone https://github.com/s4ysolutions/webpack-starter
-rm -rf .github
-```
-... make the changes
-```shell
-git init
-git remote add ...
-git push
-```
+Live site: https://grammar-tutor-510b2.firebaseapp.com/
 
-## Included features
+## Features
 
-### Modules
+### Separating UI and logic
 
-`package.json` has `"type": "module"` and the project by default supports `import` directive
-(ES6 modules).
-This the reason while commonjs files must have `.cjs` extension.
-
-### Mocha configuration
-`.mocharc` add the following options to `mocha`
-
- - `"experimental-specifier-resolution=node"` - allows node-like module resolution (i.e. search files) 
- - `loader=ts-node/esm` - enables typescript
-
-```json
-{
-  "node-option": [
-    "experimental-specifier-resolution=node",
-    "loader=ts-node/esm"
-  ]
-}
-```
-In order to make sure if typescript and mocha works the command `npm run test-ts-hello` is added to `package.json`.
+The React UI is completely isolated in the folder https://github.com/s4ysolutions/grammar-tutor/tree/main/src/react
+The main 0
