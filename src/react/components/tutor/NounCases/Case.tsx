@@ -16,31 +16,32 @@
 
 import React, {useMemo} from 'react';
 import {NounCase} from '../../../../tutor';
-import {Typography, useTheme} from '@mui/material';
+import T from '../../../../l10n';
 import log from '../../../../log';
+import {Typography, useTheme} from '@mui/material';
 
 const topSpace = 2;
 
 const caseTitle = (exerciseCase: NounCase) => {
-  const casePlurality = exerciseCase.plurality;
-  const caseName = exerciseCase.case;
+  const casePlurality = T`${exerciseCase.plurality}`;
+  const caseName = T`${exerciseCase.case}`;
 
   if (!exerciseCase.gender && !exerciseCase.form) {
     return `${casePlurality}, ${caseName}`;
   }
 
   if (exerciseCase.gender && exerciseCase.form) {
-    const formName = exerciseCase.form;
-    const genderName = exerciseCase.gender;
+    const formName = T`${exerciseCase.form}`;
+    const genderName = T`${exerciseCase.gender}`;
     return `${casePlurality}, ${genderName}, ${caseName}, ${formName}`;
   }
 
   if (exerciseCase.gender) {
-    const genderName = exerciseCase.gender;
+    const genderName = T`${exerciseCase.gender}`;
     return `${casePlurality}, ${genderName}, ${caseName}`;
   }
 
-  const formName = exerciseCase.form;
+  const formName = T`${exerciseCase.form}`;
   return `${casePlurality}, ${caseName}, ${formName}`;
 };
 
