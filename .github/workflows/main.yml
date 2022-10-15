@@ -15,6 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: '/home/runner/.local/share/pnpm'
+          key: 'pnpm-deps'
+
       - uses: actions/setup-node@v3
         with:
           node-version: 16
