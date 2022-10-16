@@ -1,21 +1,21 @@
 # Grammar Tutorial
 React 17 Demo app
 
-Live site: https://grammar-tutor-510b2.firebaseapp.com/
+Live site: https://srpska-gramatika.web.app
 
 ## Features
 
 ### Separating UI and logic
 
-The React UI is completely isolated in the folder https://github.com/s4ysolutions/grammar-tutor/tree/main/src/react
-The main part of logic resides within the folder https://github.com/s4ysolutions/grammar-tutor/tree/main/src/tutor
+The React UI is completely isolated in the folder https://github.com/s4ysolutions/srpska-gramatika/tree/main/src/react
+The main part of logic resides within the folder https://github.com/s4ysolutions/srpska-gramatika/tree/main/src/tutor
 
 Logic related code exposes API via setters, promises and RXJS observables defined as interfaces
-https://github.com/s4ysolutions/grammar-tutor/blob/main/src/tutor/index.ts
+https://github.com/s4ysolutions/srpska-gramatika/blob/main/src/tutor/index.ts
 
 The clue between the logic and UI implemented through the custom hooks
-[useObservable](https://github.com/s4ysolutions/grammar-tutor/blob/main/src/react/hooks/useObservable.ts) and
-[usePromise](https://github.com/s4ysolutions/grammar-tutor/blob/main/src/react/hooks/usePromise.ts)
+[useObservable](https://github.com/s4ysolutions/srpska-gramatika/blob/main/src/react/hooks/useObservable.ts) and
+[usePromise](https://github.com/s4ysolutions/srpska-gramatika/blob/main/src/react/hooks/usePromise.ts)
 
 ### Implementations
 
@@ -24,29 +24,29 @@ easy refactoring and evolving.
 
 Implementation is layered by problem-level API and db-access level API. The latter is not supposed to be called from
 UI code and contains 2 key-value storages: one with immediate availabe snapshots
-([implemented with Local Storage](https://github.com/s4ysolutions/grammar-tutor/tree/main/src/kv/sync)) and
+([implemented with Local Storage](https://github.com/s4ysolutions/srpska-gramatika/tree/main/src/kv/sync)) and
 promise results assumin neteork requests ([implemented with IndexDB]
-(https://github.com/s4ysolutions/grammar-tutor/tree/main/src/kv/promise)).
+(https://github.com/s4ysolutions/srpska-gramatika/tree/main/src/kv/promise)).
 
 Both storages provide observables to let the consumers be notified about the storage changes through RXJS observables.
 
 ### Dependency injection
 
 For sake of better manageability DI is implemented as very simple
-[service locator](https://github.com/s4ysolutions/grammar-tutor/blob/main/src/di/default.ts) singleton with the only
+[service locator](https://github.com/s4ysolutions/srpska-gramatika/blob/main/src/di/default.ts) singleton with the only
 practical purpose to be mocked by tests.
 
 ### Localization
 
 The multi-language support implemented with simple and fast but pretty convenient
-[module](https://github.com/s4ysolutions/grammar-tutor/tree/main/src/l10n) `l10n` providing the string interpolation
+[module](https://github.com/s4ysolutions/srpska-gramatika/tree/main/src/l10n) `l10n` providing the string interpolation
 function to be used as simple as
 
 ```js
     T`Text to be localized`
 ```
 
-while the translations are provided by JS object https://github.com/s4ysolutions/grammar-tutor/blob/main/src/l10n/translations.ts
+while the translations are provided by JS object https://github.com/s4ysolutions/srpska-gramatika/blob/main/src/l10n/translations.ts
 
 ### React UI
 
@@ -56,23 +56,23 @@ the changes via custom hooks.
 
 ## Testing
 
-The logic code is very modularized in order to be covered with [mocha unit tests](https://github.com/s4ysolutions/grammar-tutor/tree/main/tests/mocha).
+The logic code is very modularized in order to be covered with [mocha unit tests](https://github.com/s4ysolutions/srpska-gramatika/tree/main/tests/mocha).
 
 TODO: UI is supposed to be tested with Jest. 
 
 ## ES6 modules
 
-By [default](https://github.com/s4ysolutions/grammar-tutor/blob/9f6d2403c10b78f497cb097b3526277dfb228fbc/package.json#L10),
+By [default](https://github.com/s4ysolutions/srpska-gramatika/blob/9f6d2403c10b78f497cb097b3526277dfb228fbc/package.json#L10),
 all JS files are treated as ES6 modules. This why the non-ES6 js files have extension `.cjs`.
 
 ## Packaging with WebPack
 
 WebPack configuration consists from 4 files:
 
-https://github.com/s4ysolutions/grammar-tutor/blob/main/webpack.config-common.cjs
-https://github.com/s4ysolutions/grammar-tutor/blob/main/webpack.config-dev.cjs
-https://github.com/s4ysolutions/grammar-tutor/blob/main/webpack.config-prod.cjs
-https://github.com/s4ysolutions/grammar-tutor/blob/main/webpack.config-stats.cjs
+https://github.com/s4ysolutions/srpska-gramatika/blob/main/webpack.config-common.cjs
+https://github.com/s4ysolutions/srpska-gramatika/blob/main/webpack.config-dev.cjs
+https://github.com/s4ysolutions/srpska-gramatika/blob/main/webpack.config-prod.cjs
+https://github.com/s4ysolutions/srpska-gramatika/blob/main/webpack.config-stats.cjs
 
 where `webpack.config-common.cjs` is shared by others 3. 
 
@@ -82,7 +82,7 @@ built bundle.
 
 ## CI/CD with GitHub actions
 The pushing to the `main` branch triggers the build and deploy to Firebase pipeline.
-https://github.com/s4ysolutions/grammar-tutor/blob/main/.github/workflows/main.yml
+https://github.com/s4ysolutions/srpska-gramatika/blob/main/.github/workflows/main.yml
 
 ## Typescript
 
