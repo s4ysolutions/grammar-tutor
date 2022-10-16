@@ -22,10 +22,9 @@ import log from './log';
 
 declare global {
   interface ImportMeta {
-    env?: {DEV: boolean};
+    env?: {DEV?: boolean};
   }
 }
-
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
@@ -35,14 +34,15 @@ if ('serviceWorker' in navigator) {
         reg = await navigator.serviceWorker.register('/service-worker.js', {
           type: 'module',
         });
+        log.info('Service worker registered in dev mode!', reg);
       } else {
         // In production, use the normal service worker registration
         reg = await navigator.serviceWorker.register('/service-worker.js');
+        log.info('Service worker registered!', reg);
       }
 
-      log.info('Service worker registered! 😎', reg);
     } catch (err) {
-      log.info('😥 Service worker registration failed: ', err);
+      log.info('Service worker registration failed: ', err);
     }
   });
 }
