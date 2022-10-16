@@ -14,14 +14,26 @@
  * limitations under the License.
  */
 
-import {LearningDb, NounsDB, Tutor} from '../tutor';
-import {Router} from '../router';
-import {UiState} from '../ui-state';
+import log from '../../log';
+import {useEffect, useState} from 'react';
 
-export interface Di {
-  readonly pronounsDb: NounsDB
-  readonly learningDb: LearningDb
-  readonly tutor: Tutor
-  readonly router: Router
-  readonly uiState: UiState
-}
+const usePromiseOnce = <T>(promiseIssuer: ()=>Promise<T>, initialValue: T, key?: string): T => {
+  if (key) {
+    log.promiseUse(key);
+  }
+  const [state, setState] = useState<T>(initialValue);
+
+  useEffect(() => {
+    if (key) {
+      log.promiseEffect(key);
+    }
+    promiseIssuer().then(value => {
+      setState(value);
+    });
+  }, [key, promiseIssuer]);
+
+  return state;
+};
+
+export default usePromiseOnce;
+

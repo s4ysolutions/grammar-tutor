@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {Container} from '@mui/material';
+import React, {useCallback, useMemo, useState} from 'react';
+import {Container, IconButton} from '@mui/material';
 import usePromise from '../../../hooks/usePromise';
 import {NounCaseExercise} from '../../../../tutor';
 import Noun from './Noun';
@@ -23,6 +23,10 @@ import Variants from './Variants';
 import log from '../../../../log';
 import Case from './Case';
 import {getDi} from '../../../../di/default';
+import Hint from './Hint';
+import QuizIcon from '@mui/icons-material/Quiz';
+import T from '../../../../l10n';
+import Grid2 from '@mui/material/Unstable_Grid2';
 
 const di = getDi();
 const tutor = di.tutor;
@@ -34,6 +38,12 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
   const [currentExercise, nextExercise] =
     usePromise<NounCaseExercise | null>(exerciseIssuer, null, 'NounCases');
 
+  const [help, setHelp] = useState(false);
+
+  const toggleHelp = useCallback(() => setHelp(!help), [help, setHelp]);
+
+  const possibleVariant = useMemo(() =>
+    currentExercise === null ? null : currentExercise.possibleVariants.shuffle(), [currentExercise]);
   return <Container >
     {currentExercise ? <React.Fragment >
       <Noun noun={currentExercise.mainForm} />
@@ -43,7 +53,15 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
       <Variants
         exercise={currentExercise}
         nextExercise={nextExercise}
-        possibleVariants={currentExercise.possibleVariants.shuffle()} />
+        possibleVariants={possibleVariant} />
+
+      <Grid2 container justifyContent="right">
+        <IconButton aria-label={T`Hint`} color="primary" onClick={toggleHelp}>
+          <QuizIcon />
+        </IconButton >
+      </Grid2>
+
+      {help ? <Hint exerciseCase={currentExercise.exerciseCase} word={currentExercise.mainForm} /> : null}
     </React.Fragment >
       : null}
 

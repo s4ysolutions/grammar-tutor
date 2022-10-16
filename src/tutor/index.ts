@@ -23,8 +23,8 @@ export enum GrammarGender {
 }
 
 export enum GrammarForm {
-  SHORT='Short',
   LONG='Long',
+  SHORT='Short',
 }
 
 export enum GrammarPlurality {
@@ -35,11 +35,11 @@ export enum GrammarPlurality {
 export enum GrammarCase {
   NOMINATIVE = 'Nominative',
   GENITIVE = 'Genitive',
-  ACCUSATIVE = 'Accusative',
-  LOCATIVE = 'Locative',
   DATIVE = 'Dative',
-  INSTRUMENTAL = 'Instrumental',
+  ACCUSATIVE = 'Accusative',
   VOCATIVE = 'Vocative',
+  LOCATIVE = 'Locative',
+  INSTRUMENTAL = 'Instrumental',
 }
 
 export interface NounCase {

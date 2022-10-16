@@ -5,7 +5,7 @@
   },
   "name": "srpska-gramatika",
   "version": "1.0.0",
-  "description": "Проучавање падежа српских заменица.",
+  "description": "Граматика српског језика",
   "main": "index.js",
   "type": "module",
   "scripts": {

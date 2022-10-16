@@ -18,16 +18,25 @@ const translation = {
   'en': {
     'App title': 'Grammar',
     'Pronouns cases': 'Cases of pronouns',
+    'Reset': 'Reset results',
+
+    'Masculine': 'Masc.',
+    'Feminine': 'Fem.',
+    'Neuter': 'Neut.',
   },
   'ru': {
     'App title': 'Грамматика',
+    'Hint': 'Подсказка',
     'Pronouns cases': 'Падежи местоимений',
     'Reset': 'Сбросить результаты',
+
     'Masculine': 'муж.',
     'Feminine': 'жен.',
     'Neuter': 'ср.',
+
     'Short': 'короткая форма',
     'Long': 'длинная форма',
+
     'Singular': 'ед. ч.',
     'Plural': 'мн. ч.',
     'Nominative': 'именительный',

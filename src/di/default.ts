@@ -17,7 +17,7 @@
 import {DefaultPronounsDb} from '../tutor/pronouns/default';
 import indexedDbFactory from '../kv/promise/indexedDB';
 import {DefaultTutor} from '../tutor/tutor/default';
-import {LearningDb, Tutor} from '../tutor';
+import {LearningDb, NounsDB, Tutor} from '../tutor';
 import {KvPromiseLearningDb} from '../tutor/learned/kv-promise-db';
 import {DefaultRouter} from '../router/default';
 import {Router} from '../router';
@@ -41,6 +41,10 @@ class DefaultDi implements Di {
 
   get learningDb (): LearningDb {
     return this._learningDb;
+  }
+
+  get pronounsDb (): NounsDB {
+    return this._pronounsDb;
   }
 
   get router (): Router {
