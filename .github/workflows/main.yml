@@ -35,6 +35,7 @@ jobs:
         run: pnpm run build
 
       - name: install firebase-tools 
+        if: ${{ false }}
         run: npm install -g firebase-tools
 
       - name: deploy
