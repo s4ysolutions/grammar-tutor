@@ -21,18 +21,30 @@ import T from '../l10n';
 
 const observableCurrentRouter = new Subject<Route>();
 
-const routerPronounsCases: Route = {
-  id: RouteId.PRONOUNS_CASES,
-  title: T`Pronouns cases`,
+const routePronounsCases: Route = {
+  id: RouteId.PERSONAL_PRONOUNS_CASES,
+  title: T`Personal pronouns`,
+};
+
+const routeInterrogativeCases: Route = {
+  id: RouteId.INTERROGATIVE_PRONOUNS_CASES,
+  title: T`Interrogative pronouns`,
 };
 
 export class DefaultRouter implements Router {
-  readonly currentRoute: Route = routerPronounsCases;
+  currentRoute: Route = routePronounsCases;
 
   readonly observableCurrentRoute = observableCurrentRouter;
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
-  go(route: RouteId): void {
-    observableCurrentRouter.next(routerPronounsCases);
+  go(routeId: RouteId): void {
+    switch (routeId) {
+      case RouteId.INTERROGATIVE_PRONOUNS_CASES:
+        this.currentRoute = routeInterrogativeCases;
+        break;
+      default:
+        this.currentRoute = routePronounsCases;
+    }
+    observableCurrentRouter.next(this.currentRoute);
   }
 }

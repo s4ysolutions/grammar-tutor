@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-import {Observable} from 'rxjs';
+import {first, of, skip} from 'rxjs';
+import {expect} from 'chai';
 
-export enum RouteId {
-  PERSONAL_PRONOUNS_CASES,
-  INTERROGATIVE_PRONOUNS_CASES
-}
-
-export interface Route {
-  readonly id: RouteId;
-  readonly title: string;
-}
-
-export interface Router {
-  readonly currentRoute: Route;
-  readonly observableCurrentRoute: Observable<Route>;
-  go(route: RouteId): void;
-}
+describe('RXJS skip', () => {
+  it('skip', (done) => {
+    const acc: string[] = [];
+    of('a', 'b', 'c').pipe(skip(1))
+      .subscribe(n => {
+        acc.push(n);
+        if (n === 'c') {
+          expect(acc).to.be.eql(['b', 'c']);
+          done();
+        }
+      });
+  });
+  it('skip, first', (done) => {
+    of('a', 'b', 'c').pipe(skip(1), first())
+      .subscribe(n => {
+        expect(n).to.be.eq('b');
+        done();
+      });
+  });
+});

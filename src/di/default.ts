@@ -14,26 +14,37 @@
  * limitations under the License.
  */
 
-import {DefaultPronounsDb} from '../tutor/pronouns/default';
+import {DefaultPersonalPronounsDb} from '../tutor/pronouns-personal/default';
 import indexedDbFactory from '../kv/promise/indexedDB';
 import {DefaultTutor} from '../tutor/tutor/default';
-import {LearningDb, NounsDB, Tutor} from '../tutor';
+import {InterrogativePronounsDb, LearningDb, LessonsDb, NounsDb, Tutor} from '../tutor';
 import {KvPromiseLearningDb} from '../tutor/learned/kv-promise-db';
 import {DefaultRouter} from '../router/default';
 import {Router} from '../router';
 import {DefaultUiState} from '../ui-state/default';
 import {UiState} from '../ui-state';
 import {Di} from './index';
+import {DefaultInterrogativePronounsDb} from '../tutor/personal-interrogative/default';
+import {DefaultLessonsDb} from '../tutor/lessons/default';
 
 
 class DefaultDi implements Di {
   private readonly _promiseKV = indexedDbFactory('sluchaj-zamenica');
 
-  private readonly _pronounsDb = new DefaultPronounsDb();
+  private readonly _personalPronounsDb = new DefaultPersonalPronounsDb();
 
-  private readonly _learningDb = new KvPromiseLearningDb(this._promiseKV);
+  private readonly _interrogativePersonalPronounsDb = new DefaultInterrogativePronounsDb();
 
-  private readonly _tutor = new DefaultTutor(this._pronounsDb, this._learningDb);
+  private readonly _lessons = new DefaultLessonsDb();
+
+  private readonly _learningDb = new KvPromiseLearningDb(this._promiseKV, this._lessons);
+
+  private readonly _tutor = new DefaultTutor(
+    this._personalPronounsDb,
+    this._interrogativePersonalPronounsDb,
+    this._learningDb,
+    this._lessons,
+  );
 
   private readonly _router = new DefaultRouter();
 
@@ -43,12 +54,20 @@ class DefaultDi implements Di {
     return this._learningDb;
   }
 
-  get pronounsDb (): NounsDB {
-    return this._pronounsDb;
+  get personPronounsDb (): NounsDb {
+    return this._personalPronounsDb;
+  }
+
+  get interrogativePronounsDb (): InterrogativePronounsDb {
+    return this._interrogativePersonalPronounsDb;
   }
 
   get router (): Router {
     return this._router;
+  }
+
+  get lessons (): LessonsDb {
+    return this._lessons;
   }
 
   get tutor (): Tutor {

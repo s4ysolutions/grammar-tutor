@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Noun, NounCase, NounsDB} from '../index';
+import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Noun, NounCase, NounsDb} from '../index';
 
 const staticPronouns: Record<string, NounCase[]> = {
   'ја': [
@@ -609,7 +609,7 @@ const staticPronouns: Record<string, NounCase[]> = {
   ],
 };
 
-class StaticPronounEntry implements Noun {
+class StaticPersonalPronounEntry implements Noun {
   mainForm: string;
 
   constructor(mainForm: string) {
@@ -621,7 +621,7 @@ class StaticPronounEntry implements Noun {
   }
 }
 
-export class DefaultPronounsDb implements NounsDB {
+export class DefaultPersonalPronounsDb implements NounsDb {
   private wordsSet: string[] | null = null;
 
   get words(): Promise<string[]> {
@@ -633,7 +633,7 @@ export class DefaultPronounsDb implements NounsDB {
 
   // eslint-disable-next-line class-methods-use-this
   getNoun(word: string): Promise<Noun> {
-    return Promise.resolve(new StaticPronounEntry(word));
+    return Promise.resolve(new StaticPersonalPronounEntry(word));
   }
 
 }

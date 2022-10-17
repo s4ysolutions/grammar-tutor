@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import {Lesson, LessonsDb} from '../index';
 
-export enum RouteId {
-  PERSONAL_PRONOUNS_CASES,
-  INTERROGATIVE_PRONOUNS_CASES
-}
+export class DefaultLessonsDb implements LessonsDb {
+  currentLesson: Lesson = Lesson.PersonalPronounsCases;
 
-export interface Route {
-  readonly id: RouteId;
-  readonly title: string;
-}
+  private readonly subjectCurrentLesson = new Subject<Lesson>();
 
-export interface Router {
-  readonly currentRoute: Route;
-  readonly observableCurrentRoute: Observable<Route>;
-  go(route: RouteId): void;
+  observableCurrentLesson(): Observable<Lesson> {
+    return this.subjectCurrentLesson;
+  }
+
+  selectLesson(lesson: Lesson): Promise<void> {
+    this.currentLesson = lesson;
+    this.subjectCurrentLesson.next(lesson);
+    return Promise.resolve();
+  }
 }

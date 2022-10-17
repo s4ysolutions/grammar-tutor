@@ -42,12 +42,25 @@ export enum GrammarCase {
   INSTRUMENTAL = 'Instrumental',
 }
 
-export interface NounCase {
+export enum GrammarAnimation {
+  ANIMATE = 'Animate',
+  INANIMATE = 'Inanimate',
+}
+
+export interface PronounCase {
   word: string,
   case: GrammarCase,
+}
+
+export interface NounCase extends PronounCase {
   plurality: GrammarPlurality,
   gender?: GrammarGender,
   form?: GrammarForm,
+}
+
+export interface InterrogativePronounCase extends PronounCase{
+  word: string,
+  animation?: GrammarAnimation,
 }
 
 export interface Noun {
@@ -55,10 +68,35 @@ export interface Noun {
   cases(): Promise<NounCase[]>;
 }
 
-export interface NounsDB {
+export interface InterrogativePronoun {
+  readonly mainForm: string;
+  cases(): Promise<InterrogativePronounCase[]>;
+}
+
+export interface NounsDb {
   readonly words: Promise<string[]>
 
   getNoun(word: string): Promise<Noun>
+}
+
+export interface InterrogativePronounsDb {
+  readonly words: Promise<string[]>
+
+  getPronoun(word: string): Promise<InterrogativePronoun>
+}
+
+export interface CaseExercise {
+  mainForm: string,
+  possibleVariants: string[],
+  correctAnswer: string;
+}
+
+export interface NounCaseExercise extends CaseExercise{
+  exerciseCase: NounCase,
+}
+
+export interface InterrogativePronounCaseExercise extends CaseExercise{
+  exerciseCase: InterrogativePronounCase,
 }
 
 /**
@@ -71,7 +109,6 @@ export interface LearnedWordStaticsBean {
   readonly wrongCount: number;
   readonly last: Date;
 }
-
 /**
  * The calculated properties of LearnedWordStatics
  * @see LearnedWordStaticsBean for more
@@ -82,7 +119,8 @@ export interface LearnedWordStatistics extends LearnedWordStaticsBean{
 }
 
 export enum Lesson {
-  PronounCases,
+  PersonalPronounsCases,
+  InterrogativePronouns,
 }
 
 export interface LessonStatistics {
@@ -95,19 +133,19 @@ export interface LearningDb {
   addCorrect(lesson: Lesson, word: string): Promise<void>
   addWrong(lesson: Lesson, word: string): Promise<void>
   getLessonStatistics(lesson: Lesson): Promise<LessonStatistics>
-  observableLessonStatistics(lesson: Lesson): Observable<LessonStatistics>
+  observableLessonStatistics(lesson?: Lesson): Observable<LessonStatistics>
   reset(): Promise<void>
 }
 
-export interface NounCaseExercise {
-  mainForm: string,
-  exerciseCase: NounCase,
-  possibleVariants: string[],
+export interface LessonsDb {
+  readonly currentLesson: Lesson
+  selectLesson(lesson: Lesson): Promise<void>;
+  observableCurrentLesson(): Observable<Lesson>
 }
 
 export interface Tutor {
-  readonly currentLesson: Lesson
-  observableCurrentLesson(): Observable<Lesson>
-  nextPronounExersizeSelectWord(): Promise<NounCaseExercise>
+  nextPersonalPronounExersizeSelectWord(): Promise<NounCaseExercise>
+  nextInterrogativePronounExersizeSelectWord(): Promise<InterrogativePronounCaseExercise>
   checkNounCaseAnswer(answer: string, exercise: NounCaseExercise): Promise<boolean>;
+  checkPronounCaseAnswer(answer: string, exercise: InterrogativePronounCaseExercise): Promise<boolean>;
 }

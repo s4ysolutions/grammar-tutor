@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-import {Observable} from 'rxjs';
+import {of} from 'rxjs';
+import {expect} from 'chai';
 
-export enum RouteId {
-  PERSONAL_PRONOUNS_CASES,
-  INTERROGATIVE_PRONOUNS_CASES
-}
-
-export interface Route {
-  readonly id: RouteId;
-  readonly title: string;
-}
-
-export interface Router {
-  readonly currentRoute: Route;
-  readonly observableCurrentRoute: Observable<Route>;
-  go(route: RouteId): void;
-}
+describe('RXJS of', () => {
+  it('of', (done) => {
+    const acc: string[] = [];
+    of('a', 'b', 'c').subscribe(n => {
+      acc.push(n);
+      if (n === 'c') {
+        expect(acc).to.be.eql(['a', 'b', 'c']);
+        done();
+      }
+    });
+  });
+});

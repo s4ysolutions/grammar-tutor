@@ -14,23 +14,30 @@
  * limitations under the License.
  */
 
-import {LearnedWordStaticsBean, LearnedWordStatistics, LearningDb, Lesson, LessonStatistics} from '../index';
+import {LearnedWordStaticsBean, LearnedWordStatistics, LearningDb, Lesson, LessonStatistics, LessonsDb} from '../index';
 import {KvPromise} from '../../kv/promise';
 import {DefaultLearnedWordStatistics} from './default';
-import {Observable, Subject, merge} from 'rxjs';
+import {Observable, Subject, concat, merge, mergeMap, of} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
+import {fromPromise} from 'rxjs/internal/observable/innerFrom';
 
 const PREFIX = 'ldb@';
 const PREFIX_LESSON_STATS = 'ldbs@';
 const NEVER = new Date(0);
 
+const FAKE_LESSON_ID = -1;
+const FAKE_LESSON = FAKE_LESSON_ID as unknown as Lesson;
+
 export class KvPromiseLearningDb implements LearningDb {
   private readonly kv: KvPromise;
 
+  private readonly lessons: LessonsDb;
+
   private readonly subjectLessonStatistics = new Subject<LessonStatistics>();
 
-  constructor(kvPromise: KvPromise) {
+  constructor(kvPromise: KvPromise, lessons: LessonsDb) {
     this.kv = kvPromise;
+    this.lessons = lessons;
   }
 
   private getStats(lesson: Lesson, word: string): Promise<LearnedWordStaticsBean> {
@@ -50,9 +57,7 @@ export class KvPromiseLearningDb implements LearningDb {
   private setLessonStats(lesson: Lesson, stat: LessonStatistics): Promise<void> {
     return this.kv.set<LessonStatistics>(`${PREFIX_LESSON_STATS}${lesson.toString()}`, stat)
       .then(() => {
-        if (lesson === Lesson.PronounCases) {
-          this.subjectLessonStatistics.next(stat);
-        }
+        this.subjectLessonStatistics.next(stat);
       });
   }
 
@@ -97,17 +102,32 @@ export class KvPromiseLearningDb implements LearningDb {
     return this.getLessonStats(lesson);
   }
 
-  observableLessonStatistics(lesson: Lesson): Observable<LessonStatistics> {
-    if (lesson === Lesson.PronounCases) {
-      return merge(
-        this.kv.observableReset().pipe(
-          filter(reset => reset),
-          map(() => ({total: 0, wrong: 0})),
-        ),
-        this.subjectLessonStatistics,
-      );
-    }
-    throw Error(`Unknow lesson ${lesson}`);
+  observableLessonStatistics(lesson?: Lesson): Observable<LessonStatistics> {
+    if (!lesson) {
+      // dirty hack to wake up mergeMap
+      return concat(of(FAKE_LESSON), this.lessons.observableCurrentLesson())
+        .pipe(mergeMap((l) =>
+          merge(
+            // to send new stat on switch lesson
+            of(l).pipe(
+              filter(ll => ll !== FAKE_LESSON),
+              mergeMap(ll => fromPromise(this.getLessonStatistics(ll))),
+            ),
+            this.subjectLessonStatistics,
+            // react on reset storag
+            this.kv.observableReset().pipe(
+              filter(reset => reset),
+              map(() => ({total: 0, wrong: 0})),
+            ),
+          )));
+    } // else
+    return concat(
+      this.kv.observableReset().pipe(
+        filter(reset => reset),
+        map(() => ({total: 0, wrong: 0})),
+      ),
+      this.subjectLessonStatistics,
+    );
   }
 
   reset(): Promise<void> {
