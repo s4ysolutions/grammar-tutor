@@ -27,7 +27,6 @@ specifiers:
   chai-arrays: ^2.2.0
   chai-string: ^1.5.0
   clean-webpack-plugin: ^4.0.0
-  cleanup-after-each: link:@testing-library/react/cleanup-after-each
   compression-webpack-plugin: ^10.0.0
   copy-webpack-plugin: ^11.0.0
   css-loader: ^6.7.1
@@ -37,7 +36,6 @@ specifiers:
   eslint-plugin-react: ^7.31.8
   eslint-plugin-react-hooks: ^4.6.0
   eslint-plugin-react-perf: ^3.3.1
-  extend-expect: link:@testing-library/jest-dom/extend-expect
   fake-indexeddb: ^4.0.0
   firebase-tools: ^11.14.4
   fork-ts-checker-webpack-plugin: ^7.2.13
@@ -105,7 +103,6 @@ devDependencies:
   chai-arrays: 2.2.0
   chai-string: 1.5.0_chai@4.3.6
   clean-webpack-plugin: 4.0.0_webpack@5.74.0
-  cleanup-after-each: link:@testing-library/react/cleanup-after-each
   compression-webpack-plugin: 10.0.0_webpack@5.74.0
   copy-webpack-plugin: 11.0.0_webpack@5.74.0
   css-loader: 6.7.1_webpack@5.74.0
@@ -115,7 +112,6 @@ devDependencies:
   eslint-plugin-react: 7.31.8_eslint@8.25.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.25.0
   eslint-plugin-react-perf: 3.3.1_eslint@8.25.0
-  extend-expect: link:@testing-library/jest-dom/extend-expect
   fake-indexeddb: 4.0.0
   firebase-tools: 11.14.4
   fork-ts-checker-webpack-plugin: 7.2.13_qqxisngxjbp7lstdk7boexbu3e
