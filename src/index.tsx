@@ -25,7 +25,7 @@ declare global {
     env?: {DEV?: boolean};
   }
 }
-if ('off serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       let reg;
