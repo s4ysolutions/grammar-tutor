@@ -21,7 +21,7 @@ let prevTS = 0;
 const MS = 1000;
 const SIXTY = 60;
 
-const isDebug = process?.env?.LOG_LEVEL === 'DEBUG';
+const isDebug = (typeof process !== 'undefined') && process?.env?.LOG_LEVEL === 'DEBUG';
 
 const log = {
 
