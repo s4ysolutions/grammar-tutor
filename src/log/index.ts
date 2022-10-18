@@ -17,19 +17,18 @@
 /* eslint-disable no-console */
 import {Subject} from 'rxjs';
 
-console.debug = (): void => undefined;
-
 let prevTS = 0;
 const MS = 1000;
 const SIXTY = 60;
 
+const isDebug = process?.env?.LOG_LEVEL === 'DEBUG';
+
 const log = {
-  /*
-   * d: (a?: any, b?: any, c?: any) => undefined, //console.debug,
-   * debug: (a?: any, b?: any, c?: any) => undefined, //console.debug,
-   */
-  d: console.log,
-  debug: console.log,
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  d: isDebug ? console.debug : (a?: unknown, b?: unknown, c?: unknown): void => undefined, // console.debug,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  debug: isDebug ? console.debug : (a?: unknown, b?: unknown, c?: unknown): void => undefined, // console.debug,
   error: console.error,
   info: console.info,
   warn: console.warn,

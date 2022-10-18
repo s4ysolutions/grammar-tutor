@@ -1,11 +1,11 @@
 /*
- * Copyright 2019 s4y.solutions
+ * Copyright 2022 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -59,9 +59,17 @@ const config = merge(baseConfig, {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
     }),
+    new webpack.DefinePlugin({
+      'process.env' :{
+        'NODE_ENV': JSON.stringify('development'),
+        'LOG_LEVEL': JSON.stringify('DEBUG'),
+      }
+    }),
+
+    // new webpack.EnvironmentPlugin({LOG_LEVEL: 'DEBUG', DEBUG: true}),
     new ReactRefreshWebpackPlugin(),
   ],
   devServer: {
