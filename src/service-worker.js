@@ -15,7 +15,7 @@
  */
 
 // Choose a cache name
-const cacheName = 'cache-10182022';
+const cacheName = 'cache-10182022-2';
 // List the files to precache
 const precacheResources = ['/', '/index.html', '/index.js'];
 
