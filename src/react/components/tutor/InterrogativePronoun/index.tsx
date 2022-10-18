@@ -16,93 +16,76 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Container, IconButton, TableCell, TableRow} from '@mui/material';
-import Variants from '../Variants';
 import log from '../../../../log';
-import Case from '../Case';
 import {getDi} from '../../../../di/default';
-import Hint from '../Hint';
 import QuizIcon from '@mui/icons-material/Quiz';
 import T from '../../../../l10n';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import {GrammarCase, GrammarForm, GrammarPlurality, NounCase, NounCaseExercise} from '../../../../tutor';
+import {
+  GrammarAnimation,
+  GrammarCase,
+  InterrogativePronounCase,
+  InterrogativePronounCaseExercise,
+} from '../../../../tutor';
 import MainForm from '../MainForm';
+import Case from '../Case';
+import Variants from '../Variants';
+import Hint from '../Hint';
 import {CSS_CAPITALIZE} from '../constants';
 
 const di = getDi();
 const tutor = di.tutor;
-const nounsDB = di.personPronounsDb;
+const interrogativePronounsDb = di.interrogativePronounsDb;
 
-const caseTitle = (exerciseCase: NounCase) => {
-  const casePlurality = T`${exerciseCase.plurality}`;
+const caseTitle = (exerciseCase: InterrogativePronounCase) => {
   const caseName = T`${exerciseCase.case}`;
 
-  if (!exerciseCase.gender && !exerciseCase.form) {
-    return `${casePlurality}, ${caseName}`;
+  if (exerciseCase.animation) {
+    const animationName = T`${exerciseCase.animation}`;
+    return `${animationName}, ${caseName}`;
   }
 
-  if (exerciseCase.gender && exerciseCase.form) {
-    const formName = T`${exerciseCase.form}`;
-    const genderName = T`${exerciseCase.gender}`;
-    return `${casePlurality}, ${genderName}, ${caseName}, ${formName}`;
-  }
-
-  if (exerciseCase.gender) {
-    const genderName = T`${exerciseCase.gender}`;
-    return `${casePlurality}, ${genderName}, ${caseName}`;
-  }
-
-  const formName = T`${exerciseCase.form}`;
-  return `${casePlurality}, ${caseName}, ${formName}`;
+  return `${caseName}`;
 };
 
-const TWO = 2;
-const getCase = (cases: NounCase[], caseKey: string, p: GrammarPlurality): string => {
+const getCase = (cases: InterrogativePronounCase[], caseKey: string, p: GrammarAnimation): string => {
   const c = GrammarCase[caseKey as keyof typeof GrammarCase];
-  return cases.filter(e => e.plurality === p && e.case === c)
-    .sort((a, b) => {
-      const aa = a.form === GrammarForm.SHORT ? TWO : a.form === GrammarForm.LONG ? 1 : 0;
-      const bb = b.form === GrammarForm.SHORT ? TWO : b.form === GrammarForm.LONG ? 1 : 0;
-      return aa - bb;
-    })
-    .map(e => e.word)
+  return cases.filter(e => e.animation === p && e.case === c).map(e => e.word)
     .join(' | ');
 };
 
-const hintTitles = [T`${GrammarPlurality.SINGULAR}`, T`${GrammarPlurality.PLURAL}`];
+const hintTitles = [T`${GrammarAnimation.ANIMATE}`, T`${GrammarAnimation.INANIMATE}`];
 
-const NounCases: React.FunctionComponent = (): React.ReactElement => {
-  log.render('NounCases');
+const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => {
+  log.render('InterrogativePronoun');
 
-  const [currentExercise, setCurrentExercise] = useState<NounCaseExercise>(null);
+  const [currentExercise, setCurrentExercise] = useState<InterrogativePronounCaseExercise>(null);
   useEffect(() => {
-    tutor.nextPersonalPronounExersizeSelectWord().then(setCurrentExercise);
+    tutor.nextInterrogativePronounExersizeSelectWord().then(setCurrentExercise);
   }, []);
 
-  const nextExercise = useCallback(
-    () => tutor.nextPersonalPronounExersizeSelectWord().then(setCurrentExercise),
-    [setCurrentExercise],
-  );
+  const nextExercise = () => tutor.nextInterrogativePronounExersizeSelectWord().then(setCurrentExercise);
 
   const checkVariant = useCallback(
-    (variant: string): Promise<boolean> => tutor.checkNounCaseAnswer(variant, currentExercise),
+    (variant: string): Promise<boolean> => tutor.checkInterrogativePronounCaseAnswer(variant, currentExercise),
     [currentExercise],
   );
 
-  const [cases, setCases] = useState<NounCase[] | null>(null);
+  const [cases, setCases] = useState<InterrogativePronounCase[] | null>(null);
 
   const [help, setHelp] = useState(false);
 
   const toggleHelp = useCallback(() => {
     const nextHelp = !help;
-    setHelp(nextHelp);
+    setHelp(!help);
     if (nextHelp && cases === null) {
-      nounsDB.getNoun(currentExercise.mainForm)
+      interrogativePronounsDb.getPronoun(currentExercise.mainForm)
         .then(noun => noun.cases())
         // TODO: add setting to filter
         .then(cs =>
-          setCases(cs === null ? [] : cs.filter(c => c.gender === currentExercise.exerciseCase.gender)));
+          setCases(cs === null ? [] : cs));
     }
-  }, [help, setHelp, cases, currentExercise?.mainForm, currentExercise?.exerciseCase?.gender]);
+  }, [help, cases, setHelp, currentExercise?.mainForm, setCases]);
 
   const possibleVariant = useMemo(() =>
     currentExercise === null ? null : currentExercise.possibleVariants.shuffle(), [currentExercise]);
@@ -131,11 +114,11 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
         </TableCell >
 
         <TableCell >
-          {getCase(cases, key, GrammarPlurality.SINGULAR)}
+          {getCase(cases, key, GrammarAnimation.ANIMATE)}
         </TableCell >
 
         <TableCell >
-          {getCase(cases, key, GrammarPlurality.PLURAL)}
+          {getCase(cases, key, GrammarAnimation.INANIMATE)}
         </TableCell >
 
       </TableRow >)}
@@ -144,4 +127,4 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
     : null;
 };
 
-export default NounCases;
+export default InterrogativePronoun;

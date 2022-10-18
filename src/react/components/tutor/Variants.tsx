@@ -15,22 +15,24 @@
  */
 
 import {useTheme} from '@mui/material';
-import React, {memo, useCallback, useMemo, useState} from 'react';
+import React, {memo, useMemo, useState} from 'react';
 import Variant, {Status} from './Variant';
-import log from '../../../../log';
-import {NounCaseExercise} from '../../../../tutor';
+import log from '../../../log';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import {getDi} from '../../../../di/default';
 
 const topSpace = 2;
-const tutor = getDi().tutor;
+export const DELAY_WRONG = 1500;
+export const DELAY_CORRECT = 500;
 
-const DELAY_WRONG = 1500;
-const DELAY_CORRECT = 500;
 
-const Variants: React.FunctionComponent<{ exercise: NounCaseExercise, possibleVariants: string[], nextExercise: () => void }> =
-  ({exercise, possibleVariants, nextExercise}): React.ReactElement => {
-    log.render(`Variants ${exercise.mainForm}`);
+const Variants: React.FunctionComponent<{
+  checkVariant: (variant: string) => Promise<boolean>,
+  nextExercise: () => void,
+  correctVariant: string,
+  possibleVariants: string[]
+}> =
+  ({checkVariant, possibleVariants, nextExercise, correctVariant}): React.ReactElement => {
+    log.render('Variants');
 
     const theme = useTheme();
     const sx = useMemo(() => ({
@@ -41,8 +43,8 @@ const Variants: React.FunctionComponent<{ exercise: NounCaseExercise, possibleVa
     const [wrong, setWrong] = useState<string | null>(null);
     const [hint, setHint] = useState<string | null>(null);
 
-    const handleClick = useCallback((variant: string): void => {
-      tutor.checkNounCaseAnswer(variant, exercise).then((result) => {
+    const handleClick = (variant: string): void => {
+      checkVariant(variant).then(result => {
         if (result) {
           setCorrect(variant);
           setWrong(null);
@@ -51,11 +53,12 @@ const Variants: React.FunctionComponent<{ exercise: NounCaseExercise, possibleVa
         } else {
           setCorrect(null);
           setWrong(variant);
-          setHint(exercise.exerciseCase.word);
+          setHint(correctVariant);
           setTimeout(nextExercise, DELAY_WRONG);
         }
       });
-    }, [exercise, nextExercise]);
+    };
+    // handleAttempt(variant, setCorrect, setWrong, setHint).then() as unknown as void;
 
     return <Grid2 container justifyContent="center" sx={sx}>
       { possibleVariants.map(variant => <Variant

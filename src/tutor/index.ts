@@ -147,5 +147,5 @@ export interface Tutor {
   nextPersonalPronounExersizeSelectWord(): Promise<NounCaseExercise>
   nextInterrogativePronounExersizeSelectWord(): Promise<InterrogativePronounCaseExercise>
   checkNounCaseAnswer(answer: string, exercise: NounCaseExercise): Promise<boolean>;
-  checkPronounCaseAnswer(answer: string, exercise: InterrogativePronounCaseExercise): Promise<boolean>;
+  checkInterrogativePronounCaseAnswer(answer: string, exercise: InterrogativePronounCaseExercise): Promise<boolean>;
 }

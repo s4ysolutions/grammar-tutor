@@ -20,6 +20,7 @@ import {RouteId} from '../../../router';
 import NounCases from '../tutor/NounCases';
 import useRouter from '../../hooks/useRouter';
 import log from '../../../log';
+import InterrogativePronoun from '../tutor/InterrogativePronoun';
 
 const topSpace = 2;
 
@@ -36,7 +37,10 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
     className="workspace"
     maxWidth="sm"
     sx={sx} >
-    {route.id === RouteId.PERSONAL_PRONOUNS_CASES && <NounCases />}
+    {
+      route.is(RouteId.PERSONAL_PRONOUNS_CASES) && <NounCases /> ||
+      route.is(RouteId.INTERROGATIVE_PRONOUNS_CASES) && <InterrogativePronoun />
+    }
   </Container >;
 };
 

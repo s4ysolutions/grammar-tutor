@@ -24,11 +24,13 @@ const observableCurrentRouter = new Subject<Route>();
 const routePronounsCases: Route = {
   id: RouteId.PERSONAL_PRONOUNS_CASES,
   title: T`Personal pronouns`,
+  is: (id) => id === RouteId.PERSONAL_PRONOUNS_CASES,
 };
 
 const routeInterrogativeCases: Route = {
   id: RouteId.INTERROGATIVE_PRONOUNS_CASES,
   title: T`Interrogative pronouns`,
+  is: (id) => id === RouteId.INTERROGATIVE_PRONOUNS_CASES,
 };
 
 export class DefaultRouter implements Router {

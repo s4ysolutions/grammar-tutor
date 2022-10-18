@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2022 by s4y.solutions
  *
@@ -14,21 +15,4 @@
  * limitations under the License.
  */
 
-import {Observable} from 'rxjs';
-
-export enum RouteId {
-  PERSONAL_PRONOUNS_CASES,
-  INTERROGATIVE_PRONOUNS_CASES
-}
-
-export interface Route {
-  readonly id: RouteId;
-  readonly title: string;
-  is(id: RouteId): boolean;
-}
-
-export interface Router {
-  readonly currentRoute: Route;
-  readonly observableCurrentRoute: Observable<Route>;
-  go(route: RouteId): void;
-}
+export const CSS_CAPITALIZE = {'textTransform': 'capitalize', 'fontWeight': 'bold'};

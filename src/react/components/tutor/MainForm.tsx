@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-import {Observable} from 'rxjs';
+import {Typography, useTheme} from '@mui/material';
+import React, {useMemo} from 'react';
 
-export enum RouteId {
-  PERSONAL_PRONOUNS_CASES,
-  INTERROGATIVE_PRONOUNS_CASES
-}
+const vSpace = 3;
 
-export interface Route {
-  readonly id: RouteId;
-  readonly title: string;
-  is(id: RouteId): boolean;
-}
+const MainForm: React.FunctionComponent<{mainForm: string}> = ({mainForm}): React.ReactElement => {
+  const theme = useTheme();
+  const sx = useMemo(() => ({
+    mt: theme.spacing(vSpace),
+    mb: theme.spacing(vSpace),
+  }), [theme]);
 
-export interface Router {
-  readonly currentRoute: Route;
-  readonly observableCurrentRoute: Observable<Route>;
-  go(route: RouteId): void;
-}
+  return <Typography align="center" sx={sx} variant="h3">
+    {mainForm}
+  </Typography >;
+};
+
+export default MainForm;

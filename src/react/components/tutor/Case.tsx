@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-import {Typography, useTheme} from '@mui/material';
 import React, {useMemo} from 'react';
+import log from '../../../log';
+import {Typography, useTheme} from '@mui/material';
 
-const vSpace = 3;
+const topSpace = 2;
 
-const Noun: React.FunctionComponent<{noun: string}> = ({noun}): React.ReactElement => {
+const Case: React.FunctionComponent<{caseTitle: string}> = ({caseTitle}): React.ReactElement => {
+  log.render('Case', caseTitle);
   const theme = useTheme();
   const sx = useMemo(() => ({
-    mt: theme.spacing(vSpace),
-    mb: theme.spacing(vSpace),
+    mt: theme.spacing(topSpace),
   }), [theme]);
-
-  return <Typography align="center" sx={sx} variant="h3">
-    {noun}
-  </Typography >;
+  return <Typography align="center" sx={sx} variant="h6">
+    {caseTitle}
+  </Typography>;
 };
 
-export default Noun;
+export default Case;

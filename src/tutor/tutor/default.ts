@@ -36,7 +36,6 @@ import {
   PronounCase,
   Tutor,
 } from '../index';
-import log from '../../log';
 
 
 export class DefaultTutor implements Tutor {
@@ -207,7 +206,6 @@ export class DefaultTutor implements Tutor {
     grammarCase: GrammarCase,
     grammarAnimation: GrammarAnimation,
   ): InterrogativePronounCase | null {
-
     const cases = pronounCases
       .filter((pronounCase: InterrogativePronounCase) => pronounCase.case === grammarCase);
 
@@ -234,37 +232,31 @@ export class DefaultTutor implements Tutor {
   private static getWeightedArray =
     (wordWeights: Array<{word: string, weight: number}>):string[] => wordWeights.map(({word, weight}) => Array(weight).fill(word)).flat();
 
-  private prevWord: string | null = null;
+  private prevWord: string | null = null; // avoid the same word
 
-  private async nextWord(): Promise<string> {
-    log.d(`tutor nextWord enter prevWord=${this.prevWord}`);
-    const wordsSet = await this.personalPronounsDB.words;
-    const statPromises: Promise<{word: string, weight: number}>[] =
-      // TODO: hardcode lesson?
-      wordsSet.map(word => this.learningDB.getWordStatistics(this.lessons.currentLesson, word).then(stat => ({word, weight: stat.weight})));
-    const wordWeights = await Promise.all(statPromises);
-
-    const weighted: string[] = DefaultTutor.getWeightedArray(wordWeights);
-
+  private async nextWord(wordsSet: string[]): Promise<string> {
     let word: string;
-    if (weighted.length === 1) {
-      word = weighted[0];
+    if (wordsSet.length === 1) {
+      word = wordsSet[0];
     } else {
-      log.d(`tutor nextWord loop start prevWord=${this.prevWord}`);
+      const statPromises: Promise<{word: string, weight: number}>[] =
+        // TODO: hardcode lesson?
+        wordsSet.map(w => this.learningDB.getWordStatistics(this.lessons.currentLesson, w).then(stat => ({word: w, weight: stat.weight})));
+      const wordWeights = await Promise.all(statPromises);
+
+      const weighted: string[] = DefaultTutor.getWeightedArray(wordWeights);
       do {
         const i = DefaultTutor.random(weighted.length);
         word = weighted[i];
-        log.d(`tutor nextWord get word=${word} (${i})`);
       } while (word === this.prevWord);
-      log.d(`tutor nextWord loop end with word=${word}`);
     }
     this.prevWord = word;
-    log.d(`tutor nextWord exit ${word}`);
     return word;
   }
 
   async nextPersonalPronounExersizeSelectWord(): Promise<NounCaseExercise> {
-    const word = await this.nextWord();
+    const wordsSet = await this.personalPronounsDB.words;
+    const word = await this.nextWord(wordsSet);
 
     const noun: Noun = await this.personalPronounsDB.getNoun(word);
 
@@ -327,7 +319,8 @@ export class DefaultTutor implements Tutor {
   }
 
   async nextInterrogativePronounExersizeSelectWord(): Promise<InterrogativePronounCaseExercise> {
-    const word = await this.nextWord();
+    const wordsSet = await this.interrogativePronounsDB.words;
+    const word = await this.nextWord(wordsSet);
 
     const pronoun: InterrogativePronoun = await this.interrogativePronounsDB.getPronoun(word);
 
@@ -368,7 +361,7 @@ export class DefaultTutor implements Tutor {
     return this.checkCaseAnswer(answer, exercise);
   }
 
-  checkPronounCaseAnswer(answer: string, exercise: InterrogativePronounCaseExercise): Promise<boolean> {
+  checkInterrogativePronounCaseAnswer(answer: string, exercise: InterrogativePronounCaseExercise): Promise<boolean> {
     return this.checkCaseAnswer(answer, exercise);
   }
 }

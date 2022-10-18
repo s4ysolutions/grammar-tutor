@@ -37,7 +37,7 @@ import {DefaultLessonsDb} from '../../../src/tutor/lessons/default';
 
 chaiUse(chaiString);
 
-describe('Tutor', () => {
+describe('Tutor Personal Pronouns', () => {
   let promiseKV: KvPromise;
   let pronounsDB: NounsDb;
   let interrogativePronounsDB: DefaultInterrogativePronounsDb;
@@ -60,7 +60,7 @@ describe('Tutor', () => {
     sinon.restore();
   });
 
-  it('nextPronounQuestion without forms and genders', async () => {
+  it('nextPersonalPronounExersizeSelectWord without forms and genders', async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'random', sinon.fake.returns(0));
@@ -178,3 +178,6 @@ describe('Tutor', () => {
     expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
   });
 });
+
+//  ја
+// ед. ч., винительный, длинная форма
