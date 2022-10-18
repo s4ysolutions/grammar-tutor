@@ -92,3 +92,7 @@ All the code, including tests, is 100% typed with TypeScript.
 
 In order to be used on the mobile devices without access to internet the app registers the worker that caches the JS
 bundle built by WebPack and intercept all the fetches to look into the cache for the resource first.
+
+## Known problems
+
+It is possible to have the same cases in as the next exercise. The hint won't changed then.
