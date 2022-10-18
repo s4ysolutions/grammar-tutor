@@ -64,14 +64,15 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
     tutor.nextInterrogativePronounExersizeSelectWord().then(setCurrentExercise);
   }, []);
 
-  const nextExercise = () => tutor.nextInterrogativePronounExersizeSelectWord().then(setCurrentExercise);
-
-  const checkVariant = useCallback(
-    (variant: string): Promise<boolean> => tutor.checkInterrogativePronounCaseAnswer(variant, currentExercise),
-    [currentExercise],
-  );
 
   const [cases, setCases] = useState<InterrogativePronounCase[] | null>(null);
+
+  const updateCases = useCallback((exercise: InterrogativePronounCaseExercise) =>
+    interrogativePronounsDb.getPronoun(exercise.mainForm)
+      .then(pronoun => pronoun.cases())
+      .then(cs => {
+        setCases(cs === null ? [] : cs);
+      }), []);
 
   const [help, setHelp] = useState(false);
 
@@ -79,13 +80,28 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
     const nextHelp = !help;
     setHelp(!help);
     if (nextHelp && cases === null) {
-      interrogativePronounsDb.getPronoun(currentExercise.mainForm)
-        .then(noun => noun.cases())
-        // TODO: add setting to filter
-        .then(cs =>
-          setCases(cs === null ? [] : cs));
+      updateCases(currentExercise);
     }
-  }, [help, cases, setHelp, currentExercise?.mainForm, setCases]);
+  }, [help, cases, updateCases, currentExercise]);
+
+  const nextExercise = useCallback(
+    () => {
+      tutor.nextInterrogativePronounExersizeSelectWord().then((nextEx) => {
+        setCurrentExercise(nextEx);
+        if (help) {
+          updateCases(nextEx).then();
+        } else {
+          setCases(null);
+        }
+      });
+    },
+    [help, updateCases],
+  );
+
+  const checkVariant = useCallback(
+    (variant: string): Promise<boolean> => tutor.checkInterrogativePronounCaseAnswer(variant, currentExercise),
+    [currentExercise],
+  );
 
   const possibleVariant = useMemo(() =>
     currentExercise === null ? null : currentExercise.possibleVariants.shuffle(), [currentExercise]);
@@ -98,6 +114,7 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
     <Variants
       checkVariant={checkVariant}
       correctVariant={currentExercise.exerciseCase.word}
+      key={currentExercise.exerciseCase.word}
       nextExercise={nextExercise}
       possibleVariants={possibleVariant} />
 

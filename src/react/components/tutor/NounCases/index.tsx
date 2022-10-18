@@ -78,17 +78,15 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
     tutor.nextPersonalPronounExersizeSelectWord().then(setCurrentExercise);
   }, []);
 
-  const nextExercise = useCallback(
-    () => tutor.nextPersonalPronounExersizeSelectWord().then(setCurrentExercise),
-    [setCurrentExercise],
-  );
-
-  const checkVariant = useCallback(
-    (variant: string): Promise<boolean> => tutor.checkNounCaseAnswer(variant, currentExercise),
-    [currentExercise],
-  );
-
   const [cases, setCases] = useState<NounCase[] | null>(null);
+
+  const updateCases = useCallback((exercise: NounCaseExercise) =>
+    nounsDB.getNoun(exercise.mainForm)
+      .then(noun => noun.cases())
+      // TODO: add setting to filter
+      .then(cs => {
+        setCases(cs === null ? [] : cs.filter(c => c.gender === exercise.exerciseCase.gender));
+      }), []);
 
   const [help, setHelp] = useState(false);
 
@@ -96,13 +94,26 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
     const nextHelp = !help;
     setHelp(nextHelp);
     if (nextHelp && cases === null) {
-      nounsDB.getNoun(currentExercise.mainForm)
-        .then(noun => noun.cases())
-        // TODO: add setting to filter
-        .then(cs =>
-          setCases(cs === null ? [] : cs.filter(c => c.gender === currentExercise.exerciseCase.gender)));
+      updateCases(currentExercise);
     }
-  }, [help, setHelp, cases, currentExercise?.mainForm, currentExercise?.exerciseCase?.gender]);
+  }, [help, cases, updateCases, currentExercise]);
+
+  const nextExercise = useCallback(
+    () => tutor.nextPersonalPronounExersizeSelectWord().then((nextEx) => {
+      setCurrentExercise(nextEx);
+      if (help) {
+        updateCases(nextEx).then();
+      } else {
+        setCases(null);
+      }
+    }),
+    [help, updateCases],
+  );
+
+  const checkVariant = useCallback(
+    (variant: string): Promise<boolean> => tutor.checkNounCaseAnswer(variant, currentExercise),
+    [currentExercise],
+  );
 
   const possibleVariant = useMemo(() =>
     currentExercise === null ? null : currentExercise.possibleVariants.shuffle(), [currentExercise]);
@@ -115,6 +126,7 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
     <Variants
       checkVariant={checkVariant}
       correctVariant={currentExercise.exerciseCase.word}
+      key={currentExercise.exerciseCase.word}
       nextExercise={nextExercise}
       possibleVariants={possibleVariant} />
 

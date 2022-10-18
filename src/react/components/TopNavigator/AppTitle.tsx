@@ -34,7 +34,7 @@ const AppTitle: React.FunctionComponent =
     log.render('AppTitle');
 
     const routeTitle = useObservable(
-      router.observableCurrentRoute.pipe(map((route: Route) => route.title)),
+      router.observableCurrentRoute.pipe(map((route: Route) => T`${route.title}`)),
       router.currentRoute.title,
     );
 

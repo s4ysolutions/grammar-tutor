@@ -27,6 +27,10 @@ const translation = {
   'ru': {
     'App title': 'Грамматика',
     'Hint': 'Подсказка',
+    'Interrogative pronouns': 'Падежные вопросы',
+    'Interrogative Pronouns cases': 'Падежные вопросы',
+    'Personal pronouns': 'Личные местоимения',
+    'Personal Pronouns cases': 'Падежи личных местоимений',
     'Pronouns cases': 'Падежи местоимений',
     'Reset': 'Сбросить результаты',
 
@@ -46,6 +50,9 @@ const translation = {
     'Dative': 'дательный',
     'Instrumental': 'творительный',
     'Vocative': 'звательный',
+
+    'Inanimate': 'неодушевленный',
+    'Animate': 'одушевленный',
   },
   'sr': {
     'App title': 'Граматика',
