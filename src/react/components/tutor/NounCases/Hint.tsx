@@ -17,22 +17,34 @@
 import log from '../../../../log';
 import {getDi} from '../../../../di/default';
 import {GrammarCase, GrammarForm, GrammarPlurality, NounCase} from '../../../../tutor';
-import React, {useCallback, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme} from '@mui/material';
 import T from '../../../../l10n';
-import usePromiseOnce from '../../../hooks/usePromiseOnce';
 
 const di = getDi();
-const nounsDB = di.pronounsDb;
+const nounsDB = di.personPronounsDb;
 const capitalize = {'textTransform': 'capitalize', 'fontWeight': 'bold'};
 const upper = {'textTransform': 'uppercase', 'fontWeight': 'bold'};
 
 const topSpace = 3;
 const TWO = 2;
 
+const getCase = (cases: NounCase[], caseKey: string, p: GrammarPlurality): string => {
+  const c = GrammarCase[caseKey as keyof typeof GrammarCase];
+  return cases.filter(e => e.plurality === p && e.case === c)
+    .sort((a, b) => {
+      const aa = a.form === GrammarForm.SHORT ? TWO : a.form === GrammarForm.LONG ? 1 : 0;
+      const bb = b.form === GrammarForm.SHORT ? TWO : b.form === GrammarForm.LONG ? 1 : 0;
+      return aa - bb;
+    })
+    .map(e => e.word)
+    .join(' | ');
+};
+
+
 const Hint: React.FunctionComponent<{ word: string, exerciseCase: NounCase }> =
   ({word, exerciseCase: ec}): React.ReactElement => {
-    log.render('Hint', word);
+    log.render('Hint', {word, ec});
 
     const theme = useTheme();
     const sx = useMemo(() => ({
@@ -40,32 +52,18 @@ const Hint: React.FunctionComponent<{ word: string, exerciseCase: NounCase }> =
       mb: theme.spacing(topSpace),
     }), [theme]);
 
-    const promiseIssuer = useCallback((): Promise<NounCase[]> => nounsDB.getNoun(word)
-      .then(noun => noun.cases())
+    const [cases, setCases] = useState([]);
+
+    useEffect(() => {
+      nounsDB.getNoun(word)
+        .then(noun => noun.cases())
       // TODO: add setting to filter
-      .then(cases =>
-        cases === null
-          ? null
-          : cases.filter(c => c.gender === ec.gender)), [ec, word]);
+        .then(cs =>
+          setCases(cs === null ? [] : cs.filter(c => c.gender === ec.gender)));
+    }, [ec, word]);
 
-    const cases = usePromiseOnce<NounCase[] | null>(promiseIssuer, null);
-
-    const getCase = useCallback(
-      (caseKey: string, p: GrammarPlurality): string => {
-        const c = GrammarCase[caseKey as keyof typeof GrammarCase];
-        return cases.filter(e => e.plurality === p && e.case === c)
-          .sort((a, b) => {
-            const aa = a.form === GrammarForm.SHORT ? TWO : a.form === GrammarForm.LONG ? 1 : 0;
-            const bb = b.form === GrammarForm.SHORT ? TWO : b.form === GrammarForm.LONG ? 1 : 0;
-            return aa - bb;
-          })
-          .map(e => e.word)
-          .join(' | ');
-      }
-      , [cases],
-    );
-
-    return cases === null ? null : <TableContainer component={Paper} sx={sx} >
+    // return cases === null ? null : <TableContainer component={Paper} sx={sx} >
+    return <TableContainer component={Paper} sx={sx} >
       <Table aria-label="simple table" >
         <TableHead >
           <TableRow >
@@ -89,11 +87,11 @@ const Hint: React.FunctionComponent<{ word: string, exerciseCase: NounCase }> =
               </TableCell >
 
               <TableCell >
-                {getCase(key, GrammarPlurality.SINGULAR)}
+                {getCase(cases, key, GrammarPlurality.SINGULAR)}
               </TableCell >
 
               <TableCell >
-                {getCase(key, GrammarPlurality.PLURAL)}
+                {getCase(cases, key, GrammarPlurality.PLURAL)}
               </TableCell >
 
             </TableRow >)

@@ -25,7 +25,7 @@ const PREFIX = 'ldb@';
 const PREFIX_LESSON_STATS = 'ldbs@';
 const NEVER = new Date(0);
 
-const FAKE_LESSON_ID = -1;
+const FAKE_LESSON_ID = -10;
 const FAKE_LESSON = FAKE_LESSON_ID as unknown as Lesson;
 
 export class KvPromiseLearningDb implements LearningDb {
@@ -103,7 +103,7 @@ export class KvPromiseLearningDb implements LearningDb {
   }
 
   observableLessonStatistics(lesson?: Lesson): Observable<LessonStatistics> {
-    if (!lesson) {
+    if (lesson === undefined) {
       // dirty hack to wake up mergeMap
       return concat(of(FAKE_LESSON), this.lessons.observableCurrentLesson())
         .pipe(mergeMap((l) =>
@@ -121,12 +121,12 @@ export class KvPromiseLearningDb implements LearningDb {
             ),
           )));
     } // else
-    return concat(
+    return merge(
+      this.subjectLessonStatistics,
       this.kv.observableReset().pipe(
         filter(reset => reset),
         map(() => ({total: 0, wrong: 0})),
       ),
-      this.subjectLessonStatistics,
     );
   }
 

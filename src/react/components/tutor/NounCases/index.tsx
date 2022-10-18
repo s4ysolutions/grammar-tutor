@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Container, IconButton} from '@mui/material';
-import usePromise from '../../../hooks/usePromise';
-import {NounCaseExercise} from '../../../../tutor';
 import Noun from './Noun';
 import Variants from './Variants';
 import log from '../../../../log';
@@ -27,16 +25,20 @@ import Hint from './Hint';
 import QuizIcon from '@mui/icons-material/Quiz';
 import T from '../../../../l10n';
 import Grid2 from '@mui/material/Unstable_Grid2';
+import {NounCaseExercise} from '../../../../tutor';
 
 const di = getDi();
 const tutor = di.tutor;
-const exerciseIssuer = tutor.nextPronounExersizeSelectWord.bind(tutor);
 
 const NounCases: React.FunctionComponent = (): React.ReactElement => {
   log.render('NounCases');
 
-  const [currentExercise, nextExercise] =
-    usePromise<NounCaseExercise | null>(exerciseIssuer, null, 'NounCases');
+  const [currentExercise, setCurrentExercise] = useState<NounCaseExercise>(null);
+  useEffect(() => {
+    tutor.nextPersonalPronounExersizeSelectWord().then(setCurrentExercise);
+  }, []);
+
+  const nextExercise = () => tutor.nextPersonalPronounExersizeSelectWord().then(setCurrentExercise);
 
   const [help, setHelp] = useState(false);
 

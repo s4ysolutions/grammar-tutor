@@ -67,22 +67,22 @@ const log = {
     }
   },
   promiseUse(id: string): void {
-    this.debug(`promise: use ${id}`);
+    this.debug(`promise: ${id} use`);
   },
   promiseEffect(id: string): void {
-    this.debug(`promise: effect ${id}`);
+    this.debug(`promise: ${id} effect`);
   },
   promiseNext(id: string): void {
-    this.debug(`promise: next ${id}`);
+    this.debug(`promise: ${id} next`);
   },
   promiseValue(id: string, value: unknown): void {
-    this.debug(`promise: value ${id}`, value);
+    this.debug(`promise: ${id}`, value);
   },
   promiseState(id: string, state: unknown): void {
-    this.debug(`promise: state ${id}`, state);
+    this.debug(`promise: ${id} state`, state);
   },
-  rxUse(id: string): void {
-    this.debug(`rx: use ${id}`);
+  rxUse(id: string, initilal?: unknown): void {
+    this.debug(`rx: ${id} use`, initilal);
   },
   rxSetState(id: string, value?: unknown): void {
     if (value === undefined) {
@@ -90,6 +90,9 @@ const log = {
     } else {
       this.debug(`rx: ${id} setState(${value})`);
     }
+  },
+  rxState(id: string, state?: unknown): void {
+    this.debug(`rx: ${id} return state:`, state);
   },
   rxAdd(id: string): void {
     if (!this.rxCounters[id]) {

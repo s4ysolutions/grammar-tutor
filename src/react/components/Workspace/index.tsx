@@ -36,7 +36,7 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
     className="workspace"
     maxWidth="sm"
     sx={sx} >
-    {route.id === RouteId.PRONOUNS_CASES && <NounCases />}
+    {route.id === RouteId.PERSONAL_PRONOUNS_CASES && <NounCases />}
   </Container >;
 };
 

@@ -19,7 +19,8 @@ import {Lesson, LessonStatistics, LessonsDb} from '../../../src/tutor';
 import {KvPromiseLearningDb} from '../../../src/tutor/learned/kv-promise-db';
 import memoryStoragePromiseFactory, {MemoryStoragePromise} from '../../mocks/kv-promice/memoryStorage';
 import {expect} from 'chai';
-import {first} from 'rxjs';
+import {concat, first} from 'rxjs';
+import {fromPromise} from 'rxjs/internal/observable/innerFrom';
 
 describe('Learning', () => {
   let lessonDb: LessonsDb;
@@ -123,5 +124,60 @@ describe('Learning', () => {
 
     const stats = await promiseLearningStatistics;
     expect(stats).to.be.eql({total: 0, wrong: 0});
+  });
+
+  it('promise', async () => {
+    expect(lessonDb.currentLesson).to.be.eq(Lesson.PersonalPronounsCases);
+    await learningDb.addCorrect(lessonDb.currentLesson, 'word0');
+    await learningDb.addCorrect(lessonDb.currentLesson, 'word00');
+
+    const stat0 = await learningDb.getLessonStatistics(lessonDb.currentLesson);
+    expect(stat0).to.be.eql({total: 2, wrong: 0});
+
+    const acc: LessonStatistics[] = [];
+
+    await new Promise(rs => {
+      fromPromise(learningDb.getLessonStatistics(lessonDb.currentLesson))
+        .subscribe(
+          stat => {
+            acc.push(stat);
+          },
+          console.log,
+          () => {
+            expect(acc.length).to.be.eq(1);
+            expect(acc[0]).to.be.eql({total: 2, wrong: 0});
+            rs(0);
+          },
+        );
+    });
+  });
+
+  it('contact promise + stream', async () => {
+    expect(lessonDb.currentLesson).to.be.eq(Lesson.PersonalPronounsCases);
+    await learningDb.addCorrect(lessonDb.currentLesson, 'word0');
+
+    const stat0 = await learningDb.getLessonStatistics(lessonDb.currentLesson);
+    expect(stat0).to.be.eql({total: 1, wrong: 0});
+
+    const acc: LessonStatistics[] = [];
+
+    await new Promise(rs => {
+      concat(
+        fromPromise(learningDb.getLessonStatistics(lessonDb.currentLesson)),
+        learningDb.observableLessonStatistics(),
+      ).subscribe(stat => {
+        acc.push(stat);
+        console.log(stat);
+        if (stat.total === 3) {
+          expect(acc.length).to.be.eq(3);
+          expect(acc[0]).to.be.eql({total: 1, wrong: 0});
+          expect(acc[1]).to.be.eql({total: 2, wrong: 0});
+          expect(acc[2]).to.be.eql({total: 3, wrong: 1});
+          rs(0);
+        }
+      });
+    });
+    await learningDb.addCorrect(lessonDb.currentLesson, 'word0');
+    await learningDb.addWrong(lessonDb.currentLesson, 'word0');
   });
 });

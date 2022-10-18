@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-import {from} from 'rxjs';
+import {from, startWith} from 'rxjs';
 import {expect} from 'chai';
+import {fromPromise} from 'rxjs/internal/observable/innerFrom';
 
 describe('RXJS', () => {
   it('just 1', (done) => {
     from([1]).subscribe(n => {
       expect(n).to.be.eq(1);
+      done();
+    });
+  });
+
+  it('from promise', (done) => {
+    const acc: number[] = [];
+    fromPromise(Promise.resolve(10)).subscribe(n => {
+      acc.push(n);
+    }, console.log, () => {
+      expect(acc.length).to.be.eq(1);
+      expect(acc[0]).to.be.eq(10);
       done();
     });
   });
@@ -34,5 +46,17 @@ describe('RXJS', () => {
         done();
       }
     });
+  });
+
+  it('from 1,2,3 + startWith', (done) => {
+    const acc: number[] = [];
+    from([1, 2, 3]).pipe(startWith(-1))
+      .subscribe(n => {
+        acc.push(n);
+        if (n === 3) {
+          expect(acc).to.be.eql([-1, 1, 2, 3]);
+          done();
+        }
+      });
   });
 });

@@ -16,10 +16,12 @@
 
 import React from 'react';
 import log from '../../../log';
-import {Menu} from '@mui/material';
+import {Divider, Menu} from '@mui/material';
 import useObservable from '../../hooks/useObservable';
 import {getDi} from '../../../di/default';
 import MenuItemReset from './MenuItemReset';
+import MenuItemPersonalPronouns from './MenuItemPersonalPronouns';
+import MenuItemInterrogativePronouns from './MenuItemInterrogativePronouns';
 
 const di = getDi();
 const uiState = di.uiState;
@@ -41,6 +43,12 @@ const MenuMain: React.FunctionComponent<{anchorEl: Element}> =
       id="main-menu"
       onClose={handleClose}
       open={open}>
+
+      <MenuItemPersonalPronouns />
+
+      <MenuItemInterrogativePronouns />
+
+      <Divider />
 
       <MenuItemReset />
 

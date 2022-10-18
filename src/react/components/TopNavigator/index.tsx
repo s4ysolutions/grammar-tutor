@@ -18,8 +18,6 @@ import React, {useRef} from 'react';
 import {AppBar, Box, IconButton, Toolbar} from '@mui/material';
 import useObservable from '../../hooks/useObservable';
 import MenuIcon from '@mui/icons-material/Menu';
-import {LessonStatistics} from '../../../tutor';
-import usePromise from '../../hooks/usePromise';
 import Statistics from './Statistics';
 import MenuMain from './MenuMain';
 import {getDi} from '../../../di/default';
@@ -27,8 +25,6 @@ import log from '../../../log';
 import AppTitle from './AppTitle';
 
 const di = getDi();
-const learningDb = di.learningDb;
-const tutor = di.tutor;
 const uiState = di.uiState;
 
 const flexGrow1 = {flexGrow: 1};
@@ -39,17 +35,10 @@ const handleMainMenuClick = () => {
   uiState.mainMenuOpen = !uiState.mainMenuOpen;
 };
 
-const getLessonStatisticsPromise = (): Promise<LessonStatistics> => learningDb.getLessonStatistics(tutor.currentLesson);
-
-const NO_DATA = -1;
-
 const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
   log.render('TopNavigator');
 
   const menuOpen = useObservable<boolean>(uiState.observableMainMenuOpen, uiState.mainMenuOpen);
-
-  const [currentLessonStatistic] = usePromise<LessonStatistics>(getLessonStatisticsPromise, {total: NO_DATA, wrong: 0});
-
   const mainMenuButtonRef = useRef<HTMLButtonElement>(null);
 
   return <Box sx={flexGrow1} >
@@ -75,7 +64,7 @@ const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
 
         <AppTitle />
 
-        {currentLessonStatistic.total !== NO_DATA && <Statistics initial={currentLessonStatistic} />}
+        <Statistics />
       </Toolbar >
     </AppBar >
   </Box >;
