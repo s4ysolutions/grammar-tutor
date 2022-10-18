@@ -24,9 +24,11 @@
     "target": "es5",
     "downlevelIteration": true,
     "typeRoots": [
-      "./@types",
+      "./src/@types",
       "./node_modules/@types",
-      "tests/mocha/@types"
+      "tests/mocha/@types",
+      "@testing-library/jest-dom",
+      "@testing-library/react"
     ]
   },
   "include": [
