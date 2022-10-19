@@ -83,6 +83,7 @@ export interface InterrogativePronounsDb {
   readonly words: Promise<string[]>
 
   getPronoun(word: string): Promise<InterrogativePronoun>
+  getPronounsForCase(grammarCase: GrammarCase): Promise<InterrogativePronounCase[]>
 }
 
 export interface CaseExercise {

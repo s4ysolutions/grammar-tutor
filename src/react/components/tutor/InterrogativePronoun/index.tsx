@@ -32,6 +32,8 @@ import Case from '../Case';
 import Variants from '../Variants';
 import Hint from '../Hint';
 import {CSS_CAPITALIZE} from '../constants';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPerson, faTree} from '@fortawesome/free-solid-svg-icons';
 
 const di = getDi();
 const tutor = di.tutor;
@@ -39,12 +41,12 @@ const interrogativePronounsDb = di.interrogativePronounsDb;
 
 const caseTitle = (exerciseCase: InterrogativePronounCase) => {
   const caseName = T`${exerciseCase.case}`;
-
+  /*
   if (exerciseCase.animation) {
     const animationName = T`${exerciseCase.animation}`;
     return `${animationName}, ${caseName}`;
   }
-
+*/
   return `${caseName}`;
 };
 
@@ -55,6 +57,8 @@ const getCase = (cases: InterrogativePronounCase[], caseKey: string, p: GrammarA
 };
 
 const hintTitles = [T`${GrammarAnimation.ANIMATE}`, T`${GrammarAnimation.INANIMATE}`];
+
+let variantsKey = 1;
 
 const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => {
   log.render('InterrogativePronoun');
@@ -107,16 +111,22 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
     currentExercise === null ? null : currentExercise.possibleVariants.shuffle(), [currentExercise]);
 
   return currentExercise ? <Container >
-    <MainForm mainForm={currentExercise.mainForm} />
+    <MainForm mainForm={currentExercise.mainForm} small />
 
-    <Case caseTitle={caseTitle(currentExercise.exerciseCase)} />
+    <Case caseTitle={caseTitle(currentExercise.exerciseCase)}>
+
+      {currentExercise.exerciseCase.animation === GrammarAnimation.ANIMATE
+        ? <FontAwesomeIcon icon={faPerson} />
+        : <FontAwesomeIcon icon={faTree} />}
+    </Case>
 
     <Variants
       checkVariant={checkVariant}
       correctVariant={currentExercise.exerciseCase.word}
-      key={currentExercise.exerciseCase.word}
+      key={currentExercise.exerciseCase.word + variantsKey++}
       nextExercise={nextExercise}
       possibleVariants={possibleVariant} />
+
 
     <Grid2 container justifyContent="right">
       <IconButton aria-label={T`Hint`} color="primary" onClick={toggleHelp}>

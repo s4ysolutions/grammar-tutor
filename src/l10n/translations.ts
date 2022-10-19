@@ -20,9 +20,15 @@ const translation = {
     'Pronouns cases': 'Cases of pronouns',
     'Reset': 'Reset results',
 
-    'Masculine': 'Masc.',
-    'Feminine': 'Fem.',
-    'Neuter': 'Neut.',
+    'Masculine': 'masc.',
+    'Feminine': 'fem.',
+    'Neuter': 'neut.',
+
+    'Short': 'short',
+    'Long': 'long',
+
+    'Singular': 'sing.',
+    'Plural': 'pl.',
   },
   'ru': {
     'App title': 'Грамматика',
@@ -43,13 +49,13 @@ const translation = {
 
     'Singular': 'ед. ч.',
     'Plural': 'мн. ч.',
-    'Nominative': 'именительный',
-    'Genitive': 'родительный',
-    'Accusative': 'винительный',
-    'Locative': 'предложный',
-    'Dative': 'дательный',
-    'Instrumental': 'творительный',
-    'Vocative': 'звательный',
+    'Nominative': 'Именительный',
+    'Genitive': 'Родительный',
+    'Accusative': 'Винительный',
+    'Locative': 'Предложный',
+    'Dative': 'Дательный',
+    'Instrumental': 'Творительный',
+    'Vocative': 'Звательный',
 
     'Inanimate': 'неодушевленный',
     'Animate': 'одушевленный',

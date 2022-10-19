@@ -19,14 +19,14 @@ import React, {useMemo} from 'react';
 
 const vSpace = 3;
 
-const MainForm: React.FunctionComponent<{mainForm: string}> = ({mainForm}): React.ReactElement => {
+const MainForm: React.FunctionComponent<{mainForm: string, small?: boolean}> = ({mainForm, small}): React.ReactElement => {
   const theme = useTheme();
   const sx = useMemo(() => ({
     mt: theme.spacing(vSpace),
     mb: theme.spacing(vSpace),
   }), [theme]);
 
-  return <Typography align="center" sx={sx} variant="h3">
+  return <Typography align="center" sx={sx} variant={small ? 'h5' : 'h3'}>
     {mainForm}
   </Typography >;
 };

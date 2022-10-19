@@ -22,8 +22,10 @@ import {
   InterrogativePronounsDb,
 } from '../index';
 
+const root = 'Упитне заменице';
+
 const staticPronouns: Record<string, InterrogativePronounCase[]> = {
-  'Упитне заменице': [
+  [root]: [
     {
       word: 'ко̏',
       case: GrammarCase.NOMINATIVE,
@@ -114,4 +116,8 @@ export class DefaultInterrogativePronounsDb implements InterrogativePronounsDb {
     return Promise.resolve(new StaticInterrogativePronounEntry(word));
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  getPronounsForCase(grammarCase: GrammarCase): Promise<InterrogativePronounCase[]> {
+    return Promise.resolve(staticPronouns[root].filter(e => e.case === grammarCase));
+  }
 }

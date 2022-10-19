@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-import React, {useMemo} from 'react';
+import React, {ReactNode, useMemo} from 'react';
 import log from '../../../log';
 import {Typography, useTheme} from '@mui/material';
 
 const topSpace = 2;
 
-const Case: React.FunctionComponent<{caseTitle: string}> = ({caseTitle}): React.ReactElement => {
+const Case: React.FunctionComponent<{caseTitle: string, children?: ReactNode[] | ReactNode}> = ({caseTitle, children}): React.ReactElement => {
   log.render('Case', caseTitle);
   const theme = useTheme();
   const sx = useMemo(() => ({
     mt: theme.spacing(topSpace),
   }), [theme]);
-  return <Typography align="center" sx={sx} variant="h6">
+  return <Typography align="center" sx={sx} variant="h5">
+    {children}
+    &nbsp;
     {caseTitle}
   </Typography>;
 };
