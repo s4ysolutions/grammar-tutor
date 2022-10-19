@@ -25,62 +25,62 @@ import {
 const staticPronouns: Record<string, InterrogativePronounCase[]> = {
   'Упитне заменице': [
     {
-      word: 'ко',
+      word: 'ко̏',
       case: GrammarCase.NOMINATIVE,
       animation: GrammarAnimation.ANIMATE,
     },
     {
-      word: 'шта',
+      word: 'шта̏',
       case: GrammarCase.NOMINATIVE,
       animation: GrammarAnimation.INANIMATE,
     },
     {
-      word: 'кога',
+      word: 'ко̀га',
       case: GrammarCase.GENITIVE,
       animation: GrammarAnimation.ANIMATE,
     },
     {
-      word: 'чега',
+      word: 'чѐга',
       case: GrammarCase.GENITIVE,
       animation: GrammarAnimation.INANIMATE,
     },
     {
-      word: 'коме',
+      word: 'ко̀му, ко̀ме',
       case: GrammarCase.DATIVE,
       animation: GrammarAnimation.ANIMATE,
     },
     {
-      word: 'чему',
+      word: 'чѐму',
       case: GrammarCase.DATIVE,
       animation: GrammarAnimation.INANIMATE,
     },
     {
-      word: 'кога, куда',
+      word: 'ко̀га, ку̀да',
       case: GrammarCase.ACCUSATIVE,
       animation: GrammarAnimation.ANIMATE,
     },
     {
-      word: 'шта, куда',
+      word: 'шта̏, ку̀да',
       case: GrammarCase.ACCUSATIVE,
       animation: GrammarAnimation.INANIMATE,
     },
     {
-      word: 'киме',
+      word: 'ки́ме',
       case: GrammarCase.INSTRUMENTAL,
       animation: GrammarAnimation.ANIMATE,
     },
     {
-      word: 'чиме',
+      word: 'чи́ме',
       case: GrammarCase.INSTRUMENTAL,
       animation: GrammarAnimation.INANIMATE,
     },
     {
-      word: 'о коме, где',
+      word: 'о ко̀ме, где̏',
       case: GrammarCase.LOCATIVE,
       animation: GrammarAnimation.ANIMATE,
     },
     {
-      word: 'о чоме, где',
+      word: 'о чѐму, где̏',
       case: GrammarCase.LOCATIVE,
       animation: GrammarAnimation.INANIMATE,
     },
