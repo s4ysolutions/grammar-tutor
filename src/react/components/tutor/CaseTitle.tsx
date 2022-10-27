@@ -16,19 +16,42 @@
 
 import React, {ReactNode, useMemo} from 'react';
 import {Typography, useTheme} from '@mui/material';
+import T from '../../../l10n';
+import {Case} from '../../../tutor';
 
 const topSpace = 2;
 
-const CaseTitle: React.FunctionComponent<{caseTitle: string, children?: ReactNode[] | ReactNode}> = ({caseTitle, children}): React.ReactElement => {
-  const theme = useTheme();
-  const sx = useMemo(() => ({
-    mt: theme.spacing(topSpace),
-  }), [theme]);
-  return <Typography align="center" sx={sx} variant="h5">
-    {children}
-    &nbsp;
-    {caseTitle}
-  </Typography>;
+
+const getTitle = (exerciseCase: Case): string => {
+  const res: string[] = [T`${exerciseCase.case}`];
+  if (exerciseCase.plurality !== undefined) {
+    res.push(T`${exerciseCase.plurality}`);
+  }
+  if (exerciseCase.gender !== undefined) {
+    res.push(T`${exerciseCase.gender}`);
+  }
+  if (exerciseCase.animation !== undefined) {
+    res.push(T`${exerciseCase.animation}`);
+  }
+  if (exerciseCase.form !== undefined) {
+    res.push(T`${exerciseCase.form}`);
+  }
+
+  return res.join(', ');
 };
+
+const CaseTitle: React.FunctionComponent<{exerciseCase: Case, children?: ReactNode[] | ReactNode}> =
+  ({exerciseCase, children}): React.ReactElement => {
+    const theme = useTheme();
+    const sx = useMemo(() => ({
+      mt: theme.spacing(topSpace),
+    }), [theme]);
+
+    return <Typography align="center" sx={sx} variant="h5">
+      {children}
+    &nbsp;
+      {getTitle(exerciseCase)}
+    </Typography>;
+  };
 
 export default CaseTitle;

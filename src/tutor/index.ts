@@ -70,8 +70,8 @@ export interface NounsDb {
   getNounByMainForm(word: MainFormWord): Promise<Noun>
 }
 
-export interface CasesInterrogativesPronounsDb extends NounsDb {
-  getCasesForGrammarCase(grammarCase: GrammarCase): Promise<Case[]>
+export interface CasesInterrogativesDb extends NounsDb {
+  getInterrogativeForCase(grammarCase: GrammarCase): Promise<Case[]>
 }
 
 export interface CaseExercise {
@@ -79,6 +79,7 @@ export interface CaseExercise {
   possibleVariants: CaseFormWord[],
   correctAnswer: CaseFormWord;
   exerciseCase: Case,
+  noun: Noun;
 }
 
 /**

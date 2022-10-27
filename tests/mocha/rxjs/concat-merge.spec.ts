@@ -40,15 +40,13 @@ describe('RXJS of', () => {
     // concat(from(Promise.resolve(1)), s).subscribe(
     concat(Promise.resolve(1), s).subscribe(
       n => {
-        console.log(n);
         if (n === 0) {
           expect(acc).to.be.eql([1, 2, 3, 4]);
         }
         acc.push(n);
       },
-      (err) => console.log('ERR', err),
+      (err) => log.error('ERR', err),
       () => {
-        console.log('done');
         done();
       },
     );

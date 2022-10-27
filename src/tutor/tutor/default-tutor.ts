@@ -19,7 +19,7 @@
 import {
   Case,
   CaseExercise,
-  CasesInterrogativesPronounsDb,
+  CasesInterrogativesDb,
   GrammarAnimation,
   GrammarCase,
   GrammarForm,
@@ -40,7 +40,7 @@ export class DefaultTutor implements Tutor {
 
   private readonly interrogativesDB: NounsDb;
 
-  private readonly casesInterrogativesPronounsDB: CasesInterrogativesPronounsDb;
+  private readonly casesInterrogativesPronounsDB: CasesInterrogativesDb;
 
   private readonly learningDB: LearningProgress;
 
@@ -49,7 +49,7 @@ export class DefaultTutor implements Tutor {
   constructor(
     personalPronounsDB: NounsDb,
     interrogativesDB: NounsDb,
-    casesInterrogativePronounsDB: CasesInterrogativesPronounsDb,
+    casesInterrogativePronounsDB: CasesInterrogativesDb,
     learningDB: LearningProgress,
     lesson: DefaultLesson,
   ) {
@@ -285,6 +285,7 @@ export class DefaultTutor implements Tutor {
           exerciseCase,
           possibleVariants,
           correctAnswer: exerciseCase.word,
+          noun,
         };
       }
       const grammarForm: GrammarForm = DefaultTutor.randomForm(availableForms);
@@ -294,6 +295,7 @@ export class DefaultTutor implements Tutor {
         exerciseCase,
         possibleVariants,
         correctAnswer: exerciseCase.word,
+        noun,
       };
 
     }
@@ -307,6 +309,7 @@ export class DefaultTutor implements Tutor {
         exerciseCase,
         possibleVariants,
         correctAnswer: exerciseCase.word,
+        noun,
       };
     }
     const grammarForm: GrammarForm = DefaultTutor.randomForm(availableForms);
@@ -316,6 +319,7 @@ export class DefaultTutor implements Tutor {
       exerciseCase,
       possibleVariants,
       correctAnswer: exerciseCase.word,
+      noun,
     };
   }
 
@@ -340,6 +344,7 @@ export class DefaultTutor implements Tutor {
       exerciseCase,
       possibleVariants,
       correctAnswer: exerciseCase.word,
+      noun,
     };
   }
 

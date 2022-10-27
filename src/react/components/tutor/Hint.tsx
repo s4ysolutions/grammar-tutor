@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import log from '../../../log';
 import React, {ReactNode, useMemo} from 'react';
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme} from '@mui/material';
 
@@ -24,7 +23,6 @@ const topSpace = 3;
 
 const Hint: React.FunctionComponent<{ columnTitles: string[], children: ReactNode[]}> =
   ({columnTitles, children}): React.ReactElement => {
-    log.render('Hint');
 
     const theme = useTheme();
     const sx = useMemo(() => ({

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Case, CasesInterrogativesPronounsDb, GrammarAnimation, GrammarCase, Noun} from '../../index';
+import {Case, CasesInterrogativesDb, GrammarAnimation, GrammarCase, Noun} from '../../index';
 
 const root = 'Упитне заменице';
 
@@ -95,7 +95,7 @@ class StaticInterrogativePronounEntry implements Noun {
   }
 }
 
-export class DefaultCasesInterrogativesDb implements CasesInterrogativesPronounsDb {
+export class DefaultCaseInterrogativesDb implements CasesInterrogativesDb {
   private wordsSet: string[] | null = null;
 
   get mainForms(): Promise<string[]> {
@@ -111,7 +111,7 @@ export class DefaultCasesInterrogativesDb implements CasesInterrogativesPronouns
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getCasesForGrammarCase(grammarCase: GrammarCase): Promise<Case[]> {
+  getInterrogativeForCase(grammarCase: GrammarCase): Promise<Case[]> {
     return Promise.resolve(staticDB[root].filter(e => e.case === grammarCase));
   }
 }

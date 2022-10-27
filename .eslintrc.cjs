@@ -190,6 +190,14 @@ module.exports = {
         "no-magic-numbers" : "off",
         "no-unused-expressions": "off"
       }
+    },
+    {
+      "files": ["*.spec.tsx"],
+      "rules": {
+        "no-magic-numbers" : "off",
+        "no-unused-expressions": "off",
+        "react-perf/jsx-no-new-object-as-prop": "off"
+      }
     }
   ]
 };

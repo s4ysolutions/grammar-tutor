@@ -15,7 +15,8 @@
     "lint": "eslint --fix src",
     "test": "npm run test:mocha; npm run test:jest",
     "test:mocha": "mocha tests/mocha/**/*.spec.ts",
-    "test:jest": "jest"
+    "test:jest": "jest",
+    "jest:u": "jest -u"
   },
   "keywords": [],
   "author": "",

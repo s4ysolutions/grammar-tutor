@@ -718,7 +718,7 @@ class StaticInterrogativesEntry implements Noun {
   }
 }
 
-export class DefaultInterrogativesDb implements NounsDb {
+export class DefaultInterrogativePronounsDb implements NounsDb {
   private wordsSet: string[] | null = null;
 
   get mainForms(): Promise<string[]> {

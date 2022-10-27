@@ -17,9 +17,9 @@
 import React, {useMemo} from 'react';
 import {Container, useTheme} from '@mui/material';
 import {RouteId} from '../../../router';
-import NounCases from '../tutor/NounCases';
+import NounCases from '../tutor/Noun';
 import useRouter from '../../hooks/useRouter';
-import InterrogativePronouns from '../tutor/InterrogativePronouns';
+import InterrogativePronouns from '../tutor/CaseInterrogative';
 
 const topSpace = 2;
 
@@ -37,8 +37,8 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
     sx={sx} >
     {
       route.is(RouteId.PERSONAL_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
-      route.is(RouteId.CASE_INTERROGATIVES_DECLENSION) && <NounCases key={route.id} /> ||
-      route.is(RouteId.INTERROGATIVE_PRONOUNS_DECLENSION) && <InterrogativePronouns />
+      route.is(RouteId.INTERROGATIVE_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
+      route.is(RouteId.CASE_INTERROGATIVES_DECLENSION) && <InterrogativePronouns />
     }
   </Container >;
 };

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import {CasesInterrogativesPronounsDb, LearningProgress, NounsDb, Tutor} from '../tutor';
+import {CasesInterrogativesDb, LearningProgress, NounsDb, Tutor} from '../tutor';
 import {Router} from '../router';
 import {UiState} from '../ui-state';
 
 export interface Di {
-  readonly personPronounsDb: NounsDb
-  readonly interrogativesDb: NounsDb
-  readonly interrogativePronounsDb: CasesInterrogativesPronounsDb,
+  readonly personalPronounsDb: NounsDb
+  readonly interrogativePronounsD: NounsDb
+  readonly caseInterrogativesDb: CasesInterrogativesDb,
   readonly learningProgress: LearningProgress
   readonly tutor: Tutor
   readonly router: Router

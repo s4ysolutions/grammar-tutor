@@ -15,28 +15,28 @@
  */
 
 import indexedDbFactory from '../kv/promise/indexedDB';
-import {CasesInterrogativesPronounsDb, LearningProgress, NounsDb, Tutor} from '../tutor';
+import {CasesInterrogativesDb, LearningProgress, NounsDb, Tutor} from '../tutor';
 import {DefaultRouter} from '../router/default';
 import {Router} from '../router';
 import {DefaultUiState} from '../ui-state/default';
 import {UiState} from '../ui-state';
 import {Di, DiFactory} from './index';
 import {DefaultPersonalPronounsDb} from '../tutor/databases/case/personal-pronouns';
-import {DefaultInterrogativesDb} from '../tutor/databases/case/interrogatives';
 import DefaultLesson from '../tutor/tutor/default-lesson';
 import {KvPromiseLearningDb} from '../tutor/progress/kv-promise-progress-db';
-import {DefaultCasesInterrogativesDb} from '../tutor/databases/case/cases-interrogatives';
 import {DefaultTutor} from '../tutor/tutor/default-tutor';
 import {KvPromise} from '../kv/promise';
+import {DefaultCaseInterrogativesDb} from '../tutor/databases/case/case-interrogatives';
+import {DefaultInterrogativePronounsDb} from '../tutor/databases/case/interrogative-pronouns';
 
 export class DefaultDi implements Di {
   private readonly _kvPromise: KvPromise;
 
   private readonly _personalPronounsDb: NounsDb;
 
-  private readonly _interrogativesPronounsDb: NounsDb;
+  private readonly _interrogativePronounsDb: NounsDb;
 
-  private readonly _casesInterrogativesDb: CasesInterrogativesPronounsDb;
+  private readonly _caseInterrogativesDb: CasesInterrogativesDb;
 
   private readonly _lesson = new DefaultLesson();
 
@@ -51,13 +51,13 @@ export class DefaultDi implements Di {
   constructor(kvPromise: KvPromise) {
     this._kvPromise = kvPromise;
     this._personalPronounsDb = new DefaultPersonalPronounsDb();
-    this._interrogativesPronounsDb = new DefaultInterrogativesDb();
-    this._casesInterrogativesDb = new DefaultCasesInterrogativesDb();
+    this._interrogativePronounsDb = new DefaultInterrogativePronounsDb();
+    this._caseInterrogativesDb = new DefaultCaseInterrogativesDb();
     this._learningProgress = new KvPromiseLearningDb(this._kvPromise, this._lesson.observableCurrentLesson());
     this._tutor = new DefaultTutor(
       this._personalPronounsDb,
-      this._interrogativesPronounsDb,
-      this._casesInterrogativesDb,
+      this._interrogativePronounsDb,
+      this._caseInterrogativesDb,
       this._learningProgress,
       this._lesson,
     );
@@ -67,16 +67,16 @@ export class DefaultDi implements Di {
     return this._learningProgress;
   }
 
-  get personPronounsDb (): NounsDb {
+  get personalPronounsDb (): NounsDb {
     return this._personalPronounsDb;
   }
 
-  get interrogativesDb (): NounsDb {
-    return this._interrogativesPronounsDb;
+  get interrogativePronounsD (): NounsDb {
+    return this._interrogativePronounsDb;
   }
 
-  get interrogativePronounsDb (): CasesInterrogativesPronounsDb {
-    return this._casesInterrogativesDb;
+  get caseInterrogativesDb (): CasesInterrogativesDb {
+    return this._caseInterrogativesDb;
   }
 
   get router (): Router {
