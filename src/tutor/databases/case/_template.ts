@@ -73,7 +73,7 @@ const staticNouns: Record<string, Case[]> = {
       case: GrammarCase.DATIVE,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ
+    // accusative
     {
       word: '',
       plurality: GrammarPlurality.SINGULAR,
@@ -187,7 +187,7 @@ const staticNouns: Record<string, Case[]> = {
       case: GrammarCase.DATIVE,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ, pl
+    // accusative, pl
     {
       word: '',
       plurality: GrammarPlurality.PLURAL,

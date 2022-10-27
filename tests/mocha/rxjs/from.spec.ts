@@ -17,6 +17,7 @@
 import {from, startWith} from 'rxjs';
 import {expect} from 'chai';
 import {fromPromise} from 'rxjs/internal/observable/innerFrom';
+import log from '../../../src/log';
 
 describe('RXJS', () => {
   it('just 1', (done) => {
@@ -30,7 +31,7 @@ describe('RXJS', () => {
     const acc: number[] = [];
     fromPromise(Promise.resolve(10)).subscribe(n => {
       acc.push(n);
-    }, console.log, () => {
+    }, log.debug.bind(log), () => {
       expect(acc.length).to.be.eq(1);
       expect(acc[0]).to.be.eq(10);
       done();

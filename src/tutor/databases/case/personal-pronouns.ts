@@ -341,7 +341,7 @@ const staticDB: Record<string, Case[]> = {
       form: GrammarForm.LONG,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ
+    // accusative
     {
       word: 'га,њ',
       plurality: GrammarPlurality.SINGULAR,
@@ -525,7 +525,7 @@ const staticDB: Record<string, Case[]> = {
       form: GrammarForm.LONG,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ
+    // accusative
     {
       word: 'их',
       plurality: GrammarPlurality.PLURAL,

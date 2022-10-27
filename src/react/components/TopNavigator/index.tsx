@@ -51,7 +51,7 @@ const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
           aria-label="menu"
           color="inherit"
           edge="start"
-          id="main-menu-buton"
+          id="main-menu-button"
           onClick={handleMainMenuClick}
           ref={mainMenuButtonRef}
           size="large"

@@ -79,7 +79,7 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
     const nextHelp = !help;
     setHelp(!help);
     if (nextHelp && cases === null) {
-      updateCases(currentExercise);
+      updateCases(currentExercise).then();
     }
   }, [help, cases, updateCases, currentExercise]);
 

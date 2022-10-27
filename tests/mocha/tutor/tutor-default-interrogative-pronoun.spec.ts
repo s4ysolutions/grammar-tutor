@@ -39,7 +39,7 @@ describe('Tutor Interrogative Pronouns', () => {
     sinon.restore();
   });
 
-  it('nextInterrogativePronounExersizeSelectWord', async () => {
+  it('nextInterrogativePronounExerciseSelectWord', async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'random', sinon.fake.returns(0));

@@ -73,7 +73,7 @@ const staticDB: Record<string, Case[]> = {
       case: GrammarCase.DATIVE,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ
+    // accusative
     {
       word: 'ко̀јӣ 🌱, ко̀је̄г(а)🧍',
       plurality: GrammarPlurality.SINGULAR,
@@ -187,7 +187,7 @@ const staticDB: Record<string, Case[]> = {
       case: GrammarCase.DATIVE,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ, pl
+    // accusative, pl
     {
       word: 'ко̀је̄',
       plurality: GrammarPlurality.PLURAL,
@@ -302,7 +302,7 @@ const staticDB: Record<string, Case[]> = {
       case: GrammarCase.DATIVE,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ
+    // accusative
     {
       word: 'какав 🌱, каква🧍',
       plurality: GrammarPlurality.SINGULAR,
@@ -416,7 +416,7 @@ const staticDB: Record<string, Case[]> = {
       case: GrammarCase.DATIVE,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ, pl
+    // accusative, pl
     {
       word: 'какве',
       plurality: GrammarPlurality.PLURAL,
@@ -531,7 +531,7 @@ const staticDB: Record<string, Case[]> = {
       case: GrammarCase.DATIVE,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ
+    // accusative
     {
       word: 'чѝјӣ 🌱, чѝје̄г(а)🧍',
       plurality: GrammarPlurality.SINGULAR,
@@ -645,7 +645,7 @@ const staticDB: Record<string, Case[]> = {
       case: GrammarCase.DATIVE,
       gender: GrammarGender.NEUTER,
     },
-    // accuszativ, pl
+    // accusative, pl
     {
       word: 'чѝје̄',
       plurality: GrammarPlurality.PLURAL,

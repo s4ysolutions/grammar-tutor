@@ -23,9 +23,9 @@ Logic interfaces implemented with Default* classes generally for sake of testing
 easy refactoring and evolving.
 
 Implementation is layered by problem-level API and db-access level API. The latter is not supposed to be called from
-UI code and contains 2 key-value storages: one with immediate availabe snapshots
+UI code and contains 2 key-value storages: one with immediate available snapshots
 ([implemented with Local Storage](https://github.com/s4ysolutions/srpska-gramatika/tree/main/src/kv/sync)) and
-promise results assumin neteork requests ([implemented with IndexDB]
+promise results assuming network requests ([implemented with IndexDB]
 (https://github.com/s4ysolutions/srpska-gramatika/tree/main/src/kv/promise)).
 
 Both storages provide observables to let the consumers be notified about the storage changes through RXJS observables.
@@ -92,7 +92,3 @@ All the code, including tests, is 100% typed with TypeScript.
 
 In order to be used on the mobile devices without access to internet the app registers the worker that caches the JS
 bundle built by WebPack and intercept all the fetches to look into the cache for the resource first.
-
-## Known problems
-
-It is possible to have the same cases in as the next exercise. The hint won't changed then.

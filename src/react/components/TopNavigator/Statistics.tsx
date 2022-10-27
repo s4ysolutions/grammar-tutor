@@ -43,7 +43,7 @@ const Statistics: React.FunctionComponent = (): React.ReactElement => {
     // TODO: should be replaced with concat(fromPromise(learningDb.getLessonStatistics(lessonsDb.currentLesson)),...)
     //       but it either hangs or looping
     lessonsDb.selectLesson(lessonsDb.currentLesson).then();
-  }, [lessonsDb.currentLesson]);
+  }, []);
   return total !== NO_DATA && <Stack direction="row" spacing={2} >
     <Chip
       color="secondary"

@@ -114,7 +114,7 @@ export class KvPromiseLearningDb implements LearningProgress {
               mergeMap(ll => fromPromise(this.getLessonStatistics(ll))),
             ),
             this.subjectLessonStatistics,
-            // react on reset storag
+            // react on reset storage
             this.kv.observableReset().pipe(
               filter(reset => reset),
               map(() => ({total: 0, wrong: 0})),

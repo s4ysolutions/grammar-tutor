@@ -65,7 +65,7 @@ describe('RXJS', () => {
       acc.push(a);
     });
 
-    // subj1.next(1); // wake up mergeMap, it is importan to do it after subsribe
+    // subj1.next(1); // wake up mergeMap, it is important to do it after subscribe
 
     issue2('a');
     issue2('b');

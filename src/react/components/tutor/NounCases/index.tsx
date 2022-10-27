@@ -111,7 +111,7 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
     const nextHelp = !help;
     setHelp(nextHelp);
     if (nextHelp && cases === null) {
-      updateCases(currentExercise);
+      updateCases(currentExercise).then();
     }
   }, [help, cases, updateCases, currentExercise]);
 

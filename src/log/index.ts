@@ -80,8 +80,8 @@ const log = {
   promiseState(id: string, state: unknown): void {
     this.debug(`promise: ${id} state`, state);
   },
-  rxUse(id: string, initilal?: unknown): void {
-    this.debug(`rx: ${id} use`, initilal);
+  rxUse(id: string, initial?: unknown): void {
+    this.debug(`rx: ${id} use`, initial);
   },
   rxSetState(id: string, value?: unknown): void {
     if (value === undefined) {

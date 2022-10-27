@@ -37,7 +37,7 @@ const ruleCssEmbed = {
 };
 
 const ruleSassEmbed = {
-  test: /\.s(a|c)ss$/u,
+  test: /\.s([ac])ss$/u,
   use: [
     'style-loader',
     cssModuleLoader,

@@ -18,7 +18,7 @@ import '../../../src/array/shuffle';
 import {expect} from 'chai';
 
 describe('`shuffle` extension of array', () => {
-  it('oiriginal and shuffled are not the same', () => {
+  it('original and shuffled are not the same', () => {
     const src = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     const shuffled = src.shuffle();
     expect(src).to.be.eql(src.slice()); // precaution of eql

@@ -24,7 +24,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const ruleSassExtract = {
-  test: /\.s(a|c)ss$/,
+  test: /\.s([ac])ss$/,
   use: [
     MiniCssExtractPlugin.loader,
     cssModuleLoader,

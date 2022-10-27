@@ -42,8 +42,9 @@ const indexedDbFactory = (dbname: string, store = 'default'): KvPromise & Indexe
     if (this._db === null) {
       if (this._dbPromise === null) {
         log.debug('indexedDb open');
+        // noinspection JSUnusedLocalSymbols
         this._dbPromise = openDB(dbname, DB_VERSION, {
-          // eslint-disable-next-line no-unused-vars
+          // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
           upgrade(database: IDBPDatabase, oldVersion: number, newVersion: number | null) {
             log.debug('indexedDb upgrade');
             try {

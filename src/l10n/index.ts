@@ -50,7 +50,7 @@ const init = (lc: string, dict: { [key: string]: Dictionary }) => {
     }
   }
 
-  // set final version of dictionalry
+  // set final version of dictionary
   dictionary = dict;
   dictionary[lc] = messages;
 };

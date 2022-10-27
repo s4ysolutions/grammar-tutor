@@ -38,7 +38,7 @@ describe('Tutor Personal Pronouns', () => {
     sinon.restore();
   });
 
-  it('nextPersonalPronounExersizeSelectWord without forms and genders', async () => {
+  it('nextPersonalPronounExerciseSelectWord without forms and genders', async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'random', sinon.fake.returns(0));

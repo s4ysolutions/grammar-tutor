@@ -1,3 +1,5 @@
+// noinspection BadExpressionStatementJS
+
 /*
  * Copyright 2022 by s4y.solutions
  *
