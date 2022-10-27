@@ -25,13 +25,13 @@ import InterrogativePronoun from '../tutor/InterrogativePronoun';
 const topSpace = 2;
 
 const Workspace: React.FunctionComponent = (): React.ReactElement => {
-  log.render('Workspace');
   const theme = useTheme();
   const sx = useMemo(() => ({
     mt: theme.spacing(topSpace),
   }), [theme]);
 
   const [route] = useRouter();
+  log.render('Workspace');
 
   return <Container
     className="workspace"
@@ -39,6 +39,7 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
     sx={sx} >
     {
       route.is(RouteId.PERSONAL_PRONOUNS_CASES) && <NounCases /> ||
+      route.is(RouteId.INTERROGATIVES_CASES) && <NounCases /> ||
       route.is(RouteId.INTERROGATIVE_PRONOUNS_CASES) && <InterrogativePronoun />
     }
   </Container >;

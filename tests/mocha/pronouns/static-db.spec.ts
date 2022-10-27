@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
+// noinspection BadExpressionStatementJS
+
 import {use as chaiUse, expect} from 'chai';
 import chaiArray from 'chai-arrays';
-import {DefaultPersonalPronounsDb} from '../../../src/tutor/pronouns-personal/default';
 import {GrammarCase, GrammarForm, GrammarPlurality} from '../../../src/tutor';
+import {DefaultPersonalPronounsDb} from '../../../src/tutor/databases/case/personal-pronouns';
 
 chaiUse(chaiArray);
 
 describe('Test static data implementation of pronouns db', () => {
   it('Words has jа', async () => {
     const db = new DefaultPersonalPronounsDb();
-    const words = await db.words;
+    const words = await db.mainForms;
     expect(words).to.be.array;
     expect(words).to.be.eql(['ја', 'ти', 'он, она, оно']);
   });
   it('jа attributes', async () => {
     const word = 'ја';
     const db = new DefaultPersonalPronounsDb();
-    const entry = await db.getNoun(word);
+    const entry = await db.getNounByMainForm(word);
     expect(entry).has.property('mainForm', word);
     expect(entry).has.property('cases');
     const forms = (await entry.cases())
@@ -49,7 +51,7 @@ describe('Test static data implementation of pronouns db', () => {
   it('mi(gen) attributes', async () => {
     const word = 'ти';
     const db = new DefaultPersonalPronounsDb();
-    const entry = await db.getNoun(word);
+    const entry = await db.getNounByMainForm(word);
     expect(entry).has.property('mainForm', word);
     expect(entry).has.property('cases');
     const forms = (await entry.cases())

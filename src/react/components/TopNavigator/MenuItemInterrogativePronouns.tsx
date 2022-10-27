@@ -26,7 +26,7 @@ const di = getDi();
 
 const handleClick = (): void => {
   di.router.go(RouteId.INTERROGATIVE_PRONOUNS_CASES);
-  di.lessons.selectLesson(Lesson.InterrogativePronouns);
+  di.lessons.selectLesson(Lesson.CASES_INTERROGATIVES_DECLINATION).then();
   di.uiState.mainMenuOpen = false;
 };
 

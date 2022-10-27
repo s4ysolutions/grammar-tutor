@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+import {Lesson} from '../index';
 import {Observable, Subject} from 'rxjs';
-import {Lesson, LessonsDb} from '../index';
 
-export class DefaultLessonsDb implements LessonsDb {
-  currentLesson: Lesson = Lesson.PersonalPronounsCases;
+class DefaultLesson {
+
+  currentLesson: Lesson = Lesson.PERSONAL_PRONOUNS_DECLINATION;
 
   private readonly subjectCurrentLesson = new Subject<Lesson>();
 
@@ -32,3 +33,5 @@ export class DefaultLessonsDb implements LessonsDb {
     return Promise.resolve();
   }
 }
+
+export default DefaultLesson;

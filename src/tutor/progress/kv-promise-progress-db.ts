@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {LearnedWordStaticsBean, LearnedWordStatistics, LearningDb, Lesson, LessonStatistics, LessonsDb} from '../index';
+import {LearnedWordStaticsBean, LearnedWordStatistics, LearningProgress, Lesson, LessonStatistics} from '../index';
 import {KvPromise} from '../../kv/promise';
-import {DefaultLearnedWordStatistics} from './default';
+import {DefaultLearnedWordStatistics} from './default-word-statistics';
 import {Observable, Subject, concat, merge, mergeMap, of} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {fromPromise} from 'rxjs/internal/observable/innerFrom';
@@ -28,16 +28,16 @@ const NEVER = new Date(0);
 const FAKE_LESSON_ID = -10;
 const FAKE_LESSON = FAKE_LESSON_ID as unknown as Lesson;
 
-export class KvPromiseLearningDb implements LearningDb {
+export class KvPromiseLearningDb implements LearningProgress {
   private readonly kv: KvPromise;
 
-  private readonly lessons: LessonsDb;
+  private readonly lessonObservable: Observable<Lesson>;
 
   private readonly subjectLessonStatistics = new Subject<LessonStatistics>();
 
-  constructor(kvPromise: KvPromise, lessons: LessonsDb) {
+  constructor(kvPromise: KvPromise, lessonObservable: Observable<Lesson>) {
     this.kv = kvPromise;
-    this.lessons = lessons;
+    this.lessonObservable = lessonObservable;
   }
 
   private getStats(lesson: Lesson, word: string): Promise<LearnedWordStaticsBean> {
@@ -105,7 +105,7 @@ export class KvPromiseLearningDb implements LearningDb {
   observableLessonStatistics(lesson?: Lesson): Observable<LessonStatistics> {
     if (lesson === undefined) {
       // dirty hack to wake up mergeMap
-      return concat(of(FAKE_LESSON), this.lessons.observableCurrentLesson())
+      return concat(of(FAKE_LESSON), this.lessonObservable)
         .pipe(mergeMap((l) =>
           merge(
             // to send new stat on switch lesson

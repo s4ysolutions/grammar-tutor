@@ -16,35 +16,23 @@
 
 import {use as chaiUse, expect} from 'chai';
 import chaiString from 'chai-string';
-import {GrammarAnimation, GrammarCase, LearningDb, LessonsDb, Tutor} from '../../../src/tutor';
-import {KvPromise} from '../../../src/kv/promise';
-import {DefaultPersonalPronounsDb} from '../../../src/tutor/pronouns-personal/default';
-import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
-import {KvPromiseLearningDb} from '../../../src/tutor/learned/kv-promise-db';
-import {DefaultTutor} from '../../../src/tutor/tutor/default';
+import {GrammarAnimation, GrammarCase, Lesson, Tutor} from '../../../src/tutor';
 import sinonApi, {SinonSandbox} from 'sinon';
-import {DefaultInterrogativePronounsDb} from '../../../src/tutor/personal-interrogative/default';
-import {DefaultLessonsDb} from '../../../src/tutor/lessons/default';
+import {DefaultDi} from '../../../src/di/default';
+import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
+import {DefaultTutor} from '../../../src/tutor/tutor/default-tutor';
 
 chaiUse(chaiString);
 
 describe('Tutor Interrogative Pronouns', () => {
-  let promiseKV: KvPromise;
-  let pronounsDB: DefaultPersonalPronounsDb;
-  let interrogativePronounsDB: DefaultInterrogativePronounsDb;
-  let learnedDB: LearningDb;
-  let lessons: LessonsDb;
-  let tutor: Tutor;
+  let tutor: Tutor = null as Tutor;
   let sinon: SinonSandbox;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     sinon = sinonApi.createSandbox();
-    promiseKV = memoryStoragePromiseFactory({});
-    pronounsDB = new DefaultPersonalPronounsDb();
-    interrogativePronounsDB = new DefaultInterrogativePronounsDb();
-    lessons = new DefaultLessonsDb();
-    learnedDB = new KvPromiseLearningDb(promiseKV, lessons);
-    tutor = new DefaultTutor(pronounsDB, interrogativePronounsDB, learnedDB, lessons);
+    const di = new DefaultDi(memoryStoragePromiseFactory({}));
+    tutor = di.tutor;
+    await tutor.selectLesson(Lesson.CASES_INTERROGATIVES_DECLINATION);
   });
 
   afterEach(() => {
@@ -62,15 +50,15 @@ describe('Tutor Interrogative Pronouns', () => {
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomAnimation', sinon.fake.returns(GrammarAnimation.ANIMATE));
 
-    const exercise = await tutor.nextInterrogativePronounExersizeSelectWord();
+    const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'Упитне заменице');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'киме');
+    expect(exercise.exerciseCase).to.has.property('word', 'ки́ме');
     expect(exercise.exerciseCase).to.has.property('animation', GrammarAnimation.ANIMATE);
 
-    expect(await tutor.checkInterrogativePronounCaseAnswer('киме', exercise)).to.be.true;
-    expect(await tutor.checkInterrogativePronounCaseAnswer('nnn', exercise)).to.be.false;
+    expect(await tutor.checkCaseExercise('ки́ме', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 
   it('one case should not cause endless loop', async () => {
@@ -84,11 +72,11 @@ describe('Tutor Interrogative Pronouns', () => {
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomAnimation', sinon.fake.returns(GrammarAnimation.ANIMATE));
 
-    const exercise1 = await tutor.nextInterrogativePronounExersizeSelectWord();
+    const exercise1 = await tutor.nextCaseExercise();
     expect(exercise1).is.not.null;
     expect(exercise1).to.has.property('mainForm', 'Упитне заменице');
 
-    const exercise2 = await tutor.nextInterrogativePronounExersizeSelectWord();
+    const exercise2 = await tutor.nextCaseExercise();
     expect(exercise2).is.not.null;
     expect(exercise2).to.has.property('mainForm', 'Упитне заменице');
   });
@@ -105,10 +93,10 @@ describe('Tutor Interrogative Pronouns', () => {
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomAnimation', sinon.fake.returns(GrammarAnimation.ANIMATE));
 
-    await tutor.nextInterrogativePronounExersizeSelectWord();
+    await tutor.nextCaseExercise();
     expect(randomFake.called).to.be.false;
 
-    await tutor.nextInterrogativePronounExersizeSelectWord();
+    await tutor.nextCaseExercise();
     expect(randomFake.called).to.be.false;
   });
 });

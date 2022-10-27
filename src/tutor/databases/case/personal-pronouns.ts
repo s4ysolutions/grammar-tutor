@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Noun, NounCase, NounsDb} from '../index';
+import {Case, GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Noun, NounsDb} from '../../index';
 
-const staticPronouns: Record<string, NounCase[]> = {
+const staticDB: Record<string, Case[]> = {
   'ја': [
     // singular
     {
@@ -616,24 +616,23 @@ class StaticPersonalPronounEntry implements Noun {
     this.mainForm = mainForm;
   }
 
-  cases(): Promise<NounCase[]> {
-    return Promise.resolve(staticPronouns[this.mainForm]);
+  cases(): Promise<Case[]> {
+    return Promise.resolve(staticDB[this.mainForm]);
   }
 }
 
 export class DefaultPersonalPronounsDb implements NounsDb {
   private wordsSet: string[] | null = null;
 
-  get words(): Promise<string[]> {
+  get mainForms(): Promise<string[]> {
     if (this.wordsSet === null) {
-      this.wordsSet = Object.keys(staticPronouns);
+      this.wordsSet = Object.keys(staticDB);
     }
     return Promise.resolve(this.wordsSet);
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getNoun(word: string): Promise<Noun> {
+  getNounByMainForm(word: string): Promise<Noun> {
     return Promise.resolve(new StaticPersonalPronounEntry(word));
   }
-
 }

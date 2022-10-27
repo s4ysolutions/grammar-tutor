@@ -22,6 +22,7 @@ import {getDi} from '../../../di/default';
 import MenuItemReset from './MenuItemReset';
 import MenuItemPersonalPronouns from './MenuItemPersonalPronouns';
 import MenuItemInterrogativePronouns from './MenuItemInterrogativePronouns';
+import MenuItemInterrogatives from './MenuItemInterrogatives';
 
 const di = getDi();
 const uiState = di.uiState;
@@ -47,6 +48,8 @@ const MenuMain: React.FunctionComponent<{anchorEl: Element}> =
       <MenuItemPersonalPronouns />
 
       <MenuItemInterrogativePronouns />
+
+      <MenuItemInterrogatives />
 
       <Divider />
 

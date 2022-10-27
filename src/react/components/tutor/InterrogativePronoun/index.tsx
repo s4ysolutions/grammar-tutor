@@ -21,12 +21,7 @@ import {getDi} from '../../../../di/default';
 import QuizIcon from '@mui/icons-material/Quiz';
 import T from '../../../../l10n';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import {
-  GrammarAnimation,
-  GrammarCase,
-  InterrogativePronounCase,
-  InterrogativePronounCaseExercise,
-} from '../../../../tutor';
+import {Case, CaseExercise, GrammarAnimation, GrammarCase} from '../../../../tutor';
 import MainForm from '../MainForm';
 import Case from '../Case';
 import Variants from '../Variants';
@@ -39,7 +34,7 @@ const di = getDi();
 const tutor = di.tutor;
 const interrogativePronounsDb = di.interrogativePronounsDb;
 
-const caseTitle = (exerciseCase: InterrogativePronounCase) => {
+const caseTitle = (exerciseCase: Case) => {
   const caseName = T`${exerciseCase.case}`;
   /*
   if (exerciseCase.animation) {
@@ -50,7 +45,7 @@ const caseTitle = (exerciseCase: InterrogativePronounCase) => {
   return `${caseName}`;
 };
 
-const getCase = (cases: InterrogativePronounCase[], caseKey: string, p: GrammarAnimation): string => {
+const getCase = (cases: Case[], caseKey: string, p: GrammarAnimation): string => {
   const c = GrammarCase[caseKey as keyof typeof GrammarCase];
   return cases.filter(e => e.animation === p && e.case === c).map(e => e.word)
     .join(' | ');
@@ -63,16 +58,16 @@ let variantsKey = 1;
 const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => {
   log.render('InterrogativePronoun');
 
-  const [currentExercise, setCurrentExercise] = useState<InterrogativePronounCaseExercise>(null);
+  const [currentExercise, setCurrentExercise] = useState<CaseExercise>(null);
   useEffect(() => {
-    tutor.nextInterrogativePronounExersizeSelectWord().then(setCurrentExercise);
+    tutor.nextInterrogativePronounExersiseSelectWord().then(setCurrentExercise);
   }, []);
 
 
-  const [cases, setCases] = useState<InterrogativePronounCase[] | null>(null);
+  const [cases, setCases] = useState<Case[] | null>(null);
 
-  const updateCases = useCallback((exercise: InterrogativePronounCaseExercise) =>
-    interrogativePronounsDb.getPronoun(exercise.mainForm)
+  const updateCases = useCallback((exercise: CaseExercise) =>
+    interrogativePronounsDb.getNounByMainForm(exercise.mainForm)
       .then(pronoun => pronoun.cases())
       .then(cs => {
         setCases(cs === null ? [] : cs);
@@ -90,7 +85,7 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
 
   const nextExercise = useCallback(
     () => {
-      tutor.nextInterrogativePronounExersizeSelectWord().then((nextEx) => {
+      tutor.nextInterrogativePronounExersiseSelectWord().then((nextEx) => {
         setCurrentExercise(nextEx);
         if (help) {
           updateCases(nextEx).then();

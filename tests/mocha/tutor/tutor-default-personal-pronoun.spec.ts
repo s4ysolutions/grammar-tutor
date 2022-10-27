@@ -16,44 +16,22 @@
 
 import {use as chaiUse, expect} from 'chai';
 import chaiString from 'chai-string';
-import {
-  GrammarCase,
-  GrammarForm,
-  GrammarGender,
-  GrammarPlurality,
-  LearningDb,
-  LessonsDb,
-  NounsDb,
-  Tutor,
-} from '../../../src/tutor';
-import {KvPromise} from '../../../src/kv/promise';
-import {DefaultPersonalPronounsDb} from '../../../src/tutor/pronouns-personal/default';
+import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Tutor} from '../../../src/tutor';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
-import {KvPromiseLearningDb} from '../../../src/tutor/learned/kv-promise-db';
-import {DefaultTutor} from '../../../src/tutor/tutor/default';
 import sinonApi, {SinonSandbox} from 'sinon';
-import {DefaultInterrogativePronounsDb} from '../../../src/tutor/personal-interrogative/default';
-import {DefaultLessonsDb} from '../../../src/tutor/lessons/default';
+import {DefaultDi} from '../../../src/di/default';
+import {DefaultTutor} from '../../../src/tutor/tutor/default-tutor';
 
 chaiUse(chaiString);
 
 describe('Tutor Personal Pronouns', () => {
-  let promiseKV: KvPromise;
-  let pronounsDB: NounsDb;
-  let interrogativePronounsDB: DefaultInterrogativePronounsDb;
-  let learnedDB: LearningDb;
-  let lessons: LessonsDb;
   let tutor: Tutor;
   let sinon: SinonSandbox;
 
   beforeEach(() => {
     sinon = sinonApi.createSandbox();
-    promiseKV = memoryStoragePromiseFactory({});
-    pronounsDB = new DefaultPersonalPronounsDb();
-    interrogativePronounsDB = new DefaultInterrogativePronounsDb();
-    lessons = new DefaultLessonsDb();
-    learnedDB = new KvPromiseLearningDb(promiseKV, lessons);
-    tutor = new DefaultTutor(pronounsDB, interrogativePronounsDB, learnedDB, lessons);
+    const di = new DefaultDi(memoryStoragePromiseFactory({}));
+    tutor = di.tutor;
   });
 
   afterEach(() => {
@@ -71,7 +49,7 @@ describe('Tutor Personal Pronouns', () => {
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.INSTRUMENTAL));
 
-    const exercise = await tutor.nextPersonalPronounExersizeSelectWord();
+    const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'ја');
     expect(exercise).to.has.property('exerciseCase');
@@ -81,8 +59,8 @@ describe('Tutor Personal Pronouns', () => {
     expect(exercise.exerciseCase).to.not.has.property('gender');
     expect(exercise.exerciseCase).to.not.has.property('form');
 
-    expect(await tutor.checkNounCaseAnswer('мно̑м, мно́ме', exercise)).to.be.true;
-    expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
+    expect(await tutor.checkCaseExercise('мно̑м, мно́ме', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 
   it('nextPronounQuestion with form and without gender', async () => {
@@ -99,7 +77,7 @@ describe('Tutor Personal Pronouns', () => {
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomForm', sinon.fake.returns(GrammarForm.LONG));
 
-    const exercise = await tutor.nextPersonalPronounExersizeSelectWord();
+    const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'ја');
     expect(exercise).to.has.property('exerciseCase');
@@ -109,8 +87,8 @@ describe('Tutor Personal Pronouns', () => {
     expect(exercise.exerciseCase).to.has.property('form', GrammarForm.LONG);
     expect(exercise.exerciseCase).to.not.has.property('gender');
 
-    expect(await tutor.checkNounCaseAnswer('ме̏не', exercise)).to.be.true;
-    expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
+    expect(await tutor.checkCaseExercise('ме̏не', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 
   it('nextPronounQuestion with gender and no form', async () => {
@@ -130,7 +108,7 @@ describe('Tutor Personal Pronouns', () => {
     // @ts-ignore
     sinon.replace(DefaultTutor, 'getWeightedArray', sinon.fake.returns(['ја', 'ти', 'он, она, оно']));
 
-    const exercise = await tutor.nextPersonalPronounExersizeSelectWord();
+    const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'он, она, оно');
     expect(exercise).to.has.property('exerciseCase');
@@ -140,8 +118,8 @@ describe('Tutor Personal Pronouns', () => {
     expect(exercise.exerciseCase).to.not.has.property('form');
     expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
 
-    expect(await tutor.checkNounCaseAnswer('њо̑м, њо́ме', exercise)).to.be.true;
-    expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
+    expect(await tutor.checkCaseExercise('њо̑м, њо́ме', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 
   it('nextPronounQuestion with form and gender', async () => {
@@ -164,7 +142,7 @@ describe('Tutor Personal Pronouns', () => {
     // @ts-ignore
     sinon.replace(DefaultTutor, 'getWeightedArray', sinon.fake.returns(['ја', 'ти', 'он, она, оно']));
 
-    const exercise = await tutor.nextPersonalPronounExersizeSelectWord();
+    const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
     expect(exercise).to.has.property('mainForm', 'он, она, оно');
     expect(exercise).to.has.property('exerciseCase');
@@ -174,10 +152,7 @@ describe('Tutor Personal Pronouns', () => {
     expect(exercise.exerciseCase).to.has.property('form', GrammarForm.LONG);
     expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
 
-    expect(await tutor.checkNounCaseAnswer('ње̑', exercise)).to.be.true;
-    expect(await tutor.checkNounCaseAnswer('nnn', exercise)).to.be.false;
+    expect(await tutor.checkCaseExercise('ње̑', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 });
-
-//  ја
-// ед. ч., винительный, длинная форма

@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-import {
-  GrammarAnimation,
-  GrammarCase,
-  InterrogativePronoun,
-  InterrogativePronounCase,
-  InterrogativePronounsDb,
-} from '../index';
+import {Case, CasesInterrogativesPronounsDb, GrammarAnimation, GrammarCase, Noun} from '../../index';
 
 const root = 'Упитне заменице';
 
-const staticPronouns: Record<string, InterrogativePronounCase[]> = {
+const staticDB: Record<string, Case[]> = {
   [root]: [
     {
       word: 'ко̏',
@@ -89,35 +83,35 @@ const staticPronouns: Record<string, InterrogativePronounCase[]> = {
   ],
 };
 
-class StaticInterrogativePronounEntry implements InterrogativePronoun {
+class StaticInterrogativePronounEntry implements Noun {
   mainForm: string;
 
   constructor(mainForm: string) {
     this.mainForm = mainForm;
   }
 
-  cases(): Promise<InterrogativePronounCase[]> {
-    return Promise.resolve(staticPronouns[this.mainForm]);
+  cases(): Promise<Case[]> {
+    return Promise.resolve(staticDB[this.mainForm]);
   }
 }
 
-export class DefaultInterrogativePronounsDb implements InterrogativePronounsDb {
+export class DefaultCasesInterrogativesDb implements CasesInterrogativesPronounsDb {
   private wordsSet: string[] | null = null;
 
-  get words(): Promise<string[]> {
+  get mainForms(): Promise<string[]> {
     if (this.wordsSet === null) {
-      this.wordsSet = Object.keys(staticPronouns);
+      this.wordsSet = Object.keys(staticDB);
     }
     return Promise.resolve(this.wordsSet);
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getPronoun(word: string): Promise<InterrogativePronoun> {
+  getNounByMainForm(word: string): Promise<Noun> {
     return Promise.resolve(new StaticInterrogativePronounEntry(word));
   }
 
   // eslint-disable-next-line class-methods-use-this
-  getPronounsForCase(grammarCase: GrammarCase): Promise<InterrogativePronounCase[]> {
-    return Promise.resolve(staticPronouns[root].filter(e => e.case === grammarCase));
+  getCasesForGrammarCase(grammarCase: GrammarCase): Promise<Case[]> {
+    return Promise.resolve(staticDB[root].filter(e => e.case === grammarCase));
   }
 }

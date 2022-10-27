@@ -14,60 +14,73 @@
  * limitations under the License.
  */
 
-import {DefaultPersonalPronounsDb} from '../tutor/pronouns-personal/default';
 import indexedDbFactory from '../kv/promise/indexedDB';
-import {DefaultTutor} from '../tutor/tutor/default';
-import {InterrogativePronounsDb, LearningDb, LessonsDb, NounsDb, Tutor} from '../tutor';
-import {KvPromiseLearningDb} from '../tutor/learned/kv-promise-db';
+import {CasesInterrogativesPronounsDb, LearningProgress, NounsDb, Tutor} from '../tutor';
 import {DefaultRouter} from '../router/default';
 import {Router} from '../router';
 import {DefaultUiState} from '../ui-state/default';
 import {UiState} from '../ui-state';
 import {Di} from './index';
-import {DefaultInterrogativePronounsDb} from '../tutor/personal-interrogative/default';
-import {DefaultLessonsDb} from '../tutor/lessons/default';
+import {DefaultPersonalPronounsDb} from '../tutor/databases/case/personal-pronouns';
+import {DefaultInterrogativesDb} from '../tutor/databases/case/interrogatives';
+import DefaultLesson from '../tutor/tutor/default-lesson';
+import {KvPromiseLearningDb} from '../tutor/progress/kv-promise-progress-db';
+import {DefaultCasesInterrogativesDb} from '../tutor/databases/case/cases-interrogatives';
+import {DefaultTutor} from '../tutor/tutor/default-tutor';
+import {KvPromise} from '../kv/promise';
 
+export class DefaultDi implements Di {
+  private readonly _kvPromise: KvPromise;
 
-class DefaultDi implements Di {
-  private readonly _promiseKV = indexedDbFactory('sluchaj-zamenica');
+  private readonly _personalPronounsDb: NounsDb;
 
-  private readonly _personalPronounsDb = new DefaultPersonalPronounsDb();
+  private readonly _interrogativesPronounsDb: NounsDb;
 
-  private readonly _interrogativePersonalPronounsDb = new DefaultInterrogativePronounsDb();
+  private readonly _casesInterrogativesDb: CasesInterrogativesPronounsDb;
 
-  private readonly _lessons = new DefaultLessonsDb();
+  private readonly _lesson = new DefaultLesson();
 
-  private readonly _learningDb = new KvPromiseLearningDb(this._promiseKV, this._lessons);
+  private readonly _learningProgress: LearningProgress;
 
-  private readonly _tutor = new DefaultTutor(
-    this._personalPronounsDb,
-    this._interrogativePersonalPronounsDb,
-    this._learningDb,
-    this._lessons,
-  );
+  private readonly _tutor: Tutor;
 
   private readonly _router = new DefaultRouter();
 
   private readonly _uiState = new DefaultUiState();
 
-  get learningDb (): LearningDb {
-    return this._learningDb;
+  constructor(kvPromise: KvPromise) {
+    this._kvPromise = kvPromise;
+    this._personalPronounsDb = new DefaultPersonalPronounsDb();
+    this._interrogativesPronounsDb = new DefaultInterrogativesDb();
+    this._casesInterrogativesDb = new DefaultCasesInterrogativesDb();
+    this._learningProgress = new KvPromiseLearningDb(this._kvPromise, this._lesson.observableCurrentLesson());
+    this._tutor = new DefaultTutor(
+      this._personalPronounsDb,
+      this._interrogativesPronounsDb,
+      this._casesInterrogativesDb,
+      this._learningProgress,
+      this._lesson,
+    );
+  }
+
+  get learningProgress (): LearningProgress {
+    return this._learningProgress;
   }
 
   get personPronounsDb (): NounsDb {
     return this._personalPronounsDb;
   }
 
-  get interrogativePronounsDb (): InterrogativePronounsDb {
-    return this._interrogativePersonalPronounsDb;
+  get interrogativesDb (): NounsDb {
+    return this._interrogativesPronounsDb;
+  }
+
+  get interrogativePronounsDb (): CasesInterrogativesPronounsDb {
+    return this._casesInterrogativesDb;
   }
 
   get router (): Router {
     return this._router;
-  }
-
-  get lessons (): LessonsDb {
-    return this._lessons;
   }
 
   get tutor (): Tutor {
@@ -77,9 +90,8 @@ class DefaultDi implements Di {
   get uiState (): UiState {
     return this._uiState;
   }
-
 }
 
-const singletonDi = new DefaultDi();
+const singletonDi = new DefaultDi(indexedDbFactory('srpska-gramatika'));
 
 export const getDi = (): Di => singletonDi;

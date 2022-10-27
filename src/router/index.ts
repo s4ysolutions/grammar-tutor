@@ -18,7 +18,8 @@ import {Observable} from 'rxjs';
 
 export enum RouteId {
   PERSONAL_PRONOUNS_CASES,
-  INTERROGATIVE_PRONOUNS_CASES
+  INTERROGATIVE_PRONOUNS_CASES,
+  INTERROGATIVES_CASES,
 }
 
 export interface Route {

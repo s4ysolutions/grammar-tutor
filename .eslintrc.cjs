@@ -188,8 +188,7 @@ module.exports = {
       "files": ["*.spec.ts"],
       "rules": {
         "no-magic-numbers" : "off",
-        "no-unused-expressions": "off",
-        "@typescript-eslint/no-non-null-assertion": "off"
+        "no-unused-expressions": "off"
       }
     }
   ]

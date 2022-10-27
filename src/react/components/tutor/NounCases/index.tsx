@@ -24,7 +24,7 @@ import Hint from '../Hint';
 import QuizIcon from '@mui/icons-material/Quiz';
 import T from '../../../../l10n';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, NounCase, NounCaseExercise} from '../../../../tutor';
+import {Case, CaseExercise, GrammarCase, GrammarForm, GrammarGender, GrammarPlurality} from '../../../../tutor';
 import MainForm from '../MainForm';
 import {CSS_CAPITALIZE} from '../constants';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -40,7 +40,7 @@ const tutor = di.tutor;
 const nounsDB = di.personPronounsDb;
 const interrogativePronounsDb = di.interrogativePronounsDb;
 
-const caseTitle = (exerciseCase: NounCase) => {
+const caseTitle = (exerciseCase: Case) => {
   const caseName = T`${exerciseCase.case}`;
   const casePlurality = T`${exerciseCase.plurality}`;
   if (!exerciseCase.gender && !exerciseCase.form) {
@@ -61,7 +61,7 @@ const caseTitle = (exerciseCase: NounCase) => {
   return `${caseName}, ${casePlurality}, ${formName}`;
 };
 
-const caseIcon = (exerciseCase: NounCase) => {
+const caseIcon = (exerciseCase: Case) => {
   if (exerciseCase.gender === GrammarGender.NEUTER) {
     return faCloud;
   } else if (exerciseCase.gender === GrammarGender.FEMININE) {
@@ -71,7 +71,7 @@ const caseIcon = (exerciseCase: NounCase) => {
 };
 
 const TWO = 2;
-const getCase = (cases: NounCase[], caseKey: string, p: GrammarPlurality): string => {
+const getCase = (cases: Case[], caseKey: string, p: GrammarPlurality): string => {
   const c = GrammarCase[caseKey as keyof typeof GrammarCase];
   return cases.filter(e => e.plurality === p && e.case === c)
     .sort((a, b) => {
@@ -90,15 +90,15 @@ export const CSS_SHIFT_LEFT = {position: 'relative', marginLeft: -10, opacity: 0
 const NounCases: React.FunctionComponent = (): React.ReactElement => {
   log.render('NounCases');
 
-  const [currentExercise, setCurrentExercise] = useState<NounCaseExercise>(null);
+  const [currentExercise, setCurrentExercise] = useState<CaseExercise>(null);
   useEffect(() => {
-    tutor.nextPersonalPronounExersizeSelectWord().then(setCurrentExercise);
+    tutor.nextCaseExercise().then(setCurrentExercise);
   }, []);
 
-  const [cases, setCases] = useState<NounCase[] | null>(null);
+  const [cases, setCases] = useState<Case[] | null>(null);
 
-  const updateCases = useCallback((exercise: NounCaseExercise) =>
-    nounsDB.getNoun(exercise.mainForm)
+  const updateCases = useCallback((exercise: CaseExercise) =>
+    nounsDB.getNounByMainForm(exercise.mainForm)
       .then(noun => noun.cases())
       // TODO: add setting to filter
       .then(cs => {
@@ -116,7 +116,7 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
   }, [help, cases, updateCases, currentExercise]);
 
   const nextExercise = useCallback(
-    () => tutor.nextPersonalPronounExersizeSelectWord().then((nextEx) => {
+    () => tutor.nextCaseExercise().then((nextEx) => {
       setCurrentExercise(nextEx);
       if (help) {
         updateCases(nextEx).then();
@@ -128,7 +128,7 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
   );
 
   const checkVariant = useCallback(
-    (variant: string): Promise<boolean> => tutor.checkNounCaseAnswer(variant, currentExercise),
+    (variant: string): Promise<boolean> => tutor.checkCaseExercise(variant, currentExercise),
     [currentExercise],
   );
 
@@ -141,7 +141,7 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
     if (currentExercise === null) {
       setInterrogative(null);
     } else {
-      interrogativePronounsDb.getPronounsForCase(currentExercise.exerciseCase.case)
+      interrogativePronounsDb.getCasesForGrammarCase(currentExercise.exerciseCase.case)
         .then(cs => setInterrogative(cs.length === 0 ? null : cs.map(c => c.word)));
     }
   }, [currentExercise]);

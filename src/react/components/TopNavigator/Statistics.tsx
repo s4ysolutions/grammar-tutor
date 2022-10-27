@@ -24,7 +24,7 @@ import {getDi} from '../../../di/default';
 import log from '../../../log';
 
 const di = getDi();
-const learningDb = di.learningDb;
+const learningDb = di.learningProgress;
 const lessonsDb = di.lessons;
 
 const NO_DATA = -100;

@@ -27,7 +27,13 @@ const routePronounsCases: Route = {
   is: (id) => id === RouteId.PERSONAL_PRONOUNS_CASES,
 };
 
-const routeInterrogativeCases: Route = {
+const routeInterrogativesCases: Route = {
+  id: RouteId.INTERROGATIVES_CASES,
+  title: T`Interrogative pronouns declination`,
+  is: (id) => id === RouteId.INTERROGATIVES_CASES,
+};
+
+const routeInterrogativePronounsCases: Route = {
   id: RouteId.INTERROGATIVE_PRONOUNS_CASES,
   title: T`Interrogative pronouns`,
   is: (id) => id === RouteId.INTERROGATIVE_PRONOUNS_CASES,
@@ -42,7 +48,10 @@ export class DefaultRouter implements Router {
   go(routeId: RouteId): void {
     switch (routeId) {
       case RouteId.INTERROGATIVE_PRONOUNS_CASES:
-        this.currentRoute = routeInterrogativeCases;
+        this.currentRoute = routeInterrogativePronounsCases;
+        break;
+      case RouteId.INTERROGATIVES_CASES:
+        this.currentRoute = routeInterrogativesCases;
         break;
       default:
         this.currentRoute = routePronounsCases;

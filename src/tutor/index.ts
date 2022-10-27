@@ -47,57 +47,38 @@ export enum GrammarAnimation {
   INANIMATE = 'Inanimate',
 }
 
-export interface PronounCase {
-  word: string,
-  case: GrammarCase,
-}
+type MainFormWord = string
+type CaseFormWord = string
 
-export interface NounCase extends PronounCase {
-  plurality: GrammarPlurality,
+export interface Case {
+  word: CaseFormWord,
+  case: GrammarCase,
+  plurality?: GrammarPlurality,
   gender?: GrammarGender,
   form?: GrammarForm,
-}
-
-export interface InterrogativePronounCase extends PronounCase{
-  word: string,
   animation?: GrammarAnimation,
 }
 
 export interface Noun {
-  readonly mainForm: string;
-  cases(): Promise<NounCase[]>;
-}
-
-export interface InterrogativePronoun {
-  readonly mainForm: string;
-  cases(): Promise<InterrogativePronounCase[]>;
+  readonly mainForm: MainFormWord;
+  cases(): Promise<Case[]>;
 }
 
 export interface NounsDb {
-  readonly words: Promise<string[]>
+  readonly mainForms: Promise<MainFormWord[]>
 
-  getNoun(word: string): Promise<Noun>
+  getNounByMainForm(word: MainFormWord): Promise<Noun>
 }
 
-export interface InterrogativePronounsDb {
-  readonly words: Promise<string[]>
-
-  getPronoun(word: string): Promise<InterrogativePronoun>
-  getPronounsForCase(grammarCase: GrammarCase): Promise<InterrogativePronounCase[]>
+export interface CasesInterrogativesPronounsDb extends NounsDb {
+  getCasesForGrammarCase(grammarCase: GrammarCase): Promise<Case[]>
 }
 
 export interface CaseExercise {
-  mainForm: string,
-  possibleVariants: string[],
-  correctAnswer: string;
-}
-
-export interface NounCaseExercise extends CaseExercise{
-  exerciseCase: NounCase,
-}
-
-export interface InterrogativePronounCaseExercise extends CaseExercise{
-  exerciseCase: InterrogativePronounCase,
+  mainForm: MainFormWord,
+  possibleVariants: CaseFormWord[],
+  correctAnswer: CaseFormWord;
+  exerciseCase: Case,
 }
 
 /**
@@ -120,8 +101,9 @@ export interface LearnedWordStatistics extends LearnedWordStaticsBean{
 }
 
 export enum Lesson {
-  PersonalPronounsCases,
-  InterrogativePronouns,
+  PERSONAL_PRONOUNS_DECLINATION,
+  INTERROGATIVE_PRONOUNS_DECLINATION,
+  CASES_INTERROGATIVES_DECLINATION,
 }
 
 export interface LessonStatistics {
@@ -129,7 +111,7 @@ export interface LessonStatistics {
   readonly wrong: number
 }
 
-export interface LearningDb {
+export interface LearningProgress {
   getWordStatistics(lesson: Lesson, word: string): Promise<LearnedWordStatistics>
   addCorrect(lesson: Lesson, word: string): Promise<void>
   addWrong(lesson: Lesson, word: string): Promise<void>
@@ -138,15 +120,10 @@ export interface LearningDb {
   reset(): Promise<void>
 }
 
-export interface LessonsDb {
+export interface Tutor {
   readonly currentLesson: Lesson
   selectLesson(lesson: Lesson): Promise<void>;
   observableCurrentLesson(): Observable<Lesson>
-}
-
-export interface Tutor {
-  nextPersonalPronounExersizeSelectWord(): Promise<NounCaseExercise>
-  nextInterrogativePronounExersizeSelectWord(): Promise<InterrogativePronounCaseExercise>
-  checkNounCaseAnswer(answer: string, exercise: NounCaseExercise): Promise<boolean>;
-  checkInterrogativePronounCaseAnswer(answer: string, exercise: InterrogativePronounCaseExercise): Promise<boolean>;
+  nextCaseExercise(): Promise<CaseExercise>
+  checkCaseExercise(answer: string, exercise: CaseExercise): Promise<boolean>;
 }

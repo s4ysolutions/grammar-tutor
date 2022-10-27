@@ -23,7 +23,7 @@ import {getDi} from '../../../di/default';
 const di = getDi();
 
 const handleClick = (): void => {
-  di.learningDb.reset().then();
+  di.learningProgress.reset().then();
   di.uiState.mainMenuOpen = false;
 };
 

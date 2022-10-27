@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-import {DefaultLessonsDb} from '../../../src/tutor/lessons/default';
 import {expect} from 'chai';
 import {Lesson} from '../../../src/tutor';
 import {first} from 'rxjs';
+import DefaultLesson from '../../../src/tutor/tutor/default-lesson';
 
 describe('Lessons', () => {
   it('Default lesson should be Personal Pronouns', () => {
-    const lessonsDb = new DefaultLessonsDb();
-    expect(lessonsDb.currentLesson).to.be.eq(Lesson.PersonalPronounsCases);
+    const lessonsDb = new DefaultLesson();
+    expect(lessonsDb.currentLesson).to.be.eq(Lesson.PERSONAL_PRONOUNS_DECLINATION);
   });
 
   it('Lesson cab be changed to Interrogative Pronoun and back to Personal Pronouns', () => {
-    const lessonsDb = new DefaultLessonsDb();
-    lessonsDb.selectLesson(Lesson.InterrogativePronouns);
-    expect(lessonsDb.currentLesson).to.be.eq(Lesson.InterrogativePronouns);
+    const lessonsDb = new DefaultLesson();
+    lessonsDb.selectLesson(Lesson.CASES_INTERROGATIVES_DECLINATION);
+    expect(lessonsDb.currentLesson).to.be.eq(Lesson.CASES_INTERROGATIVES_DECLINATION);
   });
 
   it('Observe change current Lesson', async () => {
-    const lessonsDb = new DefaultLessonsDb();
+    const lessonsDb = new DefaultLesson();
 
     const observedLessonPromise = new Promise(rs => {
       lessonsDb.observableCurrentLesson().pipe(first())
@@ -40,9 +40,9 @@ describe('Lessons', () => {
           rs(lesson);
         });
     });
-    lessonsDb.selectLesson(Lesson.InterrogativePronouns);
+    lessonsDb.selectLesson(Lesson.CASES_INTERROGATIVES_DECLINATION).then();
     const observedLesson = await observedLessonPromise;
-    expect(lessonsDb.currentLesson).to.be.eq(Lesson.InterrogativePronouns);
-    expect(observedLesson).to.be.eq(Lesson.InterrogativePronouns);
+    expect(lessonsDb.currentLesson).to.be.eq(Lesson.CASES_INTERROGATIVES_DECLINATION);
+    expect(observedLesson).to.be.eq(Lesson.CASES_INTERROGATIVES_DECLINATION);
   });
 });

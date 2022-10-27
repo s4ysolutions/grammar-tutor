@@ -17,41 +17,47 @@
 // noinspection RedundantIfStatementJS
 
 import {
+  Case,
   CaseExercise,
+  CasesInterrogativesPronounsDb,
   GrammarAnimation,
   GrammarCase,
   GrammarForm,
   GrammarGender,
   GrammarPlurality,
-  InterrogativePronoun,
-  InterrogativePronounCase,
-  InterrogativePronounCaseExercise,
-  InterrogativePronounsDb,
-  LearningDb,
-  LessonsDb,
+  LearningProgress,
+  Lesson,
   Noun,
-  NounCase,
-  NounCaseExercise,
   NounsDb,
-  PronounCase,
   Tutor,
 } from '../index';
+import DefaultLesson from './default-lesson';
+import {Observable} from 'rxjs';
 
 
 export class DefaultTutor implements Tutor {
   private readonly personalPronounsDB: NounsDb;
 
-  private readonly interrogativePronounsDB: InterrogativePronounsDb;
+  private readonly interrogativesDB: NounsDb;
 
-  private readonly learningDB: LearningDb;
+  private readonly casesInterrogativesPronounsDB: CasesInterrogativesPronounsDb;
 
-  private readonly lessons: LessonsDb;
+  private readonly learningDB: LearningProgress;
 
-  constructor(personalPronounsDB: NounsDb, interrogativePronounsDB: InterrogativePronounsDb, learningDB: LearningDb, lessons: LessonsDb) {
+  private readonly lesson: DefaultLesson;
+
+  constructor(
+    personalPronounsDB: NounsDb,
+    interrogativesDB: NounsDb,
+    casesInterrogativePronounsDB: CasesInterrogativesPronounsDb,
+    learningDB: LearningProgress,
+    lesson: DefaultLesson,
+  ) {
     this.personalPronounsDB = personalPronounsDB;
-    this.interrogativePronounsDB = interrogativePronounsDB;
+    this.casesInterrogativesPronounsDB = casesInterrogativePronounsDB;
+    this.interrogativesDB = interrogativesDB;
     this.learningDB = learningDB;
-    this.lessons = lessons;
+    this.lesson = lesson;
   }
 
   private static random = (upTo: number): number => Math.floor(Math.random() * upTo);
@@ -86,91 +92,91 @@ export class DefaultTutor implements Tutor {
         ? animations[DefaultTutor.random(animations.length)]
         : null;
 
-  private static availableCases(cases: PronounCase[]): GrammarCase[] {
+  private static availableGrammarCases(cases: Case[]): GrammarCase[] {
     return Array.from<GrammarCase>(cases
-      .reduce((set: Set<GrammarCase>, pronounCase: PronounCase) => {
+      .reduce((set: Set<GrammarCase>, pronounCase: Case) => {
         set.add(pronounCase.case);
         return set;
       }, new Set()));
   }
 
-  private static availablePluratlities(cases: NounCase[]): GrammarPlurality[] {
+  private static availablePluralities(cases: Case[]): GrammarPlurality[] {
     return Array.from<GrammarPlurality>(cases
-      .reduce((set: Set<GrammarPlurality>, nounCase: NounCase) => {
+      .reduce((set: Set<GrammarPlurality>, nounCase: Case) => {
         set.add(nounCase.plurality);
         return set;
       }, new Set()));
   }
 
-  private static availableAnimaitons(cases: InterrogativePronounCase[]): GrammarAnimation[] {
+  private static availableAnimations(cases: Case[]): GrammarAnimation[] {
     return Array.from<GrammarAnimation>(cases
-      .reduce((set: Set<GrammarAnimation>, pronounCase: InterrogativePronounCase) => {
+      .reduce((set: Set<GrammarAnimation>, pronounCase: Case) => {
         set.add(pronounCase.animation);
         return set;
       }, new Set()));
   }
 
   private static availableCasesForPlurality(
-    cases: NounCase[],
+    cases: Case[],
     grammarPlurality: GrammarPlurality,
   ): GrammarCase[] {
     return Array.from<GrammarCase>(cases
       .filter(noun => noun.plurality === grammarPlurality)
-      .reduce((set: Set<GrammarCase>, nounCase: NounCase) => {
+      .reduce((set: Set<GrammarCase>, nounCase: Case) => {
         set.add(nounCase.case);
         return set;
       }, new Set()));
   }
 
   private static availableGendersForPluralityAndCase(
-    cases: NounCase[],
+    cases: Case[],
     grammarPlurality: GrammarPlurality,
     grammarCase: GrammarCase,
   ): GrammarGender[] {
     return Array.from<GrammarGender>(cases
       .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase)
-      .reduce((set: Set<GrammarGender>, nounCase: NounCase) => {
+      .reduce((set: Set<GrammarGender>, nounCase: Case) => {
         set.add(nounCase.gender);
         return set;
       }, new Set()));
   }
 
   private static availableFormsForPluralityAndCase(
-    cases: NounCase[],
+    cases: Case[],
     grammarPlurality: GrammarPlurality,
     grammarCase: GrammarCase,
   ): GrammarForm[] {
     return Array.from<GrammarForm>(cases
       .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase)
-      .reduce((set: Set<GrammarForm>, nounCase: NounCase) => {
+      .reduce((set: Set<GrammarForm>, nounCase: Case) => {
         set.add(nounCase.form);
         return set;
       }, new Set()));
   }
 
   private static availableFormsForPluralityAndCaseAndGender(
-    cases: NounCase[],
+    cases: Case[],
     grammarPlurality: GrammarPlurality,
     grammarCase: GrammarCase,
     grammarGender: GrammarGender,
   ): GrammarForm[] {
     return Array.from<GrammarForm>(cases
       .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase && noun.gender === grammarGender)
-      .reduce((set: Set<GrammarForm>, nounCase: NounCase) => {
+      .reduce((set: Set<GrammarForm>, nounCase: Case) => {
         set.add(nounCase.form);
         return set;
       }, new Set()));
   }
 
   private static caseForNoun(
-    nounCases: NounCase[],
+    nounCases: Case[],
     grammarPlurality: GrammarPlurality,
     grammarCase: GrammarCase,
     grammarGender?: GrammarGender,
     grammarForm?: GrammarForm,
-  ): NounCase | null {
+  ): Case | null {
     const cases = nounCases
-      .filter((nounCase: NounCase) => nounCase.case === grammarCase && nounCase.plurality === grammarPlurality);
+      .filter((nounCase: Case) => nounCase.case === grammarCase && nounCase.plurality === grammarPlurality);
 
     if (cases.length === 0) {
       return null;
@@ -202,12 +208,12 @@ export class DefaultTutor implements Tutor {
   }
 
   private static caseForInterrogativePronoun(
-    pronounCases: InterrogativePronounCase[],
+    pronounCases: Case[],
     grammarCase: GrammarCase,
     grammarAnimation: GrammarAnimation,
-  ): InterrogativePronounCase | null {
+  ): Case | null {
     const cases = pronounCases
-      .filter((pronounCase: InterrogativePronounCase) => pronounCase.case === grammarCase);
+      .filter((pronounCase: Case) => pronounCase.case === grammarCase);
 
     if (cases.length === 0) {
       return null;
@@ -234,14 +240,14 @@ export class DefaultTutor implements Tutor {
 
   private prevWord: string | null = null; // avoid the same word
 
-  private async nextWord(wordsSet: string[]): Promise<string> {
+  private async nextMainForm(wordsSet: string[]): Promise<string> {
     let word: string;
     if (wordsSet.length === 1) {
       word = wordsSet[0];
     } else {
       const statPromises: Promise<{word: string, weight: number}>[] =
         // TODO: hardcode lesson?
-        wordsSet.map(w => this.learningDB.getWordStatistics(this.lessons.currentLesson, w).then(stat => ({word: w, weight: stat.weight})));
+        wordsSet.map(w => this.learningDB.getWordStatistics(this.currentLesson, w).then(stat => ({word: w, weight: stat.weight})));
       const wordWeights = await Promise.all(statPromises);
 
       const weighted: string[] = DefaultTutor.getWeightedArray(wordWeights);
@@ -254,20 +260,15 @@ export class DefaultTutor implements Tutor {
     return word;
   }
 
-  async nextPersonalPronounExersizeSelectWord(): Promise<NounCaseExercise> {
-    const wordsSet = await this.personalPronounsDB.words;
-    const word = await this.nextWord(wordsSet);
+  private static async nextCaseWithPluralExercise(noun: Noun): Promise<CaseExercise> {
+    const cases: Case[] = await noun.cases();
 
-    const noun: Noun = await this.personalPronounsDB.getNoun(word);
-
-    const cases: NounCase[] = await noun.cases();
-
-    const possibleVariants = Array.from<string>(cases.reduce((set: Set<string>, nounCase: NounCase) => {
+    const possibleVariants = Array.from<string>(cases.reduce((set: Set<string>, nounCase: Case) => {
       set.add(nounCase.word);
       return set;
     }, new Set()).keys());
 
-    const availablePluralities = DefaultTutor.availablePluratlities(cases);
+    const availablePluralities = DefaultTutor.availablePluralities(cases);
     const grammarPlurality: GrammarPlurality = DefaultTutor.randomPlurality(availablePluralities);
 
     const availableCases = DefaultTutor.availableCasesForPlurality(cases, grammarPlurality);
@@ -318,50 +319,77 @@ export class DefaultTutor implements Tutor {
     };
   }
 
-  async nextInterrogativePronounExersizeSelectWord(): Promise<InterrogativePronounCaseExercise> {
-    const wordsSet = await this.interrogativePronounsDB.words;
-    const word = await this.nextWord(wordsSet);
+  private static async nextCaseWithAnimationExercise(noun: Noun): Promise<CaseExercise> {
 
-    const pronoun: InterrogativePronoun = await this.interrogativePronounsDB.getPronoun(word);
+    const cases: Case[] = await noun.cases();
 
-    const cases: InterrogativePronounCase[] = await pronoun.cases();
-
-    const possibleVariants = Array.from<string>(cases.reduce((set: Set<string>, pronounCase: InterrogativePronounCase) => {
+    const possibleVariants = Array.from<string>(cases.reduce((set: Set<string>, pronounCase: Case) => {
       set.add(pronounCase.word);
       return set;
     }, new Set()).keys());
 
-    const availableCases = DefaultTutor.availableCases(cases);
+    const availableCases = DefaultTutor.availableGrammarCases(cases);
     const grammarCase: GrammarCase = DefaultTutor.randomCase(availableCases);
 
-    const availableAnimations = DefaultTutor.availableAnimaitons(cases);
+    const availableAnimations = DefaultTutor.availableAnimations(cases);
     const grammarAnimation: GrammarAnimation = DefaultTutor.randomAnimation(availableAnimations);
 
     const exerciseCase = DefaultTutor.caseForInterrogativePronoun(cases, grammarCase, grammarAnimation);
     return {
-      mainForm: pronoun.mainForm,
+      mainForm: noun.mainForm,
       exerciseCase,
       possibleVariants,
       correctAnswer: exerciseCase.word,
     };
   }
 
+  async nextCaseExercise(): Promise<CaseExercise> {
+    if (this.currentLesson === Lesson.CASES_INTERROGATIVES_DECLINATION) {
+      const availableMainForms = await this.casesInterrogativesPronounsDB.mainForms;
+      const randomMainForm = await this.nextMainForm(availableMainForms);
+      const noun: Noun = await this.casesInterrogativesPronounsDB.getNounByMainForm(randomMainForm);
+      return DefaultTutor.nextCaseWithAnimationExercise(noun);
+    }
+    const db: NounsDb | null =
+      this.currentLesson === Lesson.PERSONAL_PRONOUNS_DECLINATION
+        ? this.personalPronounsDB
+        : this.currentLesson === Lesson.INTERROGATIVE_PRONOUNS_DECLINATION
+          ? await this.interrogativesDB
+          : null;
+
+    if (db === null) {
+      throw Error(`Invalid lesson ${this.currentLesson}`);
+    }
+    const availableMainForms = await db.mainForms;
+    const randomMainForm = await this.nextMainForm(availableMainForms);
+    const noun = await db.getNounByMainForm(randomMainForm);
+    return DefaultTutor.nextCaseWithPluralExercise(noun);
+  }
+
   private checkCaseAnswer(answer: string, exercise: CaseExercise): Promise<boolean> {
     const correct = answer === exercise.correctAnswer;
     // TODO: hardcode lesson?
     const promise = correct
-      ? this.learningDB.addCorrect(this.lessons.currentLesson, answer)
-      : this.learningDB.addWrong(this.lessons.currentLesson, answer);
+      ? this.learningDB.addCorrect(this.currentLesson, answer)
+      : this.learningDB.addWrong(this.currentLesson, answer);
     return promise.then(() => correct);
   }
 
   // question should be internal state?
   // eslint-disable-next-line class-methods-use-this
-  checkNounCaseAnswer(answer: string, exercise: NounCaseExercise): Promise<boolean> {
+  checkCaseExercise(answer: string, exercise: CaseExercise): Promise<boolean> {
     return this.checkCaseAnswer(answer, exercise);
   }
 
-  checkInterrogativePronounCaseAnswer(answer: string, exercise: InterrogativePronounCaseExercise): Promise<boolean> {
-    return this.checkCaseAnswer(answer, exercise);
+  get currentLesson() {
+    return this.lesson.currentLesson;
+  }
+
+  observableCurrentLesson(): Observable<Lesson> {
+    return this.lesson.observableCurrentLesson();
+  }
+
+  selectLesson(lesson: Lesson): Promise<void> {
+    return this.lesson.selectLesson(lesson);
   }
 }

@@ -25,19 +25,19 @@ import {RouteId} from '../../../router';
 const di = getDi();
 
 const handleClick = (): void => {
-  di.router.go(RouteId.PERSONAL_PRONOUNS_CASES);
-  di.lessons.selectLesson(Lesson.PERSONAL_PRONOUNS_DECLINATION).then();
+  di.router.go(RouteId.INTERROGATIVES_CASES);
+  di.lessons.selectLesson(Lesson.INTERROGATIVE_PRONOUNS_DECLINATION).then();
   di.uiState.mainMenuOpen = false;
 };
 
-const MenuItemPersonalPronouns: React.FunctionComponent =
+const MenuItemInterrogatives: React.FunctionComponent =
   (): React.ReactElement => {
 
-    log.render('MenuItemPersonalPronouns');
+    log.render('MenuItemInterrogatives');
 
     return <MenuItem onClick={handleClick}>
-      {T`Personal Pronouns cases`}
+      {T`Interrogative Pronouns`}
     </MenuItem>;
   };
 
-export default MenuItemPersonalPronouns;
+export default MenuItemInterrogatives;
