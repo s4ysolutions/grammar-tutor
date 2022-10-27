@@ -15,29 +15,22 @@
  */
 
 import React from 'react';
-import log from '../../../log';
-import T from '../../../l10n';
 import {MenuItem} from '@mui/material';
-import {getDi} from '../../../di/default';
-import {Lesson} from '../../../tutor';
-import {RouteId} from '../../../router';
+import diFactory from '../../../../di/default';
+import {Lesson} from '../../../../tutor';
+import {RouteId} from '../../../../router';
 
-const di = getDi();
+const {di} = diFactory;
 
 const handleClick = (): void => {
-  di.router.go(RouteId.PERSONAL_PRONOUNS_CASES);
-  di.lessons.selectLesson(Lesson.PERSONAL_PRONOUNS_DECLINATION).then();
+  di.router.go(RouteId.CASE_INTERROGATIVES_DECLENSION);
+  di.tutor.selectLesson(Lesson.CASES_INTERROGATIVES_DECLINATION).then();
   di.uiState.mainMenuOpen = false;
 };
 
-const MenuItemPersonalPronouns: React.FunctionComponent =
-  (): React.ReactElement => {
+const MenuItemCaseInterrogativesDeclension: React.FunctionComponent =
+  (): React.ReactElement => <MenuItem onClick={handleClick}>
+    {di.router.routeCaseInterrogativesDeclension.title}
+  </MenuItem>;
 
-    log.render('MenuItemPersonalPronouns');
-
-    return <MenuItem onClick={handleClick}>
-      {T`Personal Pronouns cases`}
-    </MenuItem>;
-  };
-
-export default MenuItemPersonalPronouns;
+export default MenuItemCaseInterrogativesDeclension;

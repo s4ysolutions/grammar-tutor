@@ -19,8 +19,7 @@ import {Container, useTheme} from '@mui/material';
 import {RouteId} from '../../../router';
 import NounCases from '../tutor/NounCases';
 import useRouter from '../../hooks/useRouter';
-import log from '../../../log';
-import InterrogativePronoun from '../tutor/InterrogativePronoun';
+import InterrogativePronouns from '../tutor/InterrogativePronouns';
 
 const topSpace = 2;
 
@@ -31,16 +30,15 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
   }), [theme]);
 
   const [route] = useRouter();
-  log.render('Workspace');
 
   return <Container
     className="workspace"
     maxWidth="sm"
     sx={sx} >
     {
-      route.is(RouteId.PERSONAL_PRONOUNS_CASES) && <NounCases /> ||
-      route.is(RouteId.INTERROGATIVES_CASES) && <NounCases /> ||
-      route.is(RouteId.INTERROGATIVE_PRONOUNS_CASES) && <InterrogativePronoun />
+      route.is(RouteId.PERSONAL_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
+      route.is(RouteId.CASE_INTERROGATIVES_DECLENSION) && <NounCases key={route.id} /> ||
+      route.is(RouteId.INTERROGATIVE_PRONOUNS_DECLENSION) && <InterrogativePronouns />
     }
   </Container >;
 };

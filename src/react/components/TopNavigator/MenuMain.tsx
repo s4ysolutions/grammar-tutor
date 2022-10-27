@@ -15,16 +15,15 @@
  */
 
 import React from 'react';
-import log from '../../../log';
 import {Divider, Menu} from '@mui/material';
 import useObservable from '../../hooks/useObservable';
-import {getDi} from '../../../di/default';
-import MenuItemReset from './MenuItemReset';
-import MenuItemPersonalPronouns from './MenuItemPersonalPronouns';
-import MenuItemInterrogativePronouns from './MenuItemInterrogativePronouns';
-import MenuItemInterrogatives from './MenuItemInterrogatives';
+import diFactory from '../../../di/default';
+import MenuItemReset from './menu-items/MenuItemReset';
+import MenuItemPersonalPronounsDeclension from './menu-items/MenuItemPersonalPronounsDeclension';
+import MenuItemInterrogativePronounsDeclension from './menu-items/MenuItemInterrogativePronounsDeclension';
+import MenuItemCaseInterrogativesDeclension from './menu-items/MenuItemCaseInterrogativesDeclension';
 
-const di = getDi();
+const {di} = diFactory;
 const uiState = di.uiState;
 
 const menuListProps = {'aria-labelledby': 'main-menu-button'};
@@ -36,7 +35,6 @@ const MenuMain: React.FunctionComponent<{anchorEl: Element}> =
   ({anchorEl}): React.ReactElement => {
 
     const open = useObservable<boolean>(uiState.observableMainMenuOpen, uiState.mainMenuOpen);
-    log.render(`Menu ${open}`);
 
     return <Menu
       MenuListProps={menuListProps}
@@ -45,11 +43,11 @@ const MenuMain: React.FunctionComponent<{anchorEl: Element}> =
       onClose={handleClose}
       open={open}>
 
-      <MenuItemPersonalPronouns />
+      <MenuItemPersonalPronounsDeclension />
 
-      <MenuItemInterrogativePronouns />
+      <MenuItemInterrogativePronounsDeclension />
 
-      <MenuItemInterrogatives />
+      <MenuItemCaseInterrogativesDeclension />
 
       <Divider />
 

@@ -17,9 +17,8 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Container, IconButton, TableCell, TableRow, Typography, useTheme} from '@mui/material';
 import Variants from '../Variants';
-import log from '../../../../log';
-import Case from '../Case';
-import {getDi} from '../../../../di/default';
+import CaseTitle from '../CaseTitle';
+import diFactory from '../../../../di/default';
 import Hint from '../Hint';
 import QuizIcon from '@mui/icons-material/Quiz';
 import T from '../../../../l10n';
@@ -35,7 +34,7 @@ import {
   faPersonDress as faWoman,
 } from '@fortawesome/free-solid-svg-icons';
 
-const di = getDi();
+const {di} = diFactory;
 const tutor = di.tutor;
 const nounsDB = di.personPronounsDb;
 const interrogativePronounsDb = di.interrogativePronounsDb;
@@ -88,7 +87,6 @@ const hintTitles = [T`${GrammarPlurality.SINGULAR}`, T`${GrammarPlurality.PLURAL
 export const CSS_SHIFT_LEFT = {position: 'relative', marginLeft: -10, opacity: 0.7} as React.CSSProperties;
 
 const NounCases: React.FunctionComponent = (): React.ReactElement => {
-  log.render('NounCases');
 
   const [currentExercise, setCurrentExercise] = useState<CaseExercise>(null);
   useEffect(() => {
@@ -154,7 +152,7 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
   return currentExercise ? <Container >
     <MainForm mainForm={currentExercise.mainForm} />
 
-    <Case caseTitle={caseTitle(currentExercise.exerciseCase)} >
+    <CaseTitle caseTitle={caseTitle(currentExercise.exerciseCase)} >
 
       <FontAwesomeIcon icon={caseIcon(currentExercise.exerciseCase)} />
 
@@ -169,7 +167,7 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
 
       {currentExercise.exerciseCase.form === GrammarForm.LONG
         ? <FontAwesomeIcon icon={faLong} /> : null}
-    </Case >
+    </CaseTitle >
 
     {interrogative
       ? <Typography align="center" sx={sx} variant="h6">

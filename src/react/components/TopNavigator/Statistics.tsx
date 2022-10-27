@@ -20,12 +20,11 @@ import PercentIcon from '@mui/icons-material/Percent';
 import {LessonStatistics} from '../../../tutor';
 import useObservable from '../../hooks/useObservable';
 import React, {useEffect} from 'react';
-import {getDi} from '../../../di/default';
-import log from '../../../log';
+import diFactory from '../../../di/default';
 
-const di = getDi();
-const learningDb = di.learningProgress;
-const lessonsDb = di.lessons;
+const {di} = diFactory;
+const learningProgress = di.learningProgress;
+const tutor = di.tutor;
 
 const NO_DATA = -100;
 
@@ -33,16 +32,14 @@ const PCT_100 = 100;
 const pct = (total: number, wrong: number): number => total === 0 ? 0 : PCT_100 - Math.ceil(wrong * PCT_100 / total);
 
 const Statistics: React.FunctionComponent = (): React.ReactElement => {
-  log.render('Statistics');
   const {total, wrong} = useObservable<LessonStatistics>(
-    // fromPromise(learningDb.getLessonStatistics(lessonsDb.currentLesson)),
-    learningDb.observableLessonStatistics(),
+    learningProgress.observableLessonStatistics(),
     {total: NO_DATA, wrong: 0},
   );
   useEffect(() => {
     // TODO: should be replaced with concat(fromPromise(learningDb.getLessonStatistics(lessonsDb.currentLesson)),...)
     //       but it either hangs or looping
-    lessonsDb.selectLesson(lessonsDb.currentLesson).then();
+    tutor.selectLesson(tutor.currentLesson).then();
   }, []);
   return total !== NO_DATA && <Stack direction="row" spacing={2} >
     <Chip

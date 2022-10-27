@@ -20,11 +20,10 @@ import useObservable from '../../hooks/useObservable';
 import MenuIcon from '@mui/icons-material/Menu';
 import Statistics from './Statistics';
 import MenuMain from './MenuMain';
-import {getDi} from '../../../di/default';
-import log from '../../../log';
+import diFactory from '../../../di/default';
 import AppTitle from './AppTitle';
 
-const di = getDi();
+const di = diFactory.di;
 const uiState = di.uiState;
 
 const flexGrow1 = {flexGrow: 1};
@@ -36,8 +35,6 @@ const handleMainMenuClick = () => {
 };
 
 const TopNavigator: React.FunctionComponent = (): React.ReactElement => {
-  log.render('TopNavigator');
-
   const menuOpen = useObservable<boolean>(uiState.observableMainMenuOpen, uiState.mainMenuOpen);
   const mainMenuButtonRef = useRef<HTMLButtonElement>(null);
 

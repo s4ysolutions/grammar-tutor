@@ -20,7 +20,7 @@ import {DefaultRouter} from '../router/default';
 import {Router} from '../router';
 import {DefaultUiState} from '../ui-state/default';
 import {UiState} from '../ui-state';
-import {Di} from './index';
+import {Di, DiFactory} from './index';
 import {DefaultPersonalPronounsDb} from '../tutor/databases/case/personal-pronouns';
 import {DefaultInterrogativesDb} from '../tutor/databases/case/interrogatives';
 import DefaultLesson from '../tutor/tutor/default-lesson';
@@ -94,4 +94,8 @@ export class DefaultDi implements Di {
 
 const singletonDi = new DefaultDi(indexedDbFactory('srpska-gramatika'));
 
-export const getDi = (): Di => singletonDi;
+const diFactory: DiFactory = {
+  di: singletonDi as Di,
+};
+
+export default diFactory;

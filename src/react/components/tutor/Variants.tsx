@@ -17,7 +17,6 @@
 import {useTheme} from '@mui/material';
 import React, {memo, useMemo, useState} from 'react';
 import Variant, {Status} from './Variant';
-import log from '../../../log';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
 const topSpace = 2;
@@ -32,7 +31,6 @@ const Variants: React.FunctionComponent<{
   possibleVariants: string[]
 }> =
   ({checkVariant, possibleVariants, nextExercise, correctVariant}): React.ReactElement => {
-    log.render('Variants');
 
     const theme = useTheme();
     const sx = useMemo(() => ({

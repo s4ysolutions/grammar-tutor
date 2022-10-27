@@ -15,13 +15,11 @@
  */
 
 import React, {ReactNode, useMemo} from 'react';
-import log from '../../../log';
 import {Typography, useTheme} from '@mui/material';
 
 const topSpace = 2;
 
-const Case: React.FunctionComponent<{caseTitle: string, children?: ReactNode[] | ReactNode}> = ({caseTitle, children}): React.ReactElement => {
-  log.render('Case', caseTitle);
+const CaseTitle: React.FunctionComponent<{caseTitle: string, children?: ReactNode[] | ReactNode}> = ({caseTitle, children}): React.ReactElement => {
   const theme = useTheme();
   const sx = useMemo(() => ({
     mt: theme.spacing(topSpace),
@@ -33,4 +31,4 @@ const Case: React.FunctionComponent<{caseTitle: string, children?: ReactNode[] |
   </Typography>;
 };
 
-export default Case;
+export default CaseTitle;

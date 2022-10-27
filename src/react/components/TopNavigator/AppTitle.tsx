@@ -17,13 +17,12 @@
 import React from 'react';
 import {Typography, useMediaQuery} from '@mui/material';
 import T from '../../../l10n';
-import log from '../../../log';
-import {getDi} from '../../../di/default';
+import diFactory from '../../../di/default';
 import useObservable from '../../hooks/useObservable';
 import {Route} from '../../../router';
 import {map} from 'rxjs/operators';
 
-const di = getDi();
+const di = diFactory.di;
 const router = di.router;
 
 const appTitle = T`App title`;
@@ -31,7 +30,6 @@ const flexGrow1 = {flexGrow: 1};
 
 const AppTitle: React.FunctionComponent =
   (): React.ReactElement => {
-    log.render('AppTitle');
 
     const routeTitle = useObservable(
       router.observableCurrentRoute.pipe(map((route: Route) => T`${route.title}`)),

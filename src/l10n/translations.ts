@@ -17,7 +17,6 @@
 const translation = {
   'en': {
     'App title': 'Grammar',
-    'Pronouns cases': 'Cases of pronouns',
     'Reset': 'Reset results',
 
     'Masculine': 'masc.',
@@ -33,11 +32,11 @@ const translation = {
   'ru': {
     'App title': 'Грамматика',
     'Hint': 'Подсказка',
-    'Interrogative pronouns': 'Падежные вопросы',
-    'Interrogative Pronouns cases': 'Падежные вопросы',
-    'Personal pronouns': 'Личные местоимения',
-    'Personal Pronouns cases': 'Падежи личных местоимений',
-    'Pronouns cases': 'Падежи местоимений',
+
+    'Case interrogatives declension': 'Склонение падежных вопросов',
+    'Interrogative pronouns declension': 'Склонение вопросительных местоимений',
+    'Personal pronouns declension': 'Склонение личных местоимений',
+
     'Reset': 'Сбросить результаты',
 
     'Masculine': 'муж.',
@@ -59,6 +58,10 @@ const translation = {
 
     'Inanimate': 'неодушевленный',
     'Animate': 'одушевленный',
+
+    'Which?': 'Который? Какой из?',
+    'What kind?': 'Какой?',
+    'Whose?': 'Чей?',
   },
   'sr': {
     'App title': 'Граматика',

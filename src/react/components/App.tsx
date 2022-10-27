@@ -18,20 +18,16 @@ import React from 'react';
 import {CssBaseline, ThemeProvider} from '@mui/material';
 import Workspace from './Workspace';
 import TopNavigator from './TopNavigator';
-import log from '../../log';
 import theme from '../theme';
 
-const App: React.FunctionComponent = (): React.ReactElement => {
-  log.render('App');
-  return <React.StrictMode >
-    <CssBaseline />
+const App: React.FunctionComponent = (): React.ReactElement => <React.StrictMode >
+  <CssBaseline />
 
-    <ThemeProvider theme={theme} >
-      <TopNavigator />
+  <ThemeProvider theme={theme} >
+    <TopNavigator />
 
-      <Workspace />
-    </ThemeProvider >
-  </React.StrictMode >;
-};
+    <Workspace />
+  </ThemeProvider >
+</React.StrictMode >;
 
 export default App;

@@ -16,21 +16,20 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Container, IconButton, TableCell, TableRow} from '@mui/material';
-import log from '../../../../log';
-import {getDi} from '../../../../di/default';
+import diFactory from '../../../../di/default';
 import QuizIcon from '@mui/icons-material/Quiz';
 import T from '../../../../l10n';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import {Case, CaseExercise, GrammarAnimation, GrammarCase} from '../../../../tutor';
 import MainForm from '../MainForm';
-import Case from '../Case';
+import CaseTitle from '../CaseTitle';
 import Variants from '../Variants';
 import Hint from '../Hint';
 import {CSS_CAPITALIZE} from '../constants';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPerson, faTree} from '@fortawesome/free-solid-svg-icons';
 
-const di = getDi();
+const {di} = diFactory;
 const tutor = di.tutor;
 const interrogativePronounsDb = di.interrogativePronounsDb;
 
@@ -56,11 +55,10 @@ const hintTitles = [T`${GrammarAnimation.ANIMATE}`, T`${GrammarAnimation.INANIMA
 let variantsKey = 1;
 
 const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => {
-  log.render('InterrogativePronoun');
 
   const [currentExercise, setCurrentExercise] = useState<CaseExercise>(null);
   useEffect(() => {
-    tutor.nextInterrogativePronounExersiseSelectWord().then(setCurrentExercise);
+    tutor.nextCaseExercise().then(setCurrentExercise);
   }, []);
 
 
@@ -85,7 +83,7 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
 
   const nextExercise = useCallback(
     () => {
-      tutor.nextInterrogativePronounExersiseSelectWord().then((nextEx) => {
+      tutor.nextCaseExercise().then((nextEx) => {
         setCurrentExercise(nextEx);
         if (help) {
           updateCases(nextEx).then();
@@ -98,7 +96,7 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
   );
 
   const checkVariant = useCallback(
-    (variant: string): Promise<boolean> => tutor.checkInterrogativePronounCaseAnswer(variant, currentExercise),
+    (variant: string): Promise<boolean> => tutor.checkCaseExercise(variant, currentExercise),
     [currentExercise],
   );
 
@@ -108,12 +106,12 @@ const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => 
   return currentExercise ? <Container >
     <MainForm mainForm={currentExercise.mainForm} small />
 
-    <Case caseTitle={caseTitle(currentExercise.exerciseCase)}>
+    <CaseTitle caseTitle={caseTitle(currentExercise.exerciseCase)}>
 
       {currentExercise.exerciseCase.animation === GrammarAnimation.ANIMATE
         ? <FontAwesomeIcon icon={faPerson} />
         : <FontAwesomeIcon icon={faTree} />}
-    </Case>
+    </CaseTitle>
 
     <Variants
       checkVariant={checkVariant}

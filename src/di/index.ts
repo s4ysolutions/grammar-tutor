@@ -27,3 +27,7 @@ export interface Di {
   readonly router: Router
   readonly uiState: UiState
 }
+
+export interface DiFactory {
+  readonly di: Di;
+}

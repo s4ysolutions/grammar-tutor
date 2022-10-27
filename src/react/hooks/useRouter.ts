@@ -17,9 +17,9 @@
 
 import {Route, RouteId} from '../../router';
 import useObservable from './useObservable';
-import {getDi} from '../../di/default';
+import diFactory from '../../di/default';
 
-const router = getDi().router;
+const {di: {router}} = diFactory;
 
 const useRouter = (): [Route, (route: RouteId) => void] => {
   const route = useObservable(router.observableCurrentRoute, router.currentRoute);

@@ -1,5 +1,5 @@
 {
-  "packageManager": "pnpm@7.13.4",
+  "packageManager": "pnpm@7.14.0",
   "engines": {
     "node": ">=16.0.0"
   },
@@ -13,9 +13,9 @@
     "build": "webpack --config webpack.config-prod.cjs",
     "stats": "webpack --config webpack.config-stats.cjs --profile --json >stats.json",
     "lint": "eslint --fix src",
-    "test": "mocha tests/mocha/**/*.spec.ts",
-    "test-react": "jest",
-    "test-react:watch": "jest --watch"
+    "test": "npm run test:mocha; npm run test:jest",
+    "test:mocha": "mocha tests/mocha/**/*.spec.ts",
+    "test:jest": "jest"
   },
   "keywords": [],
   "author": "",
@@ -50,6 +50,7 @@
     "@types/node": "^18.8.3",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "@types/react-test-renderer": "^18.0.0",
     "@types/sinon": "^10.0.13",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
@@ -68,7 +69,6 @@
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-perf": "^3.3.1",
-    "fake-indexeddb": "^4.0.0",
     "firebase-tools": "^11.14.4",
     "fork-ts-checker-webpack-plugin": "^7.2.13",
     "html-webpack-plugin": "^5.5.0",
@@ -78,6 +78,7 @@
     "mocha": "^10.0.0",
     "react-refresh": "^0.14.0",
     "react-refresh-typescript": "^2.0.7",
+    "react-test-renderer": "^18.2.0",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
     "sinon": "^14.0.1",

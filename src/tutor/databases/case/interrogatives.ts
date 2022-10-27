@@ -15,9 +15,10 @@
  */
 
 import {Case, GrammarCase, GrammarGender, GrammarPlurality, Noun, NounsDb} from '../../index';
+import T from '../../../l10n';
 
 const staticDB: Record<string, Case[]> = {
-  'Which?': [
+  [T`Which?`]: [
     {
       word: 'ко̀јӣ',
       plurality: GrammarPlurality.SINGULAR,
@@ -245,7 +246,7 @@ const staticDB: Record<string, Case[]> = {
       gender: GrammarGender.NEUTER,
     },
   ],
-  'What kind?': [
+  [T`What kind?`]: [
     {
       word: 'какав',
       plurality: GrammarPlurality.SINGULAR,
@@ -474,7 +475,7 @@ const staticDB: Record<string, Case[]> = {
       gender: GrammarGender.NEUTER,
     },
   ],
-  'Whose?': [
+  [T`Whose?`]: [
     {
       word: 'чѝјӣ',
       plurality: GrammarPlurality.SINGULAR,

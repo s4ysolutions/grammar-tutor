@@ -15,26 +15,19 @@
  */
 
 import React from 'react';
-// import '@testing-library/react/cleanup-after-each';
-// import '@testing-library/jest-dom/extend-expect';
-import {render} from '@testing-library/react';
-import App from '../App';
+import T from '../../../../l10n';
+import {MenuItem} from '@mui/material';
+import diFactory from '../../../../di/default';
 
-describe('<App />', () => {
-  test('true is truthy', () => {
-    expect(true).toBe(true);
-  });
+const handleClick = (): void => {
+  const di = diFactory.di;
+  di.learningProgress.reset().then();
+  di.uiState.mainMenuOpen = false;
+};
 
-  test('false is falsy', () => {
-    expect(false).toBe(false);
-  });
+const MenuItemReset: React.FunctionComponent =
+  (): React.ReactElement => <MenuItem onClick={handleClick}>
+    {T`Reset`}
+  </MenuItem>;
 
-  test('render', () => {
-    render(<App />);
-    /*
-    const { getByText } = render(<App />);
-    expect(getByText('Hi Alejandro Roman')).toBeNull();
-
-     */
-  });
-});
+export default MenuItemReset;

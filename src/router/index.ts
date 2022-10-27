@@ -17,9 +17,9 @@
 import {Observable} from 'rxjs';
 
 export enum RouteId {
-  PERSONAL_PRONOUNS_CASES,
-  INTERROGATIVE_PRONOUNS_CASES,
-  INTERROGATIVES_CASES,
+  PERSONAL_PRONOUNS_DECLENSION,
+  INTERROGATIVE_PRONOUNS_DECLENSION,
+  CASE_INTERROGATIVES_DECLENSION,
 }
 
 export interface Route {
@@ -29,6 +29,10 @@ export interface Route {
 }
 
 export interface Router {
+  readonly routePersonalPronounsDeclension: Route;
+  readonly routeCaseInterrogativesDeclension: Route;
+  readonly routeInterrogativePronounsDeclension: Route;
+
   readonly currentRoute: Route;
   readonly observableCurrentRoute: Observable<Route>;
   go(route: RouteId): void;

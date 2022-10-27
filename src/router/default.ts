@@ -21,40 +21,41 @@ import T from '../l10n';
 
 const observableCurrentRouter = new Subject<Route>();
 
-const routePronounsCases: Route = {
-  id: RouteId.PERSONAL_PRONOUNS_CASES,
-  title: T`Personal pronouns`,
-  is: (id) => id === RouteId.PERSONAL_PRONOUNS_CASES,
-};
-
-const routeInterrogativesCases: Route = {
-  id: RouteId.INTERROGATIVES_CASES,
-  title: T`Interrogative pronouns declination`,
-  is: (id) => id === RouteId.INTERROGATIVES_CASES,
-};
-
-const routeInterrogativePronounsCases: Route = {
-  id: RouteId.INTERROGATIVE_PRONOUNS_CASES,
-  title: T`Interrogative pronouns`,
-  is: (id) => id === RouteId.INTERROGATIVE_PRONOUNS_CASES,
-};
 
 export class DefaultRouter implements Router {
-  currentRoute: Route = routePronounsCases;
+  routePersonalPronounsDeclension: Route = {
+    id: RouteId.PERSONAL_PRONOUNS_DECLENSION,
+    title: T`Personal pronouns declension`,
+    is: (id) => id === RouteId.PERSONAL_PRONOUNS_DECLENSION,
+  };
+
+  routeCaseInterrogativesDeclension: Route = {
+    id: RouteId.CASE_INTERROGATIVES_DECLENSION,
+    title: T`Case interrogatives declension`,
+    is: (id) => id === RouteId.CASE_INTERROGATIVES_DECLENSION,
+  };
+
+  routeInterrogativePronounsDeclension: Route = {
+    id: RouteId.INTERROGATIVE_PRONOUNS_DECLENSION,
+    title: T`Interrogative pronouns declension`,
+    is: (id) => id === RouteId.INTERROGATIVE_PRONOUNS_DECLENSION,
+  };
+
+  currentRoute: Route = this.routePersonalPronounsDeclension;
 
   readonly observableCurrentRoute = observableCurrentRouter;
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
   go(routeId: RouteId): void {
     switch (routeId) {
-      case RouteId.INTERROGATIVE_PRONOUNS_CASES:
-        this.currentRoute = routeInterrogativePronounsCases;
+      case RouteId.INTERROGATIVE_PRONOUNS_DECLENSION:
+        this.currentRoute = this.routeInterrogativePronounsDeclension;
         break;
-      case RouteId.INTERROGATIVES_CASES:
-        this.currentRoute = routeInterrogativesCases;
+      case RouteId.CASE_INTERROGATIVES_DECLENSION:
+        this.currentRoute = this.routeCaseInterrogativesDeclension;
         break;
       default:
-        this.currentRoute = routePronounsCases;
+        this.currentRoute = this.routePersonalPronounsDeclension;
     }
     observableCurrentRouter.next(this.currentRoute);
   }
