@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-import React, {ReactNode, useMemo} from 'react';
-import {Typography, useTheme} from '@mui/material';
-import T from '../../../l10n';
-import {Case} from '../../../tutor';
-
-const topSpace = 2;
-
+import React, {ReactNode} from 'react';
+import T from '../../../../l10n';
+import {Case} from '../../../../tutor';
+import ExerciseTitle from '../ExerciseTitle';
 
 const getTitle = (exerciseCase: Case): string => {
   const res: string[] = [T`${exerciseCase.case}`];
@@ -41,17 +38,9 @@ const getTitle = (exerciseCase: Case): string => {
 };
 
 const CaseTitle: React.FunctionComponent<{exerciseCase: Case, children?: ReactNode[] | ReactNode}> =
-  ({exerciseCase, children}): React.ReactElement => {
-    const theme = useTheme();
-    const sx = useMemo(() => ({
-      mt: theme.spacing(topSpace),
-    }), [theme]);
-
-    return <Typography align="center" sx={sx} variant="h5">
+  ({exerciseCase, children}): React.ReactElement =>
+    <ExerciseTitle title={getTitle(exerciseCase)}>
       {children}
-    &nbsp;
-      {getTitle(exerciseCase)}
-    </Typography>;
-  };
+    </ExerciseTitle>;
 
 export default CaseTitle;

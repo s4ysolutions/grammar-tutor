@@ -14,38 +14,30 @@
  * limitations under the License.
  */
 
-import {Case, CaseExercise, GrammarCase, GrammarForm, GrammarPlurality} from '../../../../tutor';
+import {Case, CaseExercise, GrammarAnimation, GrammarCase} from '../../../../../tutor';
 import {TableCell, TableRow} from '@mui/material';
-import {CSS_CAPITALIZE} from '../constants';
-import T from '../../../../l10n';
-import Hint from '../Hint';
+import {CSS_CAPITALIZE} from '../../constants';
+import T from '../../../../../l10n';
+import Hint from '../../Hint';
 import React, {useEffect, useState} from 'react';
 
-const hintTitles = [T`${GrammarPlurality.SINGULAR}`, T`${GrammarPlurality.PLURAL}`];
+const hintTitles = [T`${GrammarAnimation.ANIMATE}`, T`${GrammarAnimation.INANIMATE}`];
 
-const TWO = 2;
-const getCase = (cases: Case[], caseKey: string, p: GrammarPlurality): string => {
+const getCase = (cases: Case[], caseKey: string, p: GrammarAnimation): string => {
   const c = GrammarCase[caseKey as keyof typeof GrammarCase];
-  return cases.filter(e => e.plurality === p && e.case === c)
-    .sort((a, b) => {
-      const aa = a.form === GrammarForm.SHORT ? TWO : a.form === GrammarForm.LONG ? 1 : 0;
-      const bb = b.form === GrammarForm.SHORT ? TWO : b.form === GrammarForm.LONG ? 1 : 0;
-      return aa - bb;
-    })
-    .map(e => e.word)
+  return cases.filter(e => e.animation === p && e.case === c).map(e => e.word)
     .join(' | ');
 };
 
-const NounHint: React.FunctionComponent<{exercise: CaseExercise}> =
+const InterrogativeHint: React.FunctionComponent<{exercise: CaseExercise}> =
   ({exercise}): React.ReactElement => {
 
     const [cases, setCases] = useState<Case[] | null>(null);
 
     useEffect(() => {
       // TODO: add setting to filter
-      const gender = exercise.exerciseCase.gender;
       exercise.noun.cases().then(cs => {
-        setCases(cs === null ? [] : cs.filter(c => !gender || c.gender === gender));
+        setCases(cs === null ? [] : cs);
       });
     }, [exercise]);
 
@@ -56,15 +48,15 @@ const NounHint: React.FunctionComponent<{exercise: CaseExercise}> =
         </TableCell >
 
         <TableCell >
-          {getCase(cases, key, GrammarPlurality.SINGULAR)}
+          {getCase(cases, key, GrammarAnimation.ANIMATE)}
         </TableCell >
 
         <TableCell >
-          {getCase(cases, key, GrammarPlurality.PLURAL)}
+          {getCase(cases, key, GrammarAnimation.INANIMATE)}
         </TableCell >
 
       </TableRow >)}
     </Hint >;
   };
 
-export default NounHint;
+export default InterrogativeHint;

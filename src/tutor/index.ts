@@ -16,6 +16,10 @@
 
 import {Observable} from 'rxjs';
 
+export type MainFormWord = string;
+export type CaseFormWord = string;
+export type PersonFormWord = string;
+
 export enum GrammarGender {
   MASCULINE= 'Masculine',
   FEMININE = 'Feminine',
@@ -47,27 +51,54 @@ export enum GrammarAnimation {
   INANIMATE = 'Inanimate',
 }
 
-type MainFormWord = string
-type CaseFormWord = string
+export enum GrammarPerson {
+  FIRST = 'First',
+  SECOND = 'Second',
+  THIRD = 'Third',
+}
 
-export interface Case {
-  word: CaseFormWord,
-  case: GrammarCase,
+export interface WithPlurality {
   plurality?: GrammarPlurality,
-  gender?: GrammarGender,
+}
+
+export interface WithForm {
   form?: GrammarForm,
+}
+
+export interface ExerciseWithWord {
+  word: CaseFormWord,
+}
+
+export interface Case extends WithPlurality, WithForm, ExerciseWithWord {
+  case: GrammarCase,
+  gender?: GrammarGender,
   animation?: GrammarAnimation,
+}
+
+export interface Person extends WithPlurality, WithForm, ExerciseWithWord{
+  person: GrammarPerson,
 }
 
 export interface Noun {
   readonly mainForm: MainFormWord;
+  readonly description?: string;
   cases(): Promise<Case[]>;
+}
+
+export interface Verb {
+  readonly mainForm: MainFormWord;
+  readonly description?: string;
+  persons(): Promise<Person[]>;
 }
 
 export interface NounsDb {
   readonly mainForms: Promise<MainFormWord[]>
-
   getNounByMainForm(word: MainFormWord): Promise<Noun>
+}
+
+export interface VerbsDb {
+  readonly mainForms: Promise<MainFormWord[]>
+  getVerbByMainForm(word: MainFormWord): Promise<Verb>
 }
 
 export interface CasesInterrogativesDb extends NounsDb {
@@ -80,6 +111,14 @@ export interface CaseExercise {
   correctAnswer: CaseFormWord;
   exerciseCase: Case,
   noun: Noun;
+}
+
+export interface ConjugationExercise {
+  mainForm: MainFormWord,
+  possibleVariants: PersonFormWord[],
+  correctAnswer: PersonFormWord;
+  exercisePerson: Person,
+  verb: Verb;
 }
 
 /**
@@ -105,6 +144,7 @@ export enum Lesson {
   PERSONAL_PRONOUNS_DECLINATION,
   INTERROGATIVE_PRONOUNS_DECLINATION,
   CASES_INTERROGATIVES_DECLINATION,
+  BITI_CONJUGATION,
 }
 
 export interface LessonStatistics {
@@ -117,14 +157,16 @@ export interface LearningProgress {
   addCorrect(lesson: Lesson, word: string): Promise<void>
   addWrong(lesson: Lesson, word: string): Promise<void>
   getLessonStatistics(lesson: Lesson): Promise<LessonStatistics>
-  observableLessonStatistics(lesson?: Lesson): Observable<LessonStatistics>
+  observableLessonStatistics(): Observable<LessonStatistics>
   reset(): Promise<void>
 }
 
 export interface Tutor {
   readonly currentLesson: Lesson
-  selectLesson(lesson: Lesson): Promise<void>;
+  selectLesson(lesson: Lesson): Promise<Lesson>;
   observableCurrentLesson(): Observable<Lesson>
   nextCaseExercise(): Promise<CaseExercise>
   checkCaseExercise(answer: string, exercise: CaseExercise): Promise<boolean>;
+  nextConjugationExercise(): Promise<ConjugationExercise>
+  checkConjugationExercise(answer: string, exercise: ConjugationExercise): Promise<boolean>;
 }

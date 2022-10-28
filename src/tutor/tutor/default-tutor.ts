@@ -20,20 +20,24 @@ import {
   Case,
   CaseExercise,
   CasesInterrogativesDb,
+  ConjugationExercise,
   GrammarAnimation,
   GrammarCase,
   GrammarForm,
   GrammarGender,
+  GrammarPerson,
   GrammarPlurality,
   LearningProgress,
   Lesson,
   Noun,
   NounsDb,
+  Person,
   Tutor,
+  VerbsDb,
+  WithPlurality,
 } from '../index';
 import DefaultLesson from './default-lesson';
 import {Observable} from 'rxjs';
-
 
 export class DefaultTutor implements Tutor {
   private readonly personalPronounsDB: NounsDb;
@@ -41,6 +45,8 @@ export class DefaultTutor implements Tutor {
   private readonly interrogativesDB: NounsDb;
 
   private readonly casesInterrogativesPronounsDB: CasesInterrogativesDb;
+
+  private readonly bitiDB: VerbsDb;
 
   private readonly learningDB: LearningProgress;
 
@@ -50,12 +56,14 @@ export class DefaultTutor implements Tutor {
     personalPronounsDB: NounsDb,
     interrogativesDB: NounsDb,
     casesInterrogativePronounsDB: CasesInterrogativesDb,
+    bitiDB: VerbsDb,
     learningDB: LearningProgress,
     lesson: DefaultLesson,
   ) {
     this.personalPronounsDB = personalPronounsDB;
     this.casesInterrogativesPronounsDB = casesInterrogativePronounsDB;
     this.interrogativesDB = interrogativesDB;
+    this.bitiDB = bitiDB;
     this.learningDB = learningDB;
     this.lesson = lesson;
   }
@@ -92,6 +100,12 @@ export class DefaultTutor implements Tutor {
         ? animations[DefaultTutor.random(animations.length)]
         : null;
 
+  private static randomPerson =
+    (persons: GrammarPerson[]): GrammarPerson | null =>
+      persons.length > 0
+        ? persons[DefaultTutor.random(persons.length)]
+        : null;
+
   private static availableGrammarCases(cases: Case[]): GrammarCase[] {
     return Array.from<GrammarCase>(cases
       .reduce((set: Set<GrammarCase>, pronounCase: Case) => {
@@ -100,7 +114,7 @@ export class DefaultTutor implements Tutor {
       }, new Set()));
   }
 
-  private static availablePluralities(cases: Case[]): GrammarPlurality[] {
+  private static availablePluralities(cases: WithPlurality[]): GrammarPlurality[] {
     return Array.from<GrammarPlurality>(cases
       .reduce((set: Set<GrammarPlurality>, nounCase: Case) => {
         set.add(nounCase.plurality);
@@ -168,6 +182,31 @@ export class DefaultTutor implements Tutor {
       }, new Set()));
   }
 
+  private static availablePersonsForPlurality(
+    persons: Person[],
+    grammarPlurality: GrammarPlurality,
+  ): GrammarPerson[] {
+    return Array.from<GrammarPerson>(persons
+      .filter(verb => verb.plurality === grammarPlurality)
+      .reduce((set: Set<GrammarPerson>, verbPerson: Person) => {
+        set.add(verbPerson.person);
+        return set;
+      }, new Set()));
+  }
+
+  private static availableFormsForPluralityAndPerson(
+    persons: Person[],
+    grammarPlurality: GrammarPlurality,
+    grammarPerson: GrammarPerson,
+  ): GrammarForm[] {
+    return Array.from<GrammarForm>(persons
+      .filter(verb => verb.plurality === grammarPlurality && verb.person === grammarPerson)
+      .reduce((set: Set<GrammarForm>, verbPerson: Person) => {
+        set.add(verbPerson.form);
+        return set;
+      }, new Set()));
+  }
+
   private static caseForNoun(
     nounCases: Case[],
     grammarPlurality: GrammarPlurality,
@@ -219,7 +258,7 @@ export class DefaultTutor implements Tutor {
       return null;
     }
     if (cases.length === 1) {
-      return cases[0];
+      return cases[0]; // assumes the source is correct
     }
 
     const filtered = cases.filter(c => grammarAnimation === c.animation);
@@ -233,6 +272,29 @@ export class DefaultTutor implements Tutor {
     }
 
     throw Error(`Too many variants (${filtered.join(',')}) for ${grammarCase}, ${grammarAnimation}`);
+  }
+
+  private static personForVerb(
+    verbPersons: Person[],
+    grammarPerson?: GrammarPerson,
+    grammarPlurality?: GrammarPlurality,
+    grammarForm?: GrammarForm,
+  ): Person | null {
+    const persons = verbPersons
+      .filter((verbPerson: Person) =>
+        (grammarPerson === undefined || verbPerson.person === grammarPerson) &&
+        (grammarPlurality === undefined || verbPerson.plurality === grammarPlurality) &&
+        (grammarForm === undefined || verbPerson.form === grammarForm));
+
+    if (persons.length === 0) {
+      return null;
+    }
+
+    if (persons.length === 1) {
+      return persons[0]; // assumes the source is correct
+    }
+
+    throw Error(`Too many variants (${persons.join(',')}) for ${grammarPerson}, ${grammarPlurality}, ${grammarForm}`);
   }
 
   private static getWeightedArray =
@@ -289,7 +351,7 @@ export class DefaultTutor implements Tutor {
         };
       }
       const grammarForm: GrammarForm = DefaultTutor.randomForm(availableForms);
-      const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase, null, grammarForm);
+      const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase, undefined, grammarForm);
       return {
         mainForm: noun.mainForm,
         exerciseCase,
@@ -302,17 +364,9 @@ export class DefaultTutor implements Tutor {
     const grammarGender: GrammarGender = DefaultTutor.randomGender(availableGenders);
     const availableForms =
       DefaultTutor.availableFormsForPluralityAndCaseAndGender(cases, grammarPlurality, grammarCase, grammarGender);
-    if (availableForms.length === 0) {
-      const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase, grammarGender);
-      return {
-        mainForm: noun.mainForm,
-        exerciseCase,
-        possibleVariants,
-        correctAnswer: exerciseCase.word,
-        noun,
-      };
-    }
-    const grammarForm: GrammarForm = DefaultTutor.randomForm(availableForms);
+
+    const grammarForm: GrammarForm = availableForms.length === 0 ? undefined : DefaultTutor.randomForm(availableForms);
+
     const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase, grammarGender, grammarForm);
     return {
       mainForm: noun.mainForm,
@@ -371,19 +425,66 @@ export class DefaultTutor implements Tutor {
     return DefaultTutor.nextCaseWithPluralExercise(noun);
   }
 
-  private checkCaseAnswer(answer: string, exercise: CaseExercise): Promise<boolean> {
-    const correct = answer === exercise.correctAnswer;
-    // TODO: hardcode lesson?
+  async nextConjugationExercise(): Promise<ConjugationExercise> {
+    const db: VerbsDb | null =
+      this.currentLesson === Lesson.BITI_CONJUGATION
+        ? this.bitiDB
+        : null;
+
+    if (db === null) {
+      throw Error(`Invalid lesson ${this.currentLesson}`);
+    }
+    const availableMainForms = await db.mainForms;
+    const randomMainForm = await this.nextMainForm(availableMainForms);
+    const verb = await db.getVerbByMainForm(randomMainForm);
+
+    const persons: Person[] = await verb.persons();
+
+    const possibleVariants = Array.from<string>(persons.reduce((set: Set<string>, person: Person) => {
+      set.add(person.word);
+      return set;
+    }, new Set()).keys());
+
+    const availablePluralities = DefaultTutor.availablePluralities(persons);
+    const grammarPlurality: GrammarPlurality = DefaultTutor.randomPlurality(availablePluralities);
+
+    const availablePersons = DefaultTutor.availablePersonsForPlurality(persons, grammarPlurality);
+    const grammarPerson: GrammarPerson = DefaultTutor.randomPerson(availablePersons);
+
+    const availableForms =
+      DefaultTutor.availableFormsForPluralityAndPerson(persons, grammarPlurality, grammarPerson);
+
+    const grammarForm = (availableForms.length === 0 ? undefined : DefaultTutor.randomForm(availableForms));
+    const exercisePerson = DefaultTutor.personForVerb(persons, grammarPerson, grammarPlurality, grammarForm);
+
+    return {
+      mainForm: verb.mainForm,
+      exercisePerson,
+      possibleVariants,
+      correctAnswer: exercisePerson.word,
+      verb,
+    };
+  }
+
+  private updateLearning(correct: boolean, key: string): Promise<boolean> {
     const promise = correct
-      ? this.learningDB.addCorrect(this.currentLesson, answer)
-      : this.learningDB.addWrong(this.currentLesson, answer);
+      ? this.learningDB.addCorrect(this.currentLesson, key)
+      : this.learningDB.addWrong(this.currentLesson, key);
     return promise.then(() => correct);
+  }
+
+  private checkCaseAnswer(answer: string, exercise: CaseExercise): Promise<boolean> {
+    return this.updateLearning(answer === exercise.correctAnswer, answer);
   }
 
   // question should be internal state?
   // eslint-disable-next-line class-methods-use-this
   checkCaseExercise(answer: string, exercise: CaseExercise): Promise<boolean> {
     return this.checkCaseAnswer(answer, exercise);
+  }
+
+  checkConjugationExercise(answer: string, exercise: ConjugationExercise): Promise<boolean> {
+    return this.updateLearning(answer === exercise.correctAnswer, answer);
   }
 
   get currentLesson() {
@@ -394,7 +495,7 @@ export class DefaultTutor implements Tutor {
     return this.lesson.observableCurrentLesson();
   }
 
-  selectLesson(lesson: Lesson): Promise<void> {
+  selectLesson(lesson: Lesson): Promise<Lesson> {
     return this.lesson.selectLesson(lesson);
   }
 }

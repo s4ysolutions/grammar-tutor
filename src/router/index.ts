@@ -20,6 +20,7 @@ export enum RouteId {
   PERSONAL_PRONOUNS_DECLENSION,
   INTERROGATIVE_PRONOUNS_DECLENSION,
   CASE_INTERROGATIVES_DECLENSION,
+  BITI_CONJUGATION,
 }
 
 export interface Route {
@@ -32,6 +33,7 @@ export interface Router {
   readonly routePersonalPronounsDeclension: Route;
   readonly routeCaseInterrogativesDeclension: Route;
   readonly routeInterrogativePronounsDeclension: Route;
+  readonly routeBitiConjugation: Route;
 
   readonly currentRoute: Route;
   readonly observableCurrentRoute: Observable<Route>;

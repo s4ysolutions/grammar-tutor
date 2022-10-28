@@ -16,25 +16,23 @@
 
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Container, IconButton} from '@mui/material';
-import Variants from '../Variants';
-import CaseTitle from '../CaseTitle';
-import diFactory from '../../../../di/default';
+import diFactory from '../../../../../di/default';
 import QuizIcon from '@mui/icons-material/Quiz';
-import T from '../../../../l10n';
+import T from '../../../../../l10n';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import {CaseExercise, GrammarForm, GrammarPlurality} from '../../../../tutor';
-import MainForm from '../MainForm';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faXmarksLines as faLong} from '@fortawesome/free-solid-svg-icons';
+import {CaseExercise} from '../../../../../tutor';
+import MainForm from '../../MainForm';
+import CaseTitle from '../CaseTitle';
+import Variants from '../../Variants';
 import CaseIcon from '../CaseIcon';
-import Interrogative from '../Interrogative';
-import NounHint from './NounHint';
+import InterrogativeHint from './InterrogativeHint';
 
 const {di} = diFactory;
 const tutor = di.tutor;
 
+let variantsKey = 1;
 
-const NounCases: React.FunctionComponent = (): React.ReactElement => {
+const InterrogativePronoun: React.FunctionComponent = (): React.ReactElement => {
 
   const [currentExercise, setCurrentExercise] = useState<CaseExercise>(null);
   useEffect(() => {
@@ -43,12 +41,15 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
 
 
   const [help, setHelp] = useState(false);
+
   const toggleHelp = () => setHelp(!help);
 
   const nextExercise = useCallback(
-    () => tutor.nextCaseExercise().then((nextEx) => {
-      setCurrentExercise(nextEx);
-    }),
+    () => {
+      tutor.nextCaseExercise().then((nextEx) => {
+        setCurrentExercise(nextEx);
+      });
+    },
     [setCurrentExercise],
   );
 
@@ -60,45 +61,30 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
   const possibleVariant = useMemo(() =>
     currentExercise === null ? null : currentExercise.possibleVariants.shuffle(), [currentExercise]);
 
-
   return currentExercise ? <Container >
-    <MainForm mainForm={currentExercise.mainForm} />
+    <MainForm mainForm={currentExercise.mainForm} small />
 
-    <CaseTitle exerciseCase={currentExercise.exerciseCase} >
-
+    <CaseTitle exerciseCase={currentExercise.exerciseCase}>
       <CaseIcon exerciseCase={currentExercise.exerciseCase} />
-
-      {currentExercise.exerciseCase.plurality === GrammarPlurality.PLURAL
-        ? <CaseIcon exerciseCase={currentExercise.exerciseCase} plural />
-        : null}
-
-      {currentExercise.exerciseCase.form === GrammarForm.LONG
-        ? <span>
-&nbsp;
-        </span> : null}
-
-      {currentExercise.exerciseCase.form === GrammarForm.LONG
-        ? <FontAwesomeIcon icon={faLong} /> : null}
-    </CaseTitle >
-
-    <Interrogative exercise={currentExercise} />
+    </CaseTitle>
 
     <Variants
       checkVariant={checkVariant}
       correctVariant={currentExercise.exerciseCase.word}
-      key={currentExercise.exerciseCase.word}
+      key={currentExercise.exerciseCase.word + variantsKey++}
       nextExercise={nextExercise}
       possibleVariants={possibleVariant} />
 
-    <Grid2 container justifyContent="right" >
-      <IconButton aria-label={T`Hint`} color="primary" onClick={toggleHelp} >
+
+    <Grid2 container justifyContent="right">
+      <IconButton aria-label={T`Hint`} color="primary" onClick={toggleHelp}>
         <QuizIcon />
       </IconButton >
-    </Grid2 >
+    </Grid2>
 
-    {help ? <NounHint exercise={currentExercise} /> : null}
+    {help ? <InterrogativeHint exercise={currentExercise} /> : null}
   </Container >
     : null;
 };
 
-export default NounCases;
+export default InterrogativePronoun;

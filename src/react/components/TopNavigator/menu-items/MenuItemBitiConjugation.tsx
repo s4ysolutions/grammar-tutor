@@ -23,14 +23,14 @@ import {RouteId} from '../../../../router';
 const {di} = diFactory;
 
 const handleClick = (): void => {
-  di.tutor.selectLesson(Lesson.CASES_INTERROGATIVES_DECLINATION).then(() =>
-    di.router.go(RouteId.CASE_INTERROGATIVES_DECLENSION));
+  di.tutor.selectLesson(Lesson.BITI_CONJUGATION).then(() =>
+    di.router.go(RouteId.BITI_CONJUGATION));
   di.uiState.mainMenuOpen = false;
 };
 
-const MenuItemCaseInterrogativesDeclension: React.FunctionComponent =
+const MenuItemBitiConjugation: React.FunctionComponent =
   (): React.ReactElement => <MenuItem onClick={handleClick}>
-    {di.router.routeCaseInterrogativesDeclension.title}
+    {di.router.routeBitiConjugation.title}
   </MenuItem>;
 
-export default MenuItemCaseInterrogativesDeclension;
+export default MenuItemBitiConjugation;

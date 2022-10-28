@@ -15,11 +15,10 @@
  */
 
 import React from 'react';
-import {Case, GrammarAnimation, GrammarGender, GrammarPlurality} from '../../../tutor';
+import {Case, GrammarAnimation, GrammarGender, GrammarPlurality} from '../../../../tutor';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faCloud, faPerson as faMan, faTree, faPersonDress as faWoman} from '@fortawesome/free-solid-svg-icons';
-
-export const CSS_SHIFT_LEFT = {position: 'relative', marginLeft: -10, opacity: 0.7} as React.CSSProperties;
+import {CSS_SHIFT_LEFT} from '../constants';
 
 const CaseIcon: React.FunctionComponent<{exerciseCase: Case, plural?: boolean}> = ({exerciseCase, plural}): React.ReactElement | null => {
   const style = plural ? CSS_SHIFT_LEFT : {};

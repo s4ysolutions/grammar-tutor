@@ -16,6 +16,7 @@
 
 import {expect} from 'chai';
 import {Subject, concat, merge, of} from 'rxjs';
+import log from '../../../src/log';
 
 describe('RXJS of', () => {
   it('concat+of', (done) => {

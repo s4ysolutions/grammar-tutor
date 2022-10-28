@@ -16,7 +16,7 @@
 
 import {use as chaiUse, expect} from 'chai';
 import chaiString from 'chai-string';
-import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Tutor} from '../../../src/tutor';
+import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Lesson, Tutor} from '../../../src/tutor';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
 import sinonApi, {SinonSandbox} from 'sinon';
 import {DefaultDi} from '../../../src/di/default';
@@ -28,10 +28,11 @@ describe('Tutor Personal Pronouns', () => {
   let tutor: Tutor;
   let sinon: SinonSandbox;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     sinon = sinonApi.createSandbox();
     const di = new DefaultDi(memoryStoragePromiseFactory({}));
     tutor = di.tutor;
+    await tutor.selectLesson(Lesson.PERSONAL_PRONOUNS_DECLINATION);
   });
 
   afterEach(() => {

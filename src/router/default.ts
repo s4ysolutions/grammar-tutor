@@ -41,6 +41,12 @@ export class DefaultRouter implements Router {
     is: (id) => id === RouteId.INTERROGATIVE_PRONOUNS_DECLENSION,
   };
 
+  routeBitiConjugation: Route = {
+    id: RouteId.BITI_CONJUGATION,
+    title: T`Biti conjugation`,
+    is: (id) => id === RouteId.BITI_CONJUGATION,
+  };
+
   currentRoute: Route = this.routePersonalPronounsDeclension;
 
   readonly observableCurrentRoute = observableCurrentRouter;
@@ -54,8 +60,14 @@ export class DefaultRouter implements Router {
       case RouteId.CASE_INTERROGATIVES_DECLENSION:
         this.currentRoute = this.routeCaseInterrogativesDeclension;
         break;
-      default:
+      case RouteId.PERSONAL_PRONOUNS_DECLENSION:
         this.currentRoute = this.routePersonalPronounsDeclension;
+        break;
+      case RouteId.BITI_CONJUGATION:
+        this.currentRoute = this.routeBitiConjugation;
+        break;
+      default:
+        throw Error(`Wrong routeId "${routeId}"`);
     }
     observableCurrentRouter.next(this.currentRoute);
   }

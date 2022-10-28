@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-import {Lesson} from '../index';
-import {Observable, Subject} from 'rxjs';
+import React, {ReactNode, useMemo} from 'react';
+import {Typography, useTheme} from '@mui/material';
 
-class DefaultLesson {
+const topSpace = 2;
 
-  currentLesson: Lesson = Lesson.PERSONAL_PRONOUNS_DECLINATION;
+const ExerciseTitle: React.FunctionComponent<{title: string, children?: ReactNode[] | ReactNode}> =
+  ({title, children}): React.ReactElement => {
+    const theme = useTheme();
+    const sx = useMemo(() => ({
+      mt: theme.spacing(topSpace),
+    }), [theme]);
 
-  private readonly subjectCurrentLesson = new Subject<Lesson>();
+    return <Typography align="center" sx={sx} variant="h5">
+      {children}
+    &nbsp;
+      {title}
+    </Typography>;
+  };
 
-  observableCurrentLesson(): Observable<Lesson> {
-    return this.subjectCurrentLesson;
-  }
-
-  selectLesson(lesson: Lesson): Promise<Lesson> {
-    this.currentLesson = lesson;
-    this.subjectCurrentLesson.next(lesson);
-    return Promise.resolve(lesson);
-  }
-}
-
-export default DefaultLesson;
+export default ExerciseTitle;

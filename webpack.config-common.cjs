@@ -25,12 +25,12 @@ const CopyPlugin = require('copy-webpack-plugin');
 const TARGET = process.env.npm_lifecycle_event;
 const PATH_SRC = path.resolve(__dirname, 'src');
 const PATH_DIST = path.resolve(__dirname, 'dist');
+const PATH_TEST = path.resolve(__dirname, './tests');
 const PATH_NODE_MODULES = path.resolve(__dirname, 'node_modules');
 const PATH_NPM = [PATH_NODE_MODULES];
 const PATH_NPM_CSS = [
   path.resolve(PATH_NODE_MODULES, 'normalize.css'),
   path.resolve(PATH_NODE_MODULES, 'reset-css'),
-  path.resolve(PATH_NODE_MODULES, 'ol'),
 ];
 const PATH_NPM_SASS = [];
 const PATH_CSS = PATH_NPM_CSS.concat(PATH_SRC);
@@ -42,7 +42,7 @@ const PATH_IMAGES = PATH_NPM_IMAGES.concat(PATH_SRC);
 
 const ruleBabelStatic = {
   test: /\.jsx?$/u,
-  exclude: /node_modules/u,
+  exclude: [/node_modules/u, PATH_TEST, './tests'],
   use: [
     {
       loader: 'babel-loader',
@@ -56,7 +56,7 @@ const ruleBabelStatic = {
 
 const ruleTypescriptGen = (isDevelopment) => ({
   test: /\.tsx?$/u,
-  exclude: /node_modules/u,
+  exclude: [/node_modules/u, PATH_TEST],
   use: [
     {
       loader: 'ts-loader',

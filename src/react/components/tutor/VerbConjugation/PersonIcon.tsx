@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-import {Lesson} from '../index';
-import {Observable, Subject} from 'rxjs';
+import React from 'react';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPerson as faMan} from '@fortawesome/free-solid-svg-icons';
+import {CSS_SHIFT_LEFT} from '../constants';
 
-class DefaultLesson {
+const PersonIcon: React.FunctionComponent<{plural?: boolean}> = ({plural}): React.ReactElement | null => {
+  const style = plural ? CSS_SHIFT_LEFT : {};
+  // has gender return man/woman/cloud
+  return <FontAwesomeIcon icon={faMan} style={style} />;
+};
 
-  currentLesson: Lesson = Lesson.PERSONAL_PRONOUNS_DECLINATION;
-
-  private readonly subjectCurrentLesson = new Subject<Lesson>();
-
-  observableCurrentLesson(): Observable<Lesson> {
-    return this.subjectCurrentLesson;
-  }
-
-  selectLesson(lesson: Lesson): Promise<Lesson> {
-    this.currentLesson = lesson;
-    this.subjectCurrentLesson.next(lesson);
-    return Promise.resolve(lesson);
-  }
-}
-
-export default DefaultLesson;
+export default PersonIcon;

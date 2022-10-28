@@ -19,7 +19,7 @@ import diFactory, {DefaultDi} from '../../../../di/default';
 import {Di} from '../../../../di';
 import memoryStoragePromiseFactory from '../../../../../tests/mocks/kv-promice/memoryStorage';
 import renderer from 'react-test-renderer';
-import CaseIcon from '../CaseIcon';
+import CaseIcon from '../declension/CaseIcon';
 import {Case, GrammarAnimation, GrammarCase, GrammarGender, GrammarPlurality} from '../../../../tutor';
 
 describe('<CaseIcon>', () => {

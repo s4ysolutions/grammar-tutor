@@ -31,9 +31,11 @@ const NO_DATA = -100;
 const PCT_100 = 100;
 const pct = (total: number, wrong: number): number => total === 0 ? 0 : PCT_100 - Math.ceil(wrong * PCT_100 / total);
 
+const observable = learningProgress.observableLessonStatistics();
+
 const Statistics: React.FunctionComponent = (): React.ReactElement => {
   const {total, wrong} = useObservable<LessonStatistics>(
-    learningProgress.observableLessonStatistics(),
+    observable,
     {total: NO_DATA, wrong: 0},
   );
   useEffect(() => {

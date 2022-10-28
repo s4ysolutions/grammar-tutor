@@ -16,3 +16,5 @@
  */
 
 export const CSS_CAPITALIZE = {'textTransform': 'capitalize', 'fontWeight': 'bold'};
+export const CSS_BOLD = {'fontWeight': 'bold'};
+export const CSS_SHIFT_LEFT = {position: 'relative', marginLeft: -10, opacity: 0.7} as React.CSSProperties;

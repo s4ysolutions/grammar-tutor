@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import {GrammarPerson} from '../tutor';
+
 const translation = {
   'en': {
     'App title': 'Grammar',
@@ -28,6 +30,10 @@ const translation = {
 
     'Singular': 'sing.',
     'Plural': 'pl.',
+
+    [GrammarPerson.FIRST]: '1st.',
+    [GrammarPerson.SECOND]: '2nd.',
+    [GrammarPerson.THIRD]: '3rd.',
   },
   'ru': {
     'App title': 'Грамматика',
@@ -36,6 +42,7 @@ const translation = {
     'Case interrogatives declension': 'Склонение падежных вопросов',
     'Interrogative pronouns declension': 'Склонение вопросительных местоимений',
     'Personal pronouns declension': 'Склонение личных местоимений',
+    'Biti conjugation': 'Спряжение глагола "бити"',
 
     'Reset': 'Сбросить результаты',
 
@@ -58,6 +65,10 @@ const translation = {
 
     'Inanimate': 'неодушевленный',
     'Animate': 'одушевленный',
+
+    [GrammarPerson.FIRST]: '1-e л.',
+    [GrammarPerson.SECOND]: '2-e л.',
+    [GrammarPerson.THIRD]: '3-e л.',
 
     'Which?': 'Который? Какой из?',
     'What kind?': 'Какой?',

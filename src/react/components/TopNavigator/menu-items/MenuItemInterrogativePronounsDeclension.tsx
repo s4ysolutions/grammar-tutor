@@ -23,8 +23,8 @@ import {RouteId} from '../../../../router';
 const {di} = diFactory;
 
 const handleClick = (): void => {
-  di.router.go(RouteId.INTERROGATIVE_PRONOUNS_DECLENSION);
-  di.tutor.selectLesson(Lesson.INTERROGATIVE_PRONOUNS_DECLINATION).then();
+  di.tutor.selectLesson(Lesson.INTERROGATIVE_PRONOUNS_DECLINATION).then(() =>
+    di.router.go(RouteId.INTERROGATIVE_PRONOUNS_DECLENSION));
   di.uiState.mainMenuOpen = false;
 };
 

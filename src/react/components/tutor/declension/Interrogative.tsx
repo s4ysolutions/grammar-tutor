@@ -15,8 +15,8 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {CaseExercise} from '../../../tutor';
-import diFactory from '../../../di/default';
+import {CaseExercise} from '../../../../tutor';
+import diFactory from '../../../../di/default';
 import {Typography, useTheme} from '@mui/material';
 
 const {di} = diFactory;

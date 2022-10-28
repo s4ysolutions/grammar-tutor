@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {Case, GrammarCase, GrammarGender, GrammarPlurality} from '../../index';
+import {Case, GrammarCase, GrammarGender, GrammarPlurality, MainFormWord} from '../../index';
 
-const staticNouns: Record<string, Case[]> = {
+const staticNouns: Record<MainFormWord, Case[]> = {
   'template': [
     {
       word: '',

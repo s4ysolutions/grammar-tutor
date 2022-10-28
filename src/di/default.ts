@@ -15,19 +15,20 @@
  */
 
 import indexedDbFactory from '../kv/promise/indexedDB';
-import {CasesInterrogativesDb, LearningProgress, NounsDb, Tutor} from '../tutor';
+import {CasesInterrogativesDb, LearningProgress, NounsDb, Tutor, VerbsDb} from '../tutor';
 import {DefaultRouter} from '../router/default';
 import {Router} from '../router';
 import {DefaultUiState} from '../ui-state/default';
 import {UiState} from '../ui-state';
 import {Di, DiFactory} from './index';
-import {DefaultPersonalPronounsDb} from '../tutor/databases/case/personal-pronouns';
+import {DefaultPersonalPronounsDb} from '../tutor/databases/declination/personal-pronouns';
 import DefaultLesson from '../tutor/tutor/default-lesson';
 import {KvPromiseLearningDb} from '../tutor/progress/kv-promise-progress-db';
 import {DefaultTutor} from '../tutor/tutor/default-tutor';
 import {KvPromise} from '../kv/promise';
-import {DefaultCaseInterrogativesDb} from '../tutor/databases/case/case-interrogatives';
-import {DefaultInterrogativePronounsDb} from '../tutor/databases/case/interrogative-pronouns';
+import {DefaultCaseInterrogativesDb} from '../tutor/databases/declination/case-interrogatives';
+import {DefaultInterrogativePronounsDb} from '../tutor/databases/declination/interrogative-pronouns';
+import {DefaultBitiDb} from '../tutor/databases/conjugation/biti';
 
 export class DefaultDi implements Di {
   private readonly _kvPromise: KvPromise;
@@ -37,6 +38,8 @@ export class DefaultDi implements Di {
   private readonly _interrogativePronounsDb: NounsDb;
 
   private readonly _caseInterrogativesDb: CasesInterrogativesDb;
+
+  private readonly _bitiDb: VerbsDb;
 
   private readonly _lesson = new DefaultLesson();
 
@@ -53,11 +56,13 @@ export class DefaultDi implements Di {
     this._personalPronounsDb = new DefaultPersonalPronounsDb();
     this._interrogativePronounsDb = new DefaultInterrogativePronounsDb();
     this._caseInterrogativesDb = new DefaultCaseInterrogativesDb();
+    this._bitiDb = new DefaultBitiDb();
     this._learningProgress = new KvPromiseLearningDb(this._kvPromise, this._lesson.observableCurrentLesson());
     this._tutor = new DefaultTutor(
       this._personalPronounsDb,
       this._interrogativePronounsDb,
       this._caseInterrogativesDb,
+      this._bitiDb,
       this._learningProgress,
       this._lesson,
     );

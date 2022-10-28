@@ -1,5 +1,3 @@
-// noinspection BadExpressionStatementJS
-
 /*
  * Copyright 2022 by s4y.solutions
  *
@@ -18,10 +16,12 @@
 
 // noinspection BadExpressionStatementJS
 
+// noinspection BadExpressionStatementJS
+
 import {use as chaiUse, expect} from 'chai';
 import chaiArray from 'chai-arrays';
 import {GrammarCase, GrammarForm, GrammarPlurality} from '../../../src/tutor';
-import {DefaultPersonalPronounsDb} from '../../../src/tutor/databases/case/personal-pronouns';
+import {DefaultPersonalPronounsDb} from '../../../src/tutor/databases/declination/personal-pronouns';
 
 chaiUse(chaiArray);
 
