@@ -92,3 +92,54 @@ All the code, including tests, is 100% typed with TypeScript.
 
 In order to be used on the mobile devices without access to internet the app registers the worker that caches the JS
 bundle built by WebPack and intercept all the fetches to look into the cache for the resource first.
+
+## Adding new lessons
+
+### Create exercises database
+
+The database must implement either `NounsDb` or `VerbsDb` interfaces;
+
+Currently, databases are implemented with static JS-objects in `src/tutor/databases` folder. Either some of existing
+ones can be used as starting point or the DB can be created from scratch;
+
+### Add a new lesson to tutor
+
+#### Add an instance of the database 
+
+The instances of databases are kept as fields of the class `DefaultTutor` in `src/tutor/tutor/default-tutor.ts` but
+created outside the class and passed by a constructor arguments;
+
+#### Register new lesson
+
+Add another constant to enum `Lesson` in `src/tutor/index.ts`.
+
+### Setup database for the lesson
+Choose the correct database instance according to the selected lesson in `nextConjugationExercise` or `nextCaseExercise` in
+`src/tutor/tutor/default-tutor.ts`.
+
+### Set up router
+
+Add a constant to enum `RouteId` in `src/router/index.ts`.
+
+Add a field satisfying `Route` interface to the `DefaultRouter` class inn `src/router/default.ts` and a case branch
+within `go(routeId: RouteId): void` method of the same class.
+
+### Fix DI
+
+The class `DefaultTutor` receives the necessary components from the outside, and they must be created by DI service in
+the file `src/di/defaults.ts`. This is the place where the database instantiated. 
+
+### Add menu item
+
+The folder `src/react/components/TopNavigator/menu-items` contains `MenuItem*` react components to display the name of
+new lesson (usually picked up from the Router object), to select the lesson with `Tutor.selectLesson` method (so tutor
+knows the databse to use) and call`go` method of the `Router` instance (cause UI to reflect new state).
+
+Add the new menu item to `src/react/components/TopNavigator/MenuMain.tsx` component.
+
+### Show the lesson screen
+
+The component `src/react/components/Workspace/index.tsx` observes the router state and selects the content according to
+`routeId` state variable. There are 2 universal components `NounCases` and `VerbConjugation` to show lessons of the
+tutor. Because the same component used for different lesson it necessary to have `key` attribute of them in order to
+force them to be re-rendered on route change.

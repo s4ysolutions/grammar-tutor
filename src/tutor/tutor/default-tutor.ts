@@ -50,6 +50,10 @@ export class DefaultTutor implements Tutor {
 
   private readonly bitiDb: VerbsDb;
 
+  private readonly htetiDb: VerbsDb;
+
+  private readonly verbsDb: VerbsDb;
+
   private readonly learningDb: LearningProgress;
 
   private readonly lesson: DefaultLesson;
@@ -60,6 +64,8 @@ export class DefaultTutor implements Tutor {
     casesInterrogativePronounsDB: CasesInterrogativesDb,
     nounsDB: NounsDb,
     bitiDB: VerbsDb,
+    htetiDB: VerbsDb,
+    verbsDB: VerbsDb,
     learningDB: LearningProgress,
     lesson: DefaultLesson,
   ) {
@@ -68,6 +74,8 @@ export class DefaultTutor implements Tutor {
     this.interrogativesDb = interrogativesDB;
     this.nounsDb = nounsDB;
     this.bitiDb = bitiDB;
+    this.htetiDb = htetiDB;
+    this.verbsDb = verbsDB;
     this.learningDb = learningDB;
     this.lesson = lesson;
   }
@@ -435,7 +443,11 @@ export class DefaultTutor implements Tutor {
     const db: VerbsDb | null =
       this.currentLesson === Lesson.BITI_CONJUGATION
         ? this.bitiDb
-        : null;
+        : this.currentLesson === Lesson.HTETI_CONJUGATION
+          ? this.htetiDb
+          : this.currentLesson === Lesson.VERBS_CONJUGATION
+            ? this.verbsDb
+            : null;
 
     if (db === null) {
       throw Error(`Invalid lesson ${this.currentLesson}`);

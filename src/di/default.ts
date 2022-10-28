@@ -30,6 +30,8 @@ import {DefaultCaseInterrogativesDb} from '../tutor/databases/declination/case-i
 import {DefaultInterrogativePronounsDb} from '../tutor/databases/declination/interrogative-pronouns';
 import {DefaultBitiDb} from '../tutor/databases/conjugation/biti';
 import {DefaultNounsDb} from '../tutor/databases/declination/nouns';
+import {DefaultHtetiDb} from '../tutor/databases/conjugation/hteti';
+import {DefaultVerbsDb} from '../tutor/databases/conjugation/verbs';
 
 export class DefaultDi implements Di {
   private readonly _kvPromise: KvPromise;
@@ -43,6 +45,10 @@ export class DefaultDi implements Di {
   private readonly _nounsDb: NounsDb;
 
   private readonly _bitiDb: VerbsDb;
+
+  private readonly _htetiDb: VerbsDb;
+
+  private readonly _verbsDb: VerbsDb;
 
   private readonly _lesson = new DefaultLesson();
 
@@ -61,6 +67,8 @@ export class DefaultDi implements Di {
     this._caseInterrogativesDb = new DefaultCaseInterrogativesDb();
     this._nounsDb = new DefaultNounsDb();
     this._bitiDb = new DefaultBitiDb();
+    this._htetiDb = new DefaultHtetiDb();
+    this._verbsDb = new DefaultVerbsDb();
     this._learningProgress = new KvPromiseLearningDb(this._kvPromise, this._lesson.observableCurrentLesson());
     this._tutor = new DefaultTutor(
       this._personalPronounsDb,
@@ -68,6 +76,8 @@ export class DefaultDi implements Di {
       this._caseInterrogativesDb,
       this._nounsDb,
       this._bitiDb,
+      this._htetiDb,
+      this._verbsDb,
       this._learningProgress,
       this._lesson,
     );

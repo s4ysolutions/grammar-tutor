@@ -24,6 +24,8 @@ import MenuItemInterrogativePronounsDeclension from './menu-items/MenuItemInterr
 import MenuItemCaseInterrogativesDeclension from './menu-items/MenuItemCaseInterrogativesDeclension';
 import MenuItemBitiConjugation from './menu-items/MenuItemBitiConjugation';
 import MenuItemNounsDeclension from './menu-items/MenuItemNounsDeclension';
+import MenuItemHtetiConjugation from './menu-items/MenuItemHtetiConjugation';
+import MenuItemVerbsConjugation from './menu-items/MenuItemVerbsConjugation';
 
 const {di} = diFactory;
 const uiState = di.uiState;
@@ -53,7 +55,11 @@ const MenuMain: React.FunctionComponent<{anchorEl: Element}> =
 
       <MenuItemCaseInterrogativesDeclension />
 
+      <MenuItemVerbsConjugation />
+
       <MenuItemBitiConjugation />
+
+      <MenuItemHtetiConjugation />
 
       <Divider />
 

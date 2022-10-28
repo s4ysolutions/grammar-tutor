@@ -21,7 +21,6 @@ import T from '../l10n';
 
 const observableCurrentRouter = new Subject<Route>();
 
-
 export class DefaultRouter implements Router {
   routeNounsDeclension: Route = {
     id: RouteId.NOUNS_DECLENSION,
@@ -53,6 +52,18 @@ export class DefaultRouter implements Router {
     is: (id) => id === RouteId.BITI_CONJUGATION,
   };
 
+  routeHtetiConjugation: Route = {
+    id: RouteId.HTETI_CONJUGATION,
+    title: T`Hteti conjugation`,
+    is: (id) => id === RouteId.HTETI_CONJUGATION,
+  };
+
+  routeVerbsConjugation: Route = {
+    id: RouteId.VERBS_CONJUGATION,
+    title: T`Verbs conjugation`,
+    is: (id) => id === RouteId.VERBS_CONJUGATION,
+  };
+
   currentRoute: Route = this.routeNounsDeclension;
 
   readonly observableCurrentRoute = observableCurrentRouter;
@@ -74,6 +85,12 @@ export class DefaultRouter implements Router {
         break;
       case RouteId.BITI_CONJUGATION:
         this.currentRoute = this.routeBitiConjugation;
+        break;
+      case RouteId.HTETI_CONJUGATION:
+        this.currentRoute = this.routeHtetiConjugation;
+        break;
+      case RouteId.VERBS_CONJUGATION:
+        this.currentRoute = this.routeVerbsConjugation;
         break;
       default:
         throw Error(`Wrong routeId "${routeId}"`);
