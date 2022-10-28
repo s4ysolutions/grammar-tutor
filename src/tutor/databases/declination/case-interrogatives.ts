@@ -112,6 +112,8 @@ export class DefaultCaseInterrogativesDb implements CasesInterrogativesDb {
 
   // eslint-disable-next-line class-methods-use-this
   getInterrogativeForCase(grammarCase: GrammarCase): Promise<Case[]> {
-    return Promise.resolve(staticDB[root].filter(e => e.case === grammarCase));
+    return Promise
+      .resolve(staticDB[root]
+        .filter(e => e.case === grammarCase));
   }
 }

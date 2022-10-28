@@ -40,15 +40,17 @@ import DefaultLesson from './default-lesson';
 import {Observable} from 'rxjs';
 
 export class DefaultTutor implements Tutor {
-  private readonly personalPronounsDB: NounsDb;
+  private readonly personalPronounsDb: NounsDb;
 
-  private readonly interrogativesDB: NounsDb;
+  private readonly interrogativesDb: NounsDb;
 
-  private readonly casesInterrogativesPronounsDB: CasesInterrogativesDb;
+  private readonly casesInterrogativesPronounsDb: CasesInterrogativesDb;
 
-  private readonly bitiDB: VerbsDb;
+  private readonly nounsDb: NounsDb;
 
-  private readonly learningDB: LearningProgress;
+  private readonly bitiDb: VerbsDb;
+
+  private readonly learningDb: LearningProgress;
 
   private readonly lesson: DefaultLesson;
 
@@ -56,15 +58,17 @@ export class DefaultTutor implements Tutor {
     personalPronounsDB: NounsDb,
     interrogativesDB: NounsDb,
     casesInterrogativePronounsDB: CasesInterrogativesDb,
+    nounsDB: NounsDb,
     bitiDB: VerbsDb,
     learningDB: LearningProgress,
     lesson: DefaultLesson,
   ) {
-    this.personalPronounsDB = personalPronounsDB;
-    this.casesInterrogativesPronounsDB = casesInterrogativePronounsDB;
-    this.interrogativesDB = interrogativesDB;
-    this.bitiDB = bitiDB;
-    this.learningDB = learningDB;
+    this.personalPronounsDb = personalPronounsDB;
+    this.casesInterrogativesPronounsDb = casesInterrogativePronounsDB;
+    this.interrogativesDb = interrogativesDB;
+    this.nounsDb = nounsDB;
+    this.bitiDb = bitiDB;
+    this.learningDb = learningDB;
     this.lesson = lesson;
   }
 
@@ -309,7 +313,7 @@ export class DefaultTutor implements Tutor {
     } else {
       const statPromises: Promise<{word: string, weight: number}>[] =
         // TODO: hardcode lesson?
-        wordsSet.map(w => this.learningDB.getWordStatistics(this.currentLesson, w).then(stat => ({word: w, weight: stat.weight})));
+        wordsSet.map(w => this.learningDb.getWordStatistics(this.currentLesson, w).then(stat => ({word: w, weight: stat.weight})));
       const wordWeights = await Promise.all(statPromises);
 
       const weighted: string[] = DefaultTutor.getWeightedArray(wordWeights);
@@ -404,17 +408,19 @@ export class DefaultTutor implements Tutor {
 
   async nextCaseExercise(): Promise<CaseExercise> {
     if (this.currentLesson === Lesson.CASES_INTERROGATIVES_DECLINATION) {
-      const availableMainForms = await this.casesInterrogativesPronounsDB.mainForms;
+      const availableMainForms = await this.casesInterrogativesPronounsDb.mainForms;
       const randomMainForm = await this.nextMainForm(availableMainForms);
-      const noun: Noun = await this.casesInterrogativesPronounsDB.getNounByMainForm(randomMainForm);
+      const noun: Noun = await this.casesInterrogativesPronounsDb.getNounByMainForm(randomMainForm);
       return DefaultTutor.nextCaseWithAnimationExercise(noun);
     }
     const db: NounsDb | null =
       this.currentLesson === Lesson.PERSONAL_PRONOUNS_DECLINATION
-        ? this.personalPronounsDB
+        ? this.personalPronounsDb
         : this.currentLesson === Lesson.INTERROGATIVE_PRONOUNS_DECLINATION
-          ? await this.interrogativesDB
-          : null;
+          ? await this.interrogativesDb
+          : this.currentLesson === Lesson.NOUNS_DECLINATION
+            ? await this.nounsDb
+            : null;
 
     if (db === null) {
       throw Error(`Invalid lesson ${this.currentLesson}`);
@@ -428,7 +434,7 @@ export class DefaultTutor implements Tutor {
   async nextConjugationExercise(): Promise<ConjugationExercise> {
     const db: VerbsDb | null =
       this.currentLesson === Lesson.BITI_CONJUGATION
-        ? this.bitiDB
+        ? this.bitiDb
         : null;
 
     if (db === null) {
@@ -468,8 +474,8 @@ export class DefaultTutor implements Tutor {
 
   private updateLearning(correct: boolean, key: string): Promise<boolean> {
     const promise = correct
-      ? this.learningDB.addCorrect(this.currentLesson, key)
-      : this.learningDB.addWrong(this.currentLesson, key);
+      ? this.learningDb.addCorrect(this.currentLesson, key)
+      : this.learningDb.addWrong(this.currentLesson, key);
     return promise.then(() => correct);
   }
 

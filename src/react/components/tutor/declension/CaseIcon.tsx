@@ -15,35 +15,53 @@
  */
 
 import React from 'react';
-import {Case, GrammarAnimation, GrammarGender, GrammarPlurality} from '../../../../tutor';
+import {Case, GrammarAnimation, GrammarGender} from '../../../../tutor';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faCloud, faPerson as faMan, faTree, faPersonDress as faWoman} from '@fortawesome/free-solid-svg-icons';
+import {
+  faCloud,
+  faVenus as faFemale,
+  faMars as faMale,
+  faPerson as faMan,
+  faNeuter,
+  faTree,
+  faPersonDress as faWoman,
+} from '@fortawesome/free-solid-svg-icons';
 import {CSS_SHIFT_LEFT} from '../constants';
 
 const CaseIcon: React.FunctionComponent<{exerciseCase: Case, plural?: boolean}> = ({exerciseCase, plural}): React.ReactElement | null => {
   const style = plural ? CSS_SHIFT_LEFT : {};
-  // has gender return man/woman/cloud
-  if (exerciseCase.gender === GrammarGender.NEUTER) {
-    return <FontAwesomeIcon icon={faCloud} style={style} />;
-  } else if (exerciseCase.gender === GrammarGender.FEMININE) {
-    return <FontAwesomeIcon icon={faWoman} style={style} />;
-  } else if (exerciseCase.gender === GrammarGender.MASCULINE) {
-    return <FontAwesomeIcon icon={faMan} style={style} />;
-  }
-  // has plurality return man/tree
-  if (exerciseCase.plurality === GrammarPlurality.PLURAL || exerciseCase.plurality === GrammarPlurality.SINGULAR) {
-    if (exerciseCase.animation === GrammarAnimation.INANIMATE) {
-      return <FontAwesomeIcon icon={faTree} style={style} />;
+  if (exerciseCase.animation === undefined || exerciseCase.animation === GrammarAnimation.ANIMATE) {
+    // has gender return man/woman/cloud
+    if (exerciseCase.gender === GrammarGender.NEUTER) {
+      return <FontAwesomeIcon icon={faCloud} style={style} />;
+    } else if (exerciseCase.gender === GrammarGender.FEMININE) {
+      return <FontAwesomeIcon icon={faWoman} style={style} />;
+    } else if (exerciseCase.gender === GrammarGender.MASCULINE) {
+      return <FontAwesomeIcon icon={faMan} style={style} />;
     }
+  }
+
+  if (exerciseCase.gender === GrammarGender.NEUTER) {
+    return <FontAwesomeIcon icon={faNeuter} style={style} />;
+  } else if (exerciseCase.gender === GrammarGender.FEMININE) {
+    return <FontAwesomeIcon icon={faFemale} style={style} />;
+  } else if (exerciseCase.gender === GrammarGender.MASCULINE) {
+    return <FontAwesomeIcon icon={faMale} style={style} />;
+  }
+
+  // has plurality return man/tree
+  if (exerciseCase.plurality !== undefined) {
     return <FontAwesomeIcon icon={faMan} style={style} />;
   }
-  // has animation return man/tree
+
+  // no gender
   if (exerciseCase.animation === GrammarAnimation.ANIMATE) {
     return <FontAwesomeIcon icon={faMan} style={style} />;
   }
   if (exerciseCase.animation === GrammarAnimation.INANIMATE) {
     return <FontAwesomeIcon icon={faTree} style={style} />;
   }
+
   return null;
 };
 

@@ -31,6 +31,9 @@ const translation = {
     'Singular': 'sing.',
     'Plural': 'pl.',
 
+    'Inanimate': 'inanimate',
+    'Animate': 'animate',
+
     [GrammarPerson.FIRST]: '1st.',
     [GrammarPerson.SECOND]: '2nd.',
     [GrammarPerson.THIRD]: '3rd.',
@@ -39,10 +42,11 @@ const translation = {
     'App title': 'Грамматика',
     'Hint': 'Подсказка',
 
+    'Biti conjugation': 'Спряжение глагола "бити"',
     'Case interrogatives declension': 'Склонение падежных вопросов',
     'Interrogative pronouns declension': 'Склонение вопросительных местоимений',
+    'Nouns declension': 'Склонение существительных',
     'Personal pronouns declension': 'Склонение личных местоимений',
-    'Biti conjugation': 'Спряжение глагола "бити"',
 
     'Reset': 'Сбросить результаты',
 

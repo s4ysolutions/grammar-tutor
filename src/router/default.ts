@@ -23,6 +23,12 @@ const observableCurrentRouter = new Subject<Route>();
 
 
 export class DefaultRouter implements Router {
+  routeNounsDeclension: Route = {
+    id: RouteId.NOUNS_DECLENSION,
+    title: T`Nouns declension`,
+    is: (id) => id === RouteId.NOUNS_DECLENSION,
+  };
+
   routePersonalPronounsDeclension: Route = {
     id: RouteId.PERSONAL_PRONOUNS_DECLENSION,
     title: T`Personal pronouns declension`,
@@ -47,13 +53,16 @@ export class DefaultRouter implements Router {
     is: (id) => id === RouteId.BITI_CONJUGATION,
   };
 
-  currentRoute: Route = this.routePersonalPronounsDeclension;
+  currentRoute: Route = this.routeNounsDeclension;
 
   readonly observableCurrentRoute = observableCurrentRouter;
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
   go(routeId: RouteId): void {
     switch (routeId) {
+      case RouteId.NOUNS_DECLENSION:
+        this.currentRoute = this.routeNounsDeclension;
+        break;
       case RouteId.INTERROGATIVE_PRONOUNS_DECLENSION:
         this.currentRoute = this.routeInterrogativePronounsDeclension;
         break;

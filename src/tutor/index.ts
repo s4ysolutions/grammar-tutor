@@ -79,15 +79,17 @@ export interface Person extends WithPlurality, WithForm, ExerciseWithWord{
   person: GrammarPerson,
 }
 
-export interface Noun {
-  readonly mainForm: MainFormWord;
+export interface WithDescription {
   readonly description?: string;
+}
+
+export interface Noun extends WithDescription{
+  readonly mainForm: MainFormWord;
   cases(): Promise<Case[]>;
 }
 
-export interface Verb {
+export interface Verb extends WithDescription{
   readonly mainForm: MainFormWord;
-  readonly description?: string;
   persons(): Promise<Person[]>;
 }
 
@@ -141,6 +143,7 @@ export interface LearnedWordStatistics extends LearnedWordStaticsBean{
 }
 
 export enum Lesson {
+  NOUNS_DECLINATION,
   PERSONAL_PRONOUNS_DECLINATION,
   INTERROGATIVE_PRONOUNS_DECLINATION,
   CASES_INTERROGATIVES_DECLINATION,

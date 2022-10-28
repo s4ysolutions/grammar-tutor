@@ -37,6 +37,7 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
     maxWidth="sm"
     sx={sx} >
     {
+      route.is(RouteId.NOUNS_DECLENSION) && <NounCases key={route.id} /> ||
       route.is(RouteId.PERSONAL_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
       route.is(RouteId.INTERROGATIVE_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
       route.is(RouteId.CASE_INTERROGATIVES_DECLENSION) && <InterrogativePronouns /> ||

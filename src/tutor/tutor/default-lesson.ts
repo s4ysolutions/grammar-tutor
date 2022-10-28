@@ -19,7 +19,7 @@ import {Observable, Subject} from 'rxjs';
 
 class DefaultLesson {
 
-  currentLesson: Lesson = Lesson.PERSONAL_PRONOUNS_DECLINATION;
+  currentLesson: Lesson = Lesson.NOUNS_DECLINATION;
 
   private readonly subjectCurrentLesson = new Subject<Lesson>();
 

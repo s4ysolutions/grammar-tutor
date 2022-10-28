@@ -29,6 +29,7 @@ import {faXmarksLines as faLong} from '@fortawesome/free-solid-svg-icons';
 import CaseIcon from '../CaseIcon';
 import Interrogative from '../Interrogative';
 import NounHint from './NounHint';
+import Description from '../../Description';
 
 const {di} = diFactory;
 const tutor = di.tutor;
@@ -90,6 +91,8 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
       key={currentExercise.exerciseCase.word + variantsKey++}
       nextExercise={nextExercise}
       possibleVariants={possibleVariant} />
+
+    {currentExercise.noun.description ? <Description withDescription={currentExercise.noun} /> : null}
 
     <Grid2 container justifyContent="right" >
       <IconButton aria-label={T`Hint`} color="primary" onClick={toggleHelp} >

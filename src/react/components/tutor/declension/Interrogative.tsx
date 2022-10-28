@@ -15,7 +15,7 @@
  */
 
 import React, {useEffect, useMemo, useState} from 'react';
-import {CaseExercise} from '../../../../tutor';
+import {CaseExercise, GrammarAnimation} from '../../../../tutor';
 import diFactory from '../../../../di/default';
 import {Typography, useTheme} from '@mui/material';
 
@@ -24,14 +24,22 @@ const interrogativePronounsDb = di.caseInterrogativesDb;
 
 const Interrogative: React.FunctionComponent<{exercise: CaseExercise | null}> =
   ({exercise}): React.ReactElement | null => {
-    const [interrogative, setInterrogative] = useState<string[] | null>(null);
+    const [interrogative, setInterrogative] = useState<string>('');
 
     useEffect(() => {
       if (exercise === null) {
         setInterrogative(null);
       } else {
         interrogativePronounsDb.getInterrogativeForCase(exercise.exerciseCase.case)
-          .then(cs => setInterrogative(cs.length === 0 ? null : cs.map(c => c.word)));
+          .then(cases => {
+            const filtered = (exercise.exerciseCase.animation === GrammarAnimation.ANIMATE)
+              ? cases.filter(c => c.animation === GrammarAnimation.ANIMATE)
+              : (exercise.exerciseCase.animation === GrammarAnimation.INANIMATE)
+                ? cases.filter(c => c.animation === GrammarAnimation.INANIMATE)
+                : cases;
+
+            setInterrogative(filtered.map(f => f.word).join('; '));
+          });
       }
     }, [exercise]);
 
@@ -42,7 +50,7 @@ const Interrogative: React.FunctionComponent<{exercise: CaseExercise | null}> =
 
     return interrogative
       ? <Typography align="center" sx={sx} variant="h6">
-        {interrogative.join('; ')}
+        {interrogative}
       </Typography>
       : null;
   };
