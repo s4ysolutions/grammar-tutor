@@ -18,9 +18,9 @@
 import {GrammarPerson, GrammarPlurality, MainFormWord, Person, Verb, VerbsDb} from '../../index';
 
 const rules: Record<number, string> = {
-  10: '-am [-ati]. 3rd, sing. -a; 3rd, pl. ➟ [aju]',
-  20: '-im [-iti, -ati]. 3rd, sing. -i; 3rd, pl. ➟ [e]',
-  30: '-em [...]. 3rd, sing. -e; 3rd, pl. ➟ [eju],[u]',
+  10: '-аm [-аtи]. 3rd, sing. [а]; 3rd, pl. ➟ [аjу]',
+  20: '-иm [-иtи, -atи]. 3rd, sing. [и]; 3rd, pl. ➟ [e]',
+  30: '-em [...]. 3rd, sing. [e]; 3rd, pl. ➟ [ejу],[у]',
 };
 
 const staticDb: Record<MainFormWord, { description?: string, rules: number[], persons: Person[]}> = {

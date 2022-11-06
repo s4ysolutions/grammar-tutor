@@ -20,6 +20,7 @@ import {CSS_BOLD} from '../constants';
 import T from '../../../../l10n';
 import Hint from '../Hint';
 import React, {useEffect, useState} from 'react';
+import Rules from '../Rules';
 
 const hintTitles = [T`${GrammarPlurality.SINGULAR}`, T`${GrammarPlurality.PLURAL}`];
 
@@ -36,7 +37,7 @@ const getPerson = (persons: Person[], personKey: string, p: GrammarPlurality): s
     .join(' | ');
 };
 
-const VerbHint: React.FunctionComponent<{exercise: ConjugationExercise}> =
+const VerbHint: React.FunctionComponent<{ exercise: ConjugationExercise }> =
   ({exercise}): React.ReactElement => {
 
     const [persons, setPersons] = useState<Person[] | null>(null);
@@ -47,22 +48,26 @@ const VerbHint: React.FunctionComponent<{exercise: ConjugationExercise}> =
       });
     }, [exercise]);
 
-    return <Hint columnTitles={hintTitles} >
-      {persons !== null && Object.entries(GrammarPerson).map(([key, value]) => <TableRow key={key} >
-        <TableCell align="right" sx={CSS_BOLD} >
-          {T`${value}`}
-        </TableCell >
+    return <React.Fragment >
+      <Hint columnTitles={hintTitles} >
+        {persons !== null && Object.entries(GrammarPerson).map(([key, value]) => <TableRow key={key} >
+          <TableCell align="right" sx={CSS_BOLD} >
+            {T`${value}`}
+          </TableCell >
 
-        <TableCell >
-          {getPerson(persons, key, GrammarPlurality.SINGULAR)}
-        </TableCell >
+          <TableCell >
+            {getPerson(persons, key, GrammarPlurality.SINGULAR)}
+          </TableCell >
 
-        <TableCell >
-          {getPerson(persons, key, GrammarPlurality.PLURAL)}
-        </TableCell >
+          <TableCell >
+            {getPerson(persons, key, GrammarPlurality.PLURAL)}
+          </TableCell >
 
-      </TableRow >)}
-    </Hint >;
+        </TableRow >)}
+      </Hint >
+
+      <Rules rules={exercise.verb.rules} />
+    </React.Fragment >;
   };
 
 export default VerbHint;

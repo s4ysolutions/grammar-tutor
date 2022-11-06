@@ -20,6 +20,7 @@ import {CSS_CAPITALIZE} from '../../constants';
 import T from '../../../../../l10n';
 import Hint from '../../Hint';
 import React, {useEffect, useState} from 'react';
+import Rules from '../../Rules';
 
 const hintTitles = [T`${GrammarPlurality.SINGULAR}`, T`${GrammarPlurality.PLURAL}`];
 
@@ -36,7 +37,7 @@ const getCase = (cases: Case[], caseKey: string, p: GrammarPlurality): string =>
     .join(' | ');
 };
 
-const NounHint: React.FunctionComponent<{exercise: CaseExercise}> =
+const NounHint: React.FunctionComponent<{ exercise: CaseExercise }> =
   ({exercise}): React.ReactElement => {
 
     const [cases, setCases] = useState<Case[] | null>(null);
@@ -49,22 +50,26 @@ const NounHint: React.FunctionComponent<{exercise: CaseExercise}> =
       });
     }, [exercise]);
 
-    return <Hint columnTitles={hintTitles} >
-      {cases !== null && Object.entries(GrammarCase).map(([key, value]) => <TableRow key={key} >
-        <TableCell align="right" sx={CSS_CAPITALIZE} >
-          {T`${value}`}
-        </TableCell >
+    return <React.Fragment >
+      <Hint columnTitles={hintTitles} >
+        {cases !== null && Object.entries(GrammarCase).map(([key, value]) => <TableRow key={key} >
+          <TableCell align="right" sx={CSS_CAPITALIZE} >
+            {T`${value}`}
+          </TableCell >
 
-        <TableCell >
-          {getCase(cases, key, GrammarPlurality.SINGULAR)}
-        </TableCell >
+          <TableCell >
+            {getCase(cases, key, GrammarPlurality.SINGULAR)}
+          </TableCell >
 
-        <TableCell >
-          {getCase(cases, key, GrammarPlurality.PLURAL)}
-        </TableCell >
+          <TableCell >
+            {getCase(cases, key, GrammarPlurality.PLURAL)}
+          </TableCell >
 
-      </TableRow >)}
-    </Hint >;
+        </TableRow >)}
+      </Hint >
+
+      <Rules rules={exercise.noun.rules} />
+    </React.Fragment >;
   };
 
 export default NounHint;
