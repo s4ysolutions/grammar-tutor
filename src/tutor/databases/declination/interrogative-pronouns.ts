@@ -709,6 +709,8 @@ const staticDB: Record<string, Case[]> = {
 class StaticInterrogativesEntry implements Noun {
   mainForm: string;
 
+  rules: [];
+
   constructor(mainForm: string) {
     this.mainForm = mainForm;
   }

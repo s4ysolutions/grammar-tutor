@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-
+/* eslint-disable no-magic-numbers */
 import {GrammarPerson, GrammarPlurality, MainFormWord, Person, Verb, VerbsDb} from '../../index';
 
-const staticDb: Record<MainFormWord, { description?: string, persons: Person[]}> = {
+const rules: Record<number, string> = {
+  10: '-am [-ati]. 3rd, sing. -a; 3rd, pl. ➟ [aju]',
+  20: '-im [-iti, -ati]. 3rd, sing. -i; 3rd, pl. ➟ [e]',
+  30: '-em [...]. 3rd, sing. -e; 3rd, pl. ➟ [eju],[u]',
+};
+
+const staticDb: Record<MainFormWord, { description?: string, rules: number[], persons: Person[]}> = {
   'морати': {
+    rules: [10],
     persons: [
       {
         word: 'морам',
@@ -53,6 +60,7 @@ const staticDb: Record<MainFormWord, { description?: string, persons: Person[]}>
     ],
   },
   'говорити': {
+    rules: [20],
     persons: [
       {
         word: 'говорим',
@@ -87,6 +95,7 @@ const staticDb: Record<MainFormWord, { description?: string, persons: Person[]}>
     ],
   },
   'разумети': {
+    rules: [30],
     persons: [
       {
         word: 'разумем',
@@ -121,6 +130,7 @@ const staticDb: Record<MainFormWord, { description?: string, persons: Person[]}>
     ],
   },
   'звати': {
+    rules: [30],
     persons: [
       {
         word: 'зовем',
@@ -161,13 +171,24 @@ class StaticVerb implements Verb {
 
   description?: string;
 
+  private _rules: string[] | null;
+
   constructor(mainForm: string) {
     this.mainForm = mainForm;
     this.description = staticDb[this.mainForm].description;
+    this._rules = null;
   }
 
   persons(): Promise<Person[]> {
     return Promise.resolve(staticDb[this.mainForm].persons);
+  }
+
+  get rules(): string[] {
+    if (this._rules === null) {
+      const entry = staticDb[this.mainForm];
+      this._rules = entry.rules.map(code => rules[code]);
+    }
+    return this._rules;
   }
 }
 

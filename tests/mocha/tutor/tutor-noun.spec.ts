@@ -52,7 +52,7 @@ describe('Tutor Nouns', () => {
 
     const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
-    expect(exercise).to.has.property('mainForm', 'hotel');
+    expect(exercise).to.has.property('mainForm', 'хотел');
     expect(exercise).to.has.property('exerciseCase');
     expect(exercise.exerciseCase).to.has.property('word', 'хотелом');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
@@ -73,10 +73,10 @@ describe('Tutor Nouns', () => {
     }));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'random', sinon.fake.returns(1));
+    sinon.replace(DefaultTutor, 'random', sinon.fake.returns(4));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    // sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.PLURAL));
+    sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.PLURAL));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.INSTRUMENTAL));

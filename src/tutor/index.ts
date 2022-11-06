@@ -83,12 +83,16 @@ export interface WithDescription {
   readonly description?: string;
 }
 
-export interface Noun extends WithDescription{
+export interface WithRules {
+  readonly rules: string[];
+}
+
+export interface Noun extends WithDescription, WithRules{
   readonly mainForm: MainFormWord;
   cases(): Promise<Case[]>;
 }
 
-export interface Verb extends WithDescription{
+export interface Verb extends WithDescription, WithRules{
   readonly mainForm: MainFormWord;
   persons(): Promise<Person[]>;
 }

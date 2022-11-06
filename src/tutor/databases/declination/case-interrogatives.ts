@@ -86,6 +86,8 @@ const staticDB: Record<string, Case[]> = {
 class StaticInterrogativePronounEntry implements Noun {
   mainForm: string;
 
+  rules: [];
+
   constructor(mainForm: string) {
     this.mainForm = mainForm;
   }

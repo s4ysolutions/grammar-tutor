@@ -97,6 +97,8 @@ const staticDb: Record<MainFormWord, Person[]> = {
 class StaticHtetiVerb implements Verb {
   mainForm: string;
 
+  rules: [];
+
   constructor(mainForm: string) {
     this.mainForm = mainForm;
   }

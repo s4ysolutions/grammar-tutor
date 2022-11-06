@@ -612,6 +612,8 @@ const staticDB: Record<string, Case[]> = {
 class StaticPersonalPronounEntry implements Noun {
   mainForm: string;
 
+  rules: [];
+
   constructor(mainForm: string) {
     this.mainForm = mainForm;
   }

@@ -22,7 +22,7 @@ import DefaultLesson from '../../../src/tutor/tutor/default-lesson';
 describe('Lessons', () => {
   it('Default lesson should be Personal Pronouns', () => {
     const lessonsDb = new DefaultLesson();
-    expect(lessonsDb.currentLesson).to.be.eq(Lesson.PERSONAL_PRONOUNS_DECLINATION);
+    expect(lessonsDb.currentLesson).to.be.eq(Lesson.NOUNS_DECLINATION);
   });
 
   it('Lesson cab be changed to Interrogative Pronoun and back to Personal Pronouns', () => {
