@@ -78,6 +78,8 @@ const rules: Record<number, string> = {
 
   2000: 'к+и ➟ ци',
   2010: 'г+и ➟ зи',
+
+  10000: 'господин(sing) ➟ господа(pl)',
 };
 
 const staticDb: Record<MainFormWord, {
@@ -105,7 +107,7 @@ const staticDb: Record<MainFormWord, {
   },
 }> = {
   'хотел': {
-    rules: [15, 40, 100, 130, 200, 240, 300, 350, 400, 500, 610, 620],
+    rules: [15, 40, 100, 130, 200, 240, 300, 350, 400, 460, 500, 610, 620],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.INANIMATE,
     singular: {
@@ -128,7 +130,7 @@ const staticDb: Record<MainFormWord, {
     },
   },
   'кишобран': {
-    rules: [15, 40, 100, 130, 200, 240, 300, 350, 400, 500, 610, 620],
+    rules: [15, 40, 100, 130, 200, 240, 300, 350, 400, 460, 500, 610, 620],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.INANIMATE,
     singular: {
@@ -151,7 +153,7 @@ const staticDb: Record<MainFormWord, {
     },
   },
   'господин': {
-    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 500, 610, 620],
+    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 460, 500, 610, 620, 1000],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.ANIMATE,
     singular: {
@@ -174,7 +176,7 @@ const staticDb: Record<MainFormWord, {
     },
   },
   'син': {
-    rules: [15, 43, 100, 130, 200, 240, 310, 350, 400, 500, 610, 620],
+    rules: [15, 43, 100, 130, 200, 240, 310, 350, 400, 460, 500, 610, 620],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.ANIMATE,
     singular: {
@@ -197,7 +199,7 @@ const staticDb: Record<MainFormWord, {
     },
   },
   'путник': {
-    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 500, 610, 620, 2000],
+    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 460, 500, 610, 620, 2000],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.ANIMATE,
     singular: {
@@ -219,8 +221,31 @@ const staticDb: Record<MainFormWord, {
       locative: 'путницима',
     },
   },
+  'дечак': {
+    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 460, 500, 610, 620, 2000],
+    gender: GrammarGender.MASCULINE,
+    animation: GrammarAnimation.ANIMATE,
+    singular: {
+      nominative: 'дѐча̄к',
+      genitive: 'деча́ка',
+      dative: 'дечаку',
+      accusative: 'дечака',
+      vocative: 'де̏ча̄че',
+      instrumental: 'дечаком',
+      locative: 'дечаку',
+    },
+    plural: {
+      nominative: 'деча́ци',
+      genitive: 'дечака',
+      dative: 'дечацима',
+      accusative: 'дечаке',
+      vocative: 'дечаци',
+      instrumental: 'дечацима',
+      locative: 'дечацима',
+    },
+  },
   'човек': {
-    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 500, 610, 620],
+    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 460, 500, 610, 620],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.ANIMATE,
     singular: {
@@ -243,7 +268,7 @@ const staticDb: Record<MainFormWord, {
     },
   },
   'ковчег': {
-    rules: [15, 40, 100, 130, 200, 240, 300, 350, 400, 500, 610, 620, 2010],
+    rules: [15, 40, 100, 130, 200, 240, 300, 350, 400, 460, 500, 610, 620, 2010],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.INANIMATE,
     singular: {
@@ -266,7 +291,7 @@ const staticDb: Record<MainFormWord, {
     },
   },
   'пријатељ': {
-    rules: [15, 40, 100, 130, 200, 240, 310, 350, 410, 500, 610, 620],
+    rules: [15, 40, 100, 130, 200, 240, 310, 350, 410, 460, 500, 610, 620],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.ANIMATE,
     singular: {
@@ -289,7 +314,7 @@ const staticDb: Record<MainFormWord, {
     },
   },
   'полицајац': {
-    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 500, 610, 620],
+    rules: [15, 40, 100, 130, 200, 240, 310, 350, 400, 460, 500, 610, 620],
     gender: GrammarGender.MASCULINE,
     animation: GrammarAnimation.ANIMATE,
     singular: {
@@ -608,29 +633,6 @@ const staticDb: Record<MainFormWord, {
       vocative: 'ствари',
       instrumental: 'стварима',
       locative: 'стварима',
-    },
-  },
-  'дечак': {
-    rules: [35, 70, 120, 130, 230, 270, 340, 370, 450, 460, 500, 610, 620, 2000],
-    gender: GrammarGender.MASCULINE,
-    animation: GrammarAnimation.ANIMATE,
-    singular: {
-      nominative: 'дѐча̄к',
-      genitive: 'деча́ка',
-      dative: 'дечаку',
-      accusative: 'дечака',
-      vocative: 'де̏ча̄че',
-      instrumental: 'дечаком',
-      locative: 'дечаку',
-    },
-    plural: {
-      nominative: 'деча́ци',
-      genitive: 'дечака',
-      dative: 'дечацима',
-      accusative: 'дечаке',
-      vocative: 'дечаци',
-      instrumental: 'дечацима',
-      locative: 'дечацима',
     },
   },
 };
