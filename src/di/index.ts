@@ -20,7 +20,9 @@ import {UiState} from '../ui-state';
 
 export interface Di {
   readonly personalPronounsDb: NounsDb
-  readonly interrogativePronounsD: NounsDb
+  readonly reflexivePronounsDb: NounsDb
+  readonly possessivePronounsDb: NounsDb
+  readonly interrogativePronounsDb: NounsDb
   readonly caseInterrogativesDb: CasesInterrogativesDb,
   readonly learningProgress: LearningProgress
   readonly tutor: Tutor

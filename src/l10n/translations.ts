@@ -49,6 +49,8 @@ const translation = {
     'Interrogative pronouns declension': 'Склонение вопросительных местоимений',
     'Nouns declension': 'Склонение существительных',
     'Personal pronouns declension': 'Склонение личных местоимений',
+    'Possessive pronouns declension': 'Склонение притяжательных местоимений',
+    'Reflexive pronouns declension': 'Склонение возвратных местоимений',
 
     'Reset': 'Сбросить результаты',
 

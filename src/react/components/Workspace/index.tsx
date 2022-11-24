@@ -39,6 +39,8 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
     {
       route.is(RouteId.NOUNS_DECLENSION) && <NounCases key={route.id} /> ||
       route.is(RouteId.PERSONAL_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
+      route.is(RouteId.REFLEXIVE_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
+      route.is(RouteId.POSSESSIVE_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
       route.is(RouteId.INTERROGATIVE_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
       route.is(RouteId.CASE_INTERROGATIVES_DECLENSION) && <InterrogativePronouns /> ||
       route.is(RouteId.VERBS_CONJUGATION) && <VerbConjugation key={route.id} /> ||

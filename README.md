@@ -114,20 +114,25 @@ created outside the class and passed by a constructor arguments;
 Add another constant to enum `Lesson` in `src/tutor/index.ts`.
 
 ### Setup database for the lesson
-Choose the correct database instance according to the selected lesson in `nextConjugationExercise` or `nextCaseExercise` in
-`src/tutor/tutor/default-tutor.ts`.
+Choose the correct database instance according to the selected lesson in `nextConjugationExercise` or `nextCaseExercise`
+in `src/tutor/tutor/default-tutor.ts`.
 
 ### Set up router
 
-Add a constant to enum `RouteId` in `src/router/index.ts`.
+Add a constant to the enum `RouteId` and property to the interface `Router` in `src/router/index.ts`.
 
-Add a field satisfying `Route` interface to the `DefaultRouter` class inn `src/router/default.ts` and a case branch
-within `go(routeId: RouteId): void` method of the same class.
+Add a field satisfying `Route` interface's property to the `DefaultRouter` class in `src/router/default.ts`
+and a case branch within `go(routeId: RouteId): void` method of the same class.
+
+Also, it is a good time to add a translation of the route title to `src/l10n/transalations.ts`
 
 ### Fix DI
 
 The class `DefaultTutor` receives the necessary components from the outside, and they must be created by DI service in
 the file `src/di/defaults.ts`. This is the place where the database instantiated. 
+
+First add a property to interface `Di` in `src/index.ts` and next assign the instance of the database to the
+property.
 
 ### Add menu item
 

@@ -68,7 +68,7 @@ const NounHint: React.FunctionComponent<{ exercise: CaseExercise }> =
         </TableRow >)}
       </Hint >
 
-      <Rules rules={exercise.noun.rules} />
+      {exercise.noun.rules ? <Rules rules={exercise.noun.rules} /> : null}
     </React.Fragment >;
   };
 

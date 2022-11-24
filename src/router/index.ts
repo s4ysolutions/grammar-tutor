@@ -19,6 +19,8 @@ import {Observable} from 'rxjs';
 export enum RouteId {
   NOUNS_DECLENSION,
   PERSONAL_PRONOUNS_DECLENSION,
+  REFLEXIVE_PRONOUNS_DECLENSION,
+  POSSESSIVE_PRONOUNS_DECLENSION,
   INTERROGATIVE_PRONOUNS_DECLENSION,
   CASE_INTERROGATIVES_DECLENSION,
   BITI_CONJUGATION,
@@ -35,6 +37,8 @@ export interface Route {
 export interface Router {
   readonly routeNounsDeclension: Route;
   readonly routePersonalPronounsDeclension: Route;
+  readonly routeReflexivePronounsDeclension: Route;
+  readonly routePossessivePronounsDeclension: Route;
   readonly routeCaseInterrogativesDeclension: Route;
   readonly routeInterrogativePronounsDeclension: Route;
   readonly routeBitiConjugation: Route;

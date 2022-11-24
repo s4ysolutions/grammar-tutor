@@ -34,6 +34,18 @@ export class DefaultRouter implements Router {
     is: (id) => id === RouteId.PERSONAL_PRONOUNS_DECLENSION,
   };
 
+  routeReflexivePronounsDeclension: Route = {
+    id: RouteId.REFLEXIVE_PRONOUNS_DECLENSION,
+    title: T`Reflexive pronouns declension`,
+    is: (id) => id === RouteId.REFLEXIVE_PRONOUNS_DECLENSION,
+  };
+
+  routePossessivePronounsDeclension: Route = {
+    id: RouteId.POSSESSIVE_PRONOUNS_DECLENSION,
+    title: T`Possessive pronouns declension`,
+    is: (id) => id === RouteId.POSSESSIVE_PRONOUNS_DECLENSION,
+  };
+
   routeCaseInterrogativesDeclension: Route = {
     id: RouteId.CASE_INTERROGATIVES_DECLENSION,
     title: T`Case interrogatives declension`,
@@ -73,6 +85,12 @@ export class DefaultRouter implements Router {
     switch (routeId) {
       case RouteId.NOUNS_DECLENSION:
         this.currentRoute = this.routeNounsDeclension;
+        break;
+      case RouteId.REFLEXIVE_PRONOUNS_DECLENSION:
+        this.currentRoute = this.routeReflexivePronounsDeclension;
+        break;
+      case RouteId.POSSESSIVE_PRONOUNS_DECLENSION:
+        this.currentRoute = this.routePossessivePronounsDeclension;
         break;
       case RouteId.INTERROGATIVE_PRONOUNS_DECLENSION:
         this.currentRoute = this.routeInterrogativePronounsDeclension;

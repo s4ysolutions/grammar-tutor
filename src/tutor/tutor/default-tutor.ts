@@ -42,6 +42,10 @@ import {Observable} from 'rxjs';
 export class DefaultTutor implements Tutor {
   private readonly personalPronounsDb: NounsDb;
 
+  private readonly reflexivePronounsDb: NounsDb;
+
+  private readonly possessivePronounsDb: NounsDb;
+
   private readonly interrogativesDb: NounsDb;
 
   private readonly casesInterrogativesPronounsDb: CasesInterrogativesDb;
@@ -60,6 +64,8 @@ export class DefaultTutor implements Tutor {
 
   constructor(
     personalPronounsDB: NounsDb,
+    reflexivePronounsDB: NounsDb,
+    possessivePronounsDB: NounsDb,
     interrogativesDB: NounsDb,
     casesInterrogativePronounsDB: CasesInterrogativesDb,
     nounsDB: NounsDb,
@@ -70,6 +76,8 @@ export class DefaultTutor implements Tutor {
     lesson: DefaultLesson,
   ) {
     this.personalPronounsDb = personalPronounsDB;
+    this.reflexivePronounsDb = reflexivePronounsDB;
+    this.possessivePronounsDb = possessivePronounsDB;
     this.casesInterrogativesPronounsDb = casesInterrogativePronounsDB;
     this.interrogativesDb = interrogativesDB;
     this.nounsDb = nounsDB;
@@ -310,7 +318,10 @@ export class DefaultTutor implements Tutor {
   }
 
   private static getWeightedArray =
-    (wordWeights: Array<{word: string, weight: number}>):string[] => wordWeights.map(({word, weight}) => Array(weight).fill(word)).flat();
+    (wordWeights: Array<{ word: string, weight: number }>): string[] => wordWeights.map(({
+      word,
+      weight,
+    }) => Array(weight).fill(word)).flat();
 
   private prevWord: string | null = null; // avoid the same word
 
@@ -319,9 +330,12 @@ export class DefaultTutor implements Tutor {
     if (wordsSet.length === 1) {
       word = wordsSet[0];
     } else {
-      const statPromises: Promise<{word: string, weight: number}>[] =
+      const statPromises: Promise<{ word: string, weight: number }>[] =
         // TODO: hardcode lesson?
-        wordsSet.map(w => this.learningDb.getWordStatistics(this.currentLesson, w).then(stat => ({word: w, weight: stat.weight})));
+        wordsSet.map(w => this.learningDb.getWordStatistics(this.currentLesson, w).then(stat => ({
+          word: w,
+          weight: stat.weight,
+        })));
       const wordWeights = await Promise.all(statPromises);
 
       const weighted: string[] = DefaultTutor.getWeightedArray(wordWeights);
@@ -424,11 +438,15 @@ export class DefaultTutor implements Tutor {
     const db: NounsDb | null =
       this.currentLesson === Lesson.PERSONAL_PRONOUNS_DECLINATION
         ? this.personalPronounsDb
-        : this.currentLesson === Lesson.INTERROGATIVE_PRONOUNS_DECLINATION
-          ? await this.interrogativesDb
-          : this.currentLesson === Lesson.NOUNS_DECLINATION
-            ? await this.nounsDb
-            : null;
+        : this.currentLesson === Lesson.REFLEXIVE_PRONOUNS_DECLINATION
+          ? await this.reflexivePronounsDb
+          : this.currentLesson === Lesson.POSSESSIVE_PRONOUNS_DECLINATION
+            ? await this.possessivePronounsDb
+            : this.currentLesson === Lesson.INTERROGATIVE_PRONOUNS_DECLINATION
+              ? await this.interrogativesDb
+              : this.currentLesson === Lesson.NOUNS_DECLINATION
+                ? await this.nounsDb
+                : null;
 
     if (db === null) {
       throw Error(`Invalid lesson ${this.currentLesson}`);

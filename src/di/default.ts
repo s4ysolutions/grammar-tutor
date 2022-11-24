@@ -32,11 +32,17 @@ import {DefaultBitiDb} from '../tutor/databases/conjugation/biti';
 import {DefaultNounsDb} from '../tutor/databases/declination/nouns';
 import {DefaultHtetiDb} from '../tutor/databases/conjugation/hteti';
 import {DefaultVerbsDb} from '../tutor/databases/conjugation/verbs';
+import {DefaultReflexivePronounsDb} from '../tutor/databases/declination/reflexive-pronouns';
+import {DefaultPossessivePronounsDb} from '../tutor/databases/declination/possessive-pronouns';
 
 export class DefaultDi implements Di {
   private readonly _kvPromise: KvPromise;
 
   private readonly _personalPronounsDb: NounsDb;
+
+  private readonly _reflexivePronounsDb: NounsDb;
+
+  private readonly _possessivePronounsDb: NounsDb;
 
   private readonly _interrogativePronounsDb: NounsDb;
 
@@ -63,6 +69,8 @@ export class DefaultDi implements Di {
   constructor(kvPromise: KvPromise) {
     this._kvPromise = kvPromise;
     this._personalPronounsDb = new DefaultPersonalPronounsDb();
+    this._reflexivePronounsDb = new DefaultReflexivePronounsDb();
+    this._possessivePronounsDb = new DefaultPossessivePronounsDb();
     this._interrogativePronounsDb = new DefaultInterrogativePronounsDb();
     this._caseInterrogativesDb = new DefaultCaseInterrogativesDb();
     this._nounsDb = new DefaultNounsDb();
@@ -72,6 +80,8 @@ export class DefaultDi implements Di {
     this._learningProgress = new KvPromiseLearningDb(this._kvPromise, this._lesson.observableCurrentLesson());
     this._tutor = new DefaultTutor(
       this._personalPronounsDb,
+      this._reflexivePronounsDb,
+      this._possessivePronounsDb,
       this._interrogativePronounsDb,
       this._caseInterrogativesDb,
       this._nounsDb,
@@ -91,7 +101,15 @@ export class DefaultDi implements Di {
     return this._personalPronounsDb;
   }
 
-  get interrogativePronounsD (): NounsDb {
+  get reflexivePronounsDb (): NounsDb {
+    return this._reflexivePronounsDb;
+  }
+
+  get possessivePronounsDb (): NounsDb {
+    return this._reflexivePronounsDb;
+  }
+
+  get interrogativePronounsDb (): NounsDb {
     return this._interrogativePronounsDb;
   }
 
@@ -110,6 +128,7 @@ export class DefaultDi implements Di {
   get uiState (): UiState {
     return this._uiState;
   }
+
 }
 
 const singletonDi = new DefaultDi(indexedDbFactory('srpska-gramatika'));

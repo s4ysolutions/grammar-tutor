@@ -66,7 +66,7 @@ const VerbHint: React.FunctionComponent<{ exercise: ConjugationExercise }> =
         </TableRow >)}
       </Hint >
 
-      <Rules rules={exercise.verb.rules} />
+      {exercise.verb.rules ? <Rules rules={exercise.verb.rules} /> : null}
     </React.Fragment >;
   };
 
