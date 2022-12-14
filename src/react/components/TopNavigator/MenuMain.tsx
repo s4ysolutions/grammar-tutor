@@ -28,6 +28,7 @@ import MenuItemHtetiConjugation from './menu-items/MenuItemHtetiConjugation';
 import MenuItemVerbsConjugation from './menu-items/MenuItemVerbsConjugation';
 import MenuItemReflexivePronounsDeclension from './menu-items/MenuItemReflexivePronounsDeclension';
 import MenuItemPossessivePronounsDeclension from './menu-items/MenuItemPossessivePronounsDeclension';
+import MenuItemVersion from './menu-items/MenuItemVersion';
 
 const {di} = diFactory;
 const uiState = di.uiState;
@@ -70,6 +71,10 @@ const MenuMain: React.FunctionComponent<{anchorEl: Element}> =
       <Divider />
 
       <MenuItemReset />
+
+      <Divider />
+
+      <MenuItemVersion />
 
     </Menu>;
   };

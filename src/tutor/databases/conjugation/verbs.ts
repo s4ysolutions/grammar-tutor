@@ -26,39 +26,111 @@ const rules: Record<number, string> = {
   100: 'к, ц ➟ ч',
   110: 'г, з ➟ ж',
   120: 'х, с ➟ ш',
+  200: 'svršeni',
+  210: 'nesvršeni',
 };
 
 const staticDb: Record<MainFormWord, { description?: string, rules: number[], persons: Person[]}> = {
-  'морати': {
-    rules: [10],
+  'брисати': {
+    rules: [30, 120],
     persons: [
       {
-        word: 'морам',
+        word: 'бришем',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'мораш',
+        word: 'бришеш',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'мора',
+        word: 'брише',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'морамо',
+        word: 'бришемо',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'морате',
+        word: 'бришете',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'морају',
+        word: 'бришу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'видети': {
+    rules: [10],
+    persons: [
+      {
+        word: 'видим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'видиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'види',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'видимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'видите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'виде',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'волети': {
+    rules: [20],
+    persons: [
+      {
+        word: 'волим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'волиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'воли',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'волимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'волите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'воле',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.PLURAL,
       },
@@ -134,526 +206,71 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
       },
     ],
   },
-  'разумети': {
+  'десити': {
+    rules: [10],
+    persons: [
+      {
+        word: 'десим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'десиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'деси',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'десимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'десите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'десе',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'дешавати': {
     rules: [30],
     persons: [
       {
-        word: 'разумем',
+        word: 'дешавам',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'разумеш',
+        word: 'дешаваш',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'разуме',
+        word: 'дешава',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'разумемо',
+        word: 'дешавамо',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'разумете',
+        word: 'дешавате',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'разумеју',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'звати': {
-    rules: [30],
-    persons: [
-      {
-        word: 'зовем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'зовеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'зове',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'зовемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'зовете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'зову',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'живети': {
-    rules: [20],
-    persons: [
-      {
-        word: 'живим',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'живиш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'живи',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'живимо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'живите',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'живе',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'трчати': {
-    rules: [20],
-    persons: [
-      {
-        word: 'трчим',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'трчиш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'трчи',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'трчимо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'трчите',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'трче',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'лежати': {
-    rules: [20],
-    persons: [
-      {
-        word: 'лежим',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'лежиш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'лежи',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'лежимо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'лежите',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'леже',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'волети': {
-    rules: [20],
-    persons: [
-      {
-        word: 'волим',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'волиш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'воли',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'волимо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'волите',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'воле',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'писати': {
-    rules: [30],
-    persons: [
-      {
-        word: 'пишем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'пишеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'пише',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'пишемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'пишете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'пишу',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'скакати': {
-    rules: [30, 100],
-    persons: [
-      {
-        word: 'скачем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'скачеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'скаче',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'скачемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'скачете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'скачу',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'утицати': {
-    rules: [30, 100],
-    persons: [
-      {
-        word: 'утичем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'утичеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'утиче',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'утичемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'утичете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'утичу',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'лагати': {
-    rules: [30, 110],
-    persons: [
-      {
-        word: 'лажем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'лажеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'лаже',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'лажемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'лажете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'лажу',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'казати': {
-    rules: [30, 110],
-    persons: [
-      {
-        word: 'кажем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'кажеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'каже',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'кажемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'кажете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'кажу',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'јахати': {
-    rules: [30, 120],
-    persons: [
-      {
-        word: 'јашем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'јашеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'јаше',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'јашемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'јашете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'јашу',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'брисати': {
-    rules: [30, 120],
-    persons: [
-      {
-        word: 'бришем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'бришеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'брише',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'бришемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'бришете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'бришу',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'путовати': {
-    rules: [40],
-    persons: [
-      {
-        word: 'путујем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'путујеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'путује',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'путујемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'путујете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'путују',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
-  'ићи': {
-    rules: [30],
-    persons: [
-      {
-        word: 'идем',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'идеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'иде',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'идемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'идете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'иду',
+        word: 'дешавају',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.PLURAL,
       },
@@ -694,6 +311,531 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
       },
     ],
   },
+  'звати': {
+    rules: [30],
+    persons: [
+      {
+        word: 'зовем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'зовеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'зове',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'зовемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'зовете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'зову',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'знати': {
+    rules: [10],
+    persons: [
+      {
+        word: 'знам',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'знаш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'зна',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'знамо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'знате',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'знају',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'живети': {
+    rules: [20],
+    persons: [
+      {
+        word: 'живим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'живиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'живи',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'живимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'живите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'живе',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'јахати': {
+    rules: [30, 120],
+    persons: [
+      {
+        word: 'јашем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'јашеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'јаше',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'јашемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'јашете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'јашу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'ићи': {
+    rules: [30],
+    persons: [
+      {
+        word: 'идем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'идеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'иде',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'идемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'идете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'иду',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'казати': {
+    rules: [30, 110],
+    persons: [
+      {
+        word: 'кажем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'кажеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'каже',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'кажемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'кажете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'кажу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'купити': {
+    rules: [20],
+    persons: [
+      {
+        word: 'купим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'купиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'купи',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'купимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'купите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'купе',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'куповати': {
+    rules: [30],
+    persons: [
+      {
+        word: 'купујем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'купујеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'купује',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'купујемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'купујете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'купују',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'лагати': {
+    rules: [30, 110],
+    persons: [
+      {
+        word: 'лажем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'лажеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'лаже',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'лажемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'лажете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'лажу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'лежати': {
+    rules: [20],
+    persons: [
+      {
+        word: 'лежим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'лежиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'лежи',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'лежимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'лежите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'леже',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'морати': {
+    rules: [10],
+    persons: [
+      {
+        word: 'морам',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'мораш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'мора',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'морамо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'морате',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'морају',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'моћи': {
+    rules: [],
+    persons: [
+      {
+        word: 'могу',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'можеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'може',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'можемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'можете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'могу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'остати': {
+    rules: [30],
+    persons: [
+      {
+        word: 'останем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'останеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'остане',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'останемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'останете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'остану',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'писати': {
+    rules: [30],
+    persons: [
+      {
+        word: 'пишем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'пишеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'пише',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'пишемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'пишете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'пишу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'питати': {
+    rules: [10],
+    persons: [
+      {
+        word: 'питам',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'питаш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'пита',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'питамо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'питате',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'питају',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
   'пити': {
     rules: [30],
     persons: [
@@ -729,36 +871,71 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
       },
     ],
   },
-  'продавати': {
-    rules: [30],
+  'постати': {
+    rules: [30, 200],
     persons: [
       {
-        word: 'продајем',
+        word: 'постанем',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'продајеш',
+        word: 'постанеш',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'продаје',
+        word: 'постане',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'продајемо',
+        word: 'постанемо',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'продајете',
+        word: 'постанете',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'продају',
+        word: 'постану',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'постојати': {
+    rules: [10, 210],
+    persons: [
+      {
+        word: 'постојим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'постојиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'постоји',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'постојимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'постојите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'постоје',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.PLURAL,
       },
@@ -799,36 +976,421 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
       },
     ],
   },
-  'моћи': {
-    rules: [],
+  'продавати': {
+    rules: [30],
     persons: [
       {
-        word: 'могу',
+        word: 'продајем',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'можеш',
+        word: 'продајеш',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'може',
+        word: 'продаје',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'можемо',
+        word: 'продајемо',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'можете',
+        word: 'продајете',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'могу',
+        word: 'продају',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'путовати': {
+    rules: [40],
+    persons: [
+      {
+        word: 'путујем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'путујеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'путује',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'путујемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'путујете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'путују',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'разговарати': {
+    rules: [10],
+    persons: [
+      {
+        word: 'разговарам',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разговараш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разговара',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разговарамо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'разговарате',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'разговарају',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'разговорити': {
+    rules: [20],
+    persons: [
+      {
+        word: 'разговорим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разговориш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разговори',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разговоримо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'разговорите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'разговоре',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'разумети': {
+    rules: [30],
+    persons: [
+      {
+        word: 'разумем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разумеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разуме',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'разумемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'разумете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'разумеју',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'сећати се': {
+    rules: [10, 210],
+    persons: [
+      {
+        word: 'сећам се',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'сећаш се',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'сећа се',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'сећамо се',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'сећате се',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'сећају се',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'сетити се': {
+    rules: [20, 200],
+    persons: [
+      {
+        word: 'сетим се',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'сетиш се',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'сети се',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'сетимо се',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'сетите се',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'сете се',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'скакати': {
+    rules: [30, 100],
+    persons: [
+      {
+        word: 'скачем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'скачеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'скаче',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'скачемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'скачете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'скачу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'стварати': {
+    rules: [10],
+    persons: [
+      {
+        word: 'стварам',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'ствараш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'ствара',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'стварамо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'стварате',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'стварају',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'створити': {
+    rules: [20],
+    persons: [
+      {
+        word: 'створим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'створиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'створи',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'створимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'створите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'створе',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'трчати': {
+    rules: [20],
+    persons: [
+      {
+        word: 'трчим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'трчиш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'трчи',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'трчимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'трчите',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'трче',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'утицати': {
+    rules: [30, 100],
+    persons: [
+      {
+        word: 'утичем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'утичеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'утиче',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'утичемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'утичете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'утичу',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.PLURAL,
       },

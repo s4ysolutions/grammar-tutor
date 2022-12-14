@@ -22,10 +22,10 @@ import log from './log';
 
 declare global {
   interface ImportMeta {
-    env?: {DEV?: boolean};
+    env?: { DEV?: boolean };
   }
 }
-if ('off serviceWorker' in navigator) {
+if (!(location.hostname === 'localhost' || location.hostname === '127.0.0.1') && 'serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       let reg;
