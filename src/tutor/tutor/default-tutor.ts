@@ -319,9 +319,9 @@ export class DefaultTutor implements Tutor {
 
   private static getWeightedArray =
     (wordWeights: Array<{ word: string, weight: number }>): string[] => wordWeights.map(({
-                                                                                           word,
-                                                                                           weight,
-                                                                                         }) => Array(weight).fill(word)).flat();
+      word,
+      weight,
+    }) => Array(weight).fill(word)).flat();
 
   private prevWord: string | null = null; // avoid the same word
 
