@@ -155,7 +155,7 @@ export class DefaultTutor implements Tutor {
     grammarPlurality: GrammarPlurality,
   ): GrammarCase[] {
     return Array.from<GrammarCase>(cases
-      .filter(noun => noun.plurality === grammarPlurality)
+      .filter(noun => noun.plurality === grammarPlurality && !(grammarPlurality === GrammarPlurality.SINGULAR && noun.case === GrammarCase.NOMINATIVE))
       .reduce((set: Set<GrammarCase>, nounCase: Case) => {
         set.add(nounCase.case);
         return set;
@@ -319,9 +319,9 @@ export class DefaultTutor implements Tutor {
 
   private static getWeightedArray =
     (wordWeights: Array<{ word: string, weight: number }>): string[] => wordWeights.map(({
-      word,
-      weight,
-    }) => Array(weight).fill(word)).flat();
+                                                                                           word,
+                                                                                           weight,
+                                                                                         }) => Array(weight).fill(word)).flat();
 
   private prevWord: string | null = null; // avoid the same word
 
