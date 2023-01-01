@@ -16,8 +16,14 @@
 
 import TableRow from '@mui/material/TableRow/TableRow';
 import React from 'react';
-import {CaseExercise, GrammarGender, GrammarPlurality} from '../../../../../../tutor';
-import {SlevRule, nounsSlevRules, slevNotes} from '../../../../../../tutor/databases/rules/slev';
+import {CaseExercise, GrammarCase, GrammarGender, GrammarPlurality} from '../../../../../../tutor';
+import {
+  IDeclensionSlevRule,
+  SlevRule,
+  iDeclensionSlevRules,
+  nounsSlevRules,
+  slevNotes,
+} from '../../../../../../tutor/databases/rules/slev';
 import Hint from '../../../Hint';
 import {TableCell, Typography} from '@mui/material';
 import {CSS_CAPITALIZE} from '../../../constants';
@@ -67,7 +73,7 @@ const prettyRules = (rules: SlevRule[]): React.ReactElement[] =>
     </div>;
   });
 
-const SlevHint: React.FunctionComponent<{ exercise: CaseExercise }> = ({exercise}): React.ReactElement => {
+const SlevHintDefault: React.FunctionComponent<{ exercise: CaseExercise }> = ({exercise}): React.ReactElement => {
   const slev = nounsSlevRules[exercise.exerciseCase.case];
   const ms: SlevRule[] = [];
   const mp: SlevRule[] = [];
@@ -165,5 +171,52 @@ const SlevHint: React.FunctionComponent<{ exercise: CaseExercise }> = ({exercise
     {hasNotes ? notesFragment : null}
   </div >;
 };
+
+const SlevHintI: React.FunctionComponent<{ exercise: CaseExercise }> = ({exercise}): React.ReactElement => {
+  const s: Record<string, IDeclensionSlevRule> = {};
+  const p: Record<string, IDeclensionSlevRule> = {};
+
+  iDeclensionSlevRules.forEach(r => {
+    if (r.plurality.indexOf(GrammarPlurality.SINGULAR) >= 0) {
+      r.cases.forEach(c => {
+        s[c.toString()] = r;
+      });
+    } else if (r.plurality.indexOf(GrammarPlurality.PLURAL) >= 0) {
+      r.cases.forEach(c => {
+        p[c.toString()] = r;
+      });
+    }
+  });
+
+  const pl = exercise.exerciseCase.plurality;
+  const c = exercise.exerciseCase.case;
+
+  return <div className="slev-hint">
+    <Typography color="error" variant="h5">
+      {T`-и Declension of female nouns`}
+    </Typography>
+
+    <Hint columnTitles={headers} >
+      {Object.entries(GrammarCase).map(([key, value]) => <TableRow key={key} >
+        <TableCell align="right" sx={CSS_CAPITALIZE} >
+          {T`${value}`}
+        </TableCell >
+
+        <TableCell className={pl === GrammarPlurality.SINGULAR && c === key ? 'current' : ''}>
+          {s[value].ending}
+        </TableCell >
+
+        <TableCell className={pl === GrammarPlurality.PLURAL && c === key ? 'current' : ''}>
+          {p[value].ending}
+        </TableCell >
+
+      </TableRow >)}
+    </Hint >
+
+  </div >;
+};
+
+const SlevHint: React.FunctionComponent<{ exercise: CaseExercise }> = ({exercise}): React.ReactElement =>
+  exercise.noun.iDeclension ? <SlevHintI exercise={exercise} /> : <SlevHintDefault exercise={exercise} />;
 
 export default SlevHint;

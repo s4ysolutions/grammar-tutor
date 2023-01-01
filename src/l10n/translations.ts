@@ -42,6 +42,7 @@ const translation = {
     'App title': 'Грамматика',
     'Exception': 'Исключение',
     'Hint': 'Подсказка',
+    '-и Declension of female nouns': '"-и" спряжение женского рода',
 
     'Biti conjugation': 'Спряжение глагола "бити"',
     'Case interrogatives declension': 'Склонение падежных вопросов',
@@ -98,7 +99,8 @@ const translation = {
     'Used with masculine monosyllabic nouns only.':
       'Только с односложными существительными мужского рода',
     'Don’t change ending for some female names (mostly long names).':
-    'Окончание не меняется у некоторых женских имен (обычно длинных).',
+    'Окончание не меняется у некоторых женских имен (обычно длиных).',
+    'Female names ending on -ца': 'Женские имена оканчивающися на -ца',
   },
   'sr': {
     'App title': 'Граматика',

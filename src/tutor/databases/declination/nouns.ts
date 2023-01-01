@@ -380,6 +380,7 @@ const staticDb: Record<MainFormWord, {
     rules: [35, 70, 120, 130, 230, 270, 340, 370, 450, 460, 500, 610, 620],
     gender: GrammarGender.FEMININE,
     animation: GrammarAnimation.INANIMATE,
+    iDeclension: true,
     singular: {
       nominative: 'но̑ћ',
       genitive: 'но̏ћи',
@@ -564,6 +565,7 @@ const staticDb: Record<MainFormWord, {
     rules: [35, 70, 120, 130, 230, 270, 340, 370, 450, 460, 500, 610, 620],
     gender: GrammarGender.FEMININE,
     animation: GrammarAnimation.INANIMATE,
+    iDeclension: true,
     singular: {
       nominative: 'ства̑р',
       genitive: 'ствари',
@@ -705,13 +707,17 @@ class StaticNounEntry implements Noun {
 
   description: string;
 
+  iDeclension: boolean;
+
   private _cases: Case[] | null;
 
   private _rules: string[] | null;
 
+
   constructor(mainForm: string) {
     this.mainForm = mainForm;
     this.description = staticDb[this.mainForm].description?.toString();
+    this.iDeclension = Boolean(staticDb[this.mainForm].iDeclension);
     this._cases = null;
     this._rules = null;
   }

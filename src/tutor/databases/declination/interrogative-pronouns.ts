@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 by s4y.solutions
+ * Copyright 2023 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -478,6 +478,8 @@ const staticDB: Record<string, Case[]> = {
 
 class StaticInterrogativesEntry implements Noun {
   mainForm: string;
+
+  iDeclension = false;
 
   rules: [];
 

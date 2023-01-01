@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 by s4y.solutions
+ * Copyright 2023 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +89,7 @@ export interface WithRules {
 
 export interface Noun extends WithDescription, WithRules{
   readonly mainForm: MainFormWord;
+  readonly iDeclension: boolean;
   cases(): Promise<Case[]>;
 }
 

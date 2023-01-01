@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 by s4y.solutions
+ * Copyright 2023 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 // Choose a cache name
-const cacheName = 'cache-12142022';
+const cacheName = 'cache-100';
 // List the files to precache
 const precacheResources = ['/', '/index.html', '/index.js'];
 

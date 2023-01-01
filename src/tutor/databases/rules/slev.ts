@@ -22,12 +22,14 @@ enum SlevNote {
   Note1 = 1,
   Note2 = Note1 + 1,
   Note3 = Note2 + 1,
+  Note4 = Note3 + 1,
 }
 
 export const slevNotes: Record<SlevNote, string> = {
   [SlevNote.Note1]: T`Used with trailing soft consonants:ц,ћ,ч,ђ,џ,j,љ,њ,ш,ж, except male names.`,
   [SlevNote.Note2]: T`Used with masculine monosyllabic nouns only.`,
   [SlevNote.Note3]: T`Don’t change ending for some female names (mostly long names).`,
+  [SlevNote.Note4]: T`Female names ending on -ца`,
 };
 
 interface SlevReplacement {
@@ -148,7 +150,7 @@ export const nounsSlevRules: Record<GrammarCase, SlevCaseRule> = {
         ending: 'и',
         genders: [GrammarGender.MASCULINE],
         plurality: [GrammarPlurality.PLURAL],
-        exceptions: ['брат', 'човек', 'пас', 'сто'],
+        exceptions: ['брат', 'човек', 'пас', 'сто', 'господин'],
         replacements: [
           {
             from: 'к',
@@ -408,6 +410,12 @@ export const nounsSlevRules: Record<GrammarCase, SlevCaseRule> = {
         notes: [SlevNote.Note3],
       },
       {
+        ending: 'е',
+        genders: [GrammarGender.FEMININE],
+        plurality: [GrammarPlurality.SINGULAR],
+        notes: [SlevNote.Note4],
+      },
+      {
         ending: `о,(${T`nominative`})`,
         genders: [GrammarGender.NEUTER],
         plurality: [GrammarPlurality.SINGULAR],
@@ -449,13 +457,13 @@ export const nounsSlevRules: Record<GrammarCase, SlevCaseRule> = {
   },
 };
 
-interface IDeclensionSlevRule {
+export interface IDeclensionSlevRule {
   ending: string,
   cases: GrammarCase[],
   plurality: GrammarPlurality
 }
 
-export const iDeclensionSlevRule: IDeclensionSlevRule[] = [
+export const iDeclensionSlevRules: IDeclensionSlevRule[] = [
   {
     ending: 'ø',
     plurality: GrammarPlurality.SINGULAR,
