@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 by s4y.solutions
+ * Copyright 2023 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,6 +103,7 @@ const staticDb: Record<MainFormWord, {
   rules?: number[],
   gender: GrammarGender,
   animation: GrammarAnimation,
+  iDeclension?: true,
   singular: {
     nominative: string,
     genitive: string,
@@ -546,8 +547,8 @@ const staticDb: Record<MainFormWord, {
       dative: 'соби',
       accusative: 'собу',
       vocative: 'собо',
-      instrumental: 'соби',
-      locative: 'собом',
+      instrumental: 'собом',
+      locative: 'соби',
     },
     plural: {
       nominative: 'собе',

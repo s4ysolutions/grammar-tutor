@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 by s4y.solutions
+ * Copyright 2023 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ const translation = {
   },
   'ru': {
     'App title': 'Грамматика',
+    'Exception': 'Исключение',
     'Hint': 'Подсказка',
 
     'Biti conjugation': 'Спряжение глагола "бити"',
@@ -64,7 +65,9 @@ const translation = {
     'Singular': 'ед. ч.',
     'Plural': 'мн. ч.',
     'Nominative': 'Именительный',
+    'nominative': 'именительный',
     'Genitive': 'Родительный',
+    'genitive': 'родительный',
     'Accusative': 'Винительный',
     'Locative': 'Предложный',
     'Dative': 'Дательный',
@@ -81,6 +84,21 @@ const translation = {
     'Which?': 'Который? Какой из?',
     'What kind?': 'Какой?',
     'Whose?': 'Чей?',
+
+    'Calling/addressing someone.': 'Обращение, призыв.',
+    'Direct object. Also with motion verbs.': 'Объект действия или с глаголами движения.',
+    'Names of things.': 'Имена объектов.',
+    'Object relation, quantity, time, possessive.': 'Отношения, количество, время, владение.',
+    'Where? About whom or what?': 'Где, о чем или о ком?',
+    'With or by what.  Indefinite recurrences.': 'С чем или с помощью чего. Повторение.',
+    'Toward, to, for.': 'Направление, к, для.',
+
+    'Used with trailing soft consonants:ц,ћ,ч,ђ,џ,j,љ,њ,ш,ж, except male names.':
+      'Оканчивается на согласные ц,ћ,ч,ђ,џ,j,љ,њ,ш,ж, кроме мужских имен',
+    'Used with masculine monosyllabic nouns only.':
+      'Только с односложными существительными мужского рода',
+    'Don’t change ending for some female names (mostly long names).':
+    'Окончание не меняется у некоторых женских имен (обычно длинных).',
   },
   'sr': {
     'App title': 'Граматика',

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 by s4y.solutions
+ * Copyright 2023 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,10 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faXmarksLines as faLong} from '@fortawesome/free-solid-svg-icons';
 import CaseIcon from '../CaseIcon';
 import Interrogative from '../Interrogative';
+// import SlevDescription from '../SlevDescription';
 import NounHint from './NounHint';
 import Description from '../../Description';
+import SlevPreps from '../SlevPreps';
 
 const {di} = diFactory;
 const tutor = di.tutor;
@@ -75,9 +77,9 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
         : null}
 
       {currentExercise.exerciseCase.form === GrammarForm.LONG
-        ? <span>
+        ? <span >
 &nbsp;
-        </span> : null}
+        </span > : null}
 
       {currentExercise.exerciseCase.form === GrammarForm.LONG
         ? <FontAwesomeIcon icon={faLong} /> : null}
@@ -101,6 +103,8 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
     </Grid2 >
 
     {help ? <NounHint exercise={currentExercise} /> : null}
+
+    <SlevPreps exercise={currentExercise} />
   </Container >
     : null;
 };

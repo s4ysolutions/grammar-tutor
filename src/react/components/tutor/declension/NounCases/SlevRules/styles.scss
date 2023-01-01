@@ -1,4 +1,4 @@
-/*
+/*!
  * Copyright 2023 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +14,28 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {Typography} from '@mui/material';
-
-const MenuItemVersion: React.FunctionComponent =
-  (): React.ReactElement => <Typography align="center" variant="body2">
-    v20230101
-  </Typography >;
-
-export default MenuItemVersion;
+.slev-hint {
+  .current {
+    .ending {
+      font-weight: bold;
+      font-size: 115%;
+    }
+  }
+}
+.slev-rule {
+  .replacements {
+    text-align: center;
+    font-style: oblique;
+    opacity: 0.9;
+  }
+}
+.slev-notes {
+  font-size: 90%;
+  sup {
+    font-weight: bold;
+  }
+  span {
+    font-style: italic;
+    padding-inline-start: 0.25ex;
+  }
+}

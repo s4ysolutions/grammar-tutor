@@ -15,11 +15,19 @@
  */
 
 import React from 'react';
-import {Typography} from '@mui/material';
+import {CaseExercise} from '../../../../tutor';
 
-const MenuItemVersion: React.FunctionComponent =
-  (): React.ReactElement => <Typography align="center" variant="body2">
-    v20230101
-  </Typography >;
+import {nounsSlevRules} from '../../../../tutor/databases/rules/slev';
 
-export default MenuItemVersion;
+const SlevPreps: React.FunctionComponent<{exercise: CaseExercise}> = ({exercise}): React.ReactElement | null => {
+  const preps = nounsSlevRules[exercise.exerciseCase.case]?.prepositions;
+  return preps
+    ? <ul>
+      {preps.map(prep => <li key={prep}>
+        {prep}
+      </li>)}
+    </ul>
+    : null;
+};
+
+export default SlevPreps;
