@@ -240,6 +240,11 @@ export const nounsSlevRules: Record<GrammarCase, SlevCaseRule> = {
         notes: [SlevNote.Note1],
       },
       {
+        ending: 'е',
+        genders: [GrammarGender.MASCULINE],
+        plurality: [GrammarPlurality.PLURAL],
+      },
+      {
         ending: 'ове',
         genders: [GrammarGender.MASCULINE],
         plurality: [GrammarPlurality.PLURAL],
