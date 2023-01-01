@@ -462,6 +462,23 @@ export const nounsSlevRules: Record<GrammarCase, SlevCaseRule> = {
   },
 };
 
+let exceptionsCache: Record<string, true> | null = null;
+
+export const isSlevException = (mainForm: MainFormWord): boolean => {
+  if (exceptionsCache === null) {
+    exceptionsCache = {};
+    Object.values(nounsSlevRules).map(rule => rule.rules.map(r => r.exceptions || []))
+      // eslint-disable-next-line no-magic-numbers
+      .flat(3)
+      .forEach(e => {
+        exceptionsCache[e] = true;
+      });
+
+  }
+  return Boolean(exceptionsCache[mainForm]);
+};
+
+
 export interface IDeclensionSlevRule {
   ending: string,
   cases: GrammarCase[],

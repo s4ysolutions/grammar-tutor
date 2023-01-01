@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-import {CaseExercise} from '../../../../../tutor';
-import React from 'react';
+import {Case, CaseExercise, GrammarCase, GrammarForm, GrammarPlurality} from '../../../../../tutor';
+import React, {useEffect, useState} from 'react';
 import SlevRules from './SlevRules';
-/*
+import T from '../../../../../l10n';
+import Hint from '../../Hint';
+import {CSS_CAPITALIZE} from '../../constants';
+import {TableCell, TableRow} from '@mui/material';
+import {isSlevException} from '../../../../../tutor/databases/rules/slev';
+
 const hintTitles = [T`${GrammarPlurality.SINGULAR}`, T`${GrammarPlurality.PLURAL}`];
 
 const TWO = 2;
@@ -32,11 +37,10 @@ const getCase = (cases: Case[], caseKey: string, p: GrammarPlurality): string =>
     .map(e => e.word)
     .join(' | ');
 };
-*/
-const NounHint: React.FunctionComponent<{ exercise: CaseExercise }> =
-  ({exercise}): React.ReactElement =>
 
-  /*
+const NounHint: React.FunctionComponent<{ exercise: CaseExercise }> =
+  ({exercise}): React.ReactElement => {
+
     const [cases, setCases] = useState<Case[] | null>(null);
 
     useEffect(() => {
@@ -46,10 +50,9 @@ const NounHint: React.FunctionComponent<{ exercise: CaseExercise }> =
         setCases(cs === null ? [] : cs.filter(c => !gender || c.gender === gender));
       });
     }, [exercise]);
-*/
-    <React.Fragment >
-      {/*
-      <Hint columnTitles={hintTitles} >
+
+    return isSlevException(exercise.mainForm)
+      ? <Hint columnTitles={hintTitles} >
         {cases !== null && Object.entries(GrammarCase).map(([key, value]) => <TableRow key={key} >
           <TableCell align="right" sx={CSS_CAPITALIZE} >
             {T`${value}`}
@@ -65,12 +68,11 @@ const NounHint: React.FunctionComponent<{ exercise: CaseExercise }> =
 
         </TableRow >)}
       </Hint >
-      */ }
 
-      <SlevRules exercise={exercise} />
+      : <SlevRules exercise={exercise} />;
 
-      {/* exercise.noun.rules ? <Rules rules={exercise.noun.rules} /> : null */}
-    </React.Fragment >
-  ;
+    /* exercise.noun.rules ? <Rules rules={exercise.noun.rules} /> : null */
+
+  };
 
 export default NounHint;

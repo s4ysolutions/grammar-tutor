@@ -25,7 +25,7 @@ declare global {
     env?: { DEV?: boolean };
   }
 }
-if (!(location.hostname === 'localhost' || location.hostname === '127.0.0.1') && 'serviceWorkerX' in navigator) {
+if (!(location.hostname === 'localhost' || location.hostname === '127.0.0.1') && 'serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       let reg;
