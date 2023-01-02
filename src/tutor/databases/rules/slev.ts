@@ -70,11 +70,11 @@ const rulesLocativAndDativSingular: SlevRule[] = [
       },
       {
         from: 'га',
-        to: 'жи',
+        to: 'зи',
       },
       {
         from: 'ха',
-        to: 'ши',
+        to: 'си',
       },
     ],
   },
@@ -92,11 +92,11 @@ const rulesLocativAndDativPlural: SlevRule[] = [
       },
       {
         from: 'га',
-        to: 'жима',
+        to: 'зима',
       },
       {
         from: 'ха',
-        to: 'шима',
+        to: 'сима',
       },
     ],
   },
@@ -435,6 +435,20 @@ export const nounsSlevRules: Record<GrammarCase, SlevCaseRule> = {
         ending: `и(${T`nominative`})`,
         genders: [GrammarGender.MASCULINE],
         plurality: [GrammarPlurality.PLURAL],
+        replacements: [
+          {
+            from: 'к',
+            to: 'ци',
+          },
+          {
+            from: 'г',
+            to: 'зи',
+          },
+          {
+            from: 'х',
+            to: 'си',
+          },
+        ],
       },
       {
         ending: `ови(${T`nominative`})`,
