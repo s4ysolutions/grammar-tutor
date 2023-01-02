@@ -365,7 +365,7 @@ export const nounsSlevRules: Record<GrammarCase, SlevCaseRule> = {
       },
       {
         ending: 'ем',
-        genders: [GrammarGender.FEMININE],
+        genders: [GrammarGender.MASCULINE, GrammarGender.NEUTER],
         plurality: [GrammarPlurality.SINGULAR],
         notes: [SlevNote.Note1],
       },
