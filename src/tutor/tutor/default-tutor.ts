@@ -303,8 +303,8 @@ export class DefaultTutor implements Tutor {
     const persons = verbPersons
       .filter((verbPerson: Person) =>
         (grammarPerson === undefined || verbPerson.person === grammarPerson) &&
-        (grammarPlurality === undefined || verbPerson.plurality === grammarPlurality) &&
-        (grammarForm === undefined || verbPerson.form === grammarForm));
+                (grammarPlurality === undefined || verbPerson.plurality === grammarPlurality) &&
+                (grammarForm === undefined || verbPerson.form === grammarForm));
 
     if (persons.length === 0) {
       return null;
@@ -331,11 +331,11 @@ export class DefaultTutor implements Tutor {
       word = wordsSet[0];
     } else {
       const statPromises: Promise<{ word: string, weight: number }>[] =
-        // TODO: hardcode lesson?
-        wordsSet.map(w => this.learningDb.getWordStatistics(this.currentLesson, w).then(stat => ({
-          word: w,
-          weight: stat.weight,
-        })));
+                // TODO: hardcode lesson?
+                wordsSet.map(w => this.learningDb.getWordStatistics(this.currentLesson, w).then(stat => ({
+                  word: w,
+                  weight: stat.weight,
+                })));
       const wordWeights = await Promise.all(statPromises);
 
       const weighted: string[] = DefaultTutor.getWeightedArray(wordWeights);
@@ -389,7 +389,7 @@ export class DefaultTutor implements Tutor {
     }
     const grammarGender: GrammarGender = DefaultTutor.randomGender(availableGenders);
     const availableForms =
-      DefaultTutor.availableFormsForPluralityAndCaseAndGender(cases, grammarPlurality, grammarCase, grammarGender);
+            DefaultTutor.availableFormsForPluralityAndCaseAndGender(cases, grammarPlurality, grammarCase, grammarGender);
 
     const grammarForm: GrammarForm = availableForms.length === 0 ? undefined : DefaultTutor.randomForm(availableForms);
 
@@ -436,17 +436,17 @@ export class DefaultTutor implements Tutor {
       return DefaultTutor.nextCaseWithAnimationExercise(noun);
     }
     const db: NounsDb | null =
-      this.currentLesson === Lesson.PERSONAL_PRONOUNS_DECLINATION
-        ? this.personalPronounsDb
-        : this.currentLesson === Lesson.REFLEXIVE_PRONOUNS_DECLINATION
-          ? await this.reflexivePronounsDb
-          : this.currentLesson === Lesson.POSSESSIVE_PRONOUNS_DECLINATION
-            ? await this.possessivePronounsDb
-            : this.currentLesson === Lesson.INTERROGATIVE_PRONOUNS_DECLINATION
-              ? await this.interrogativesDb
-              : this.currentLesson === Lesson.NOUNS_DECLINATION
-                ? await this.nounsDb
-                : null;
+            this.currentLesson === Lesson.PERSONAL_PRONOUNS_DECLINATION
+              ? this.personalPronounsDb
+              : this.currentLesson === Lesson.REFLEXIVE_PRONOUNS_DECLINATION
+                ? await this.reflexivePronounsDb
+                : this.currentLesson === Lesson.POSSESSIVE_PRONOUNS_DECLINATION
+                  ? await this.possessivePronounsDb
+                  : this.currentLesson === Lesson.INTERROGATIVE_PRONOUNS_DECLINATION
+                    ? await this.interrogativesDb
+                    : this.currentLesson === Lesson.NOUNS_DECLINATION
+                      ? await this.nounsDb
+                      : null;
 
     if (db === null) {
       throw Error(`Invalid lesson ${this.currentLesson}`);
@@ -459,13 +459,13 @@ export class DefaultTutor implements Tutor {
 
   async nextConjugationExercise(): Promise<ConjugationExercise> {
     const db: VerbsDb | null =
-      this.currentLesson === Lesson.BITI_CONJUGATION
-        ? this.bitiDb
-        : this.currentLesson === Lesson.HTETI_CONJUGATION
-          ? this.htetiDb
-          : this.currentLesson === Lesson.VERBS_CONJUGATION
-            ? this.verbsDb
-            : null;
+            this.currentLesson === Lesson.BITI_CONJUGATION
+              ? this.bitiDb
+              : this.currentLesson === Lesson.HTETI_CONJUGATION
+                ? this.htetiDb
+                : this.currentLesson === Lesson.VERBS_CONJUGATION
+                  ? this.verbsDb
+                  : null;
 
     if (db === null) {
       throw Error(`Invalid lesson ${this.currentLesson}`);
@@ -488,7 +488,7 @@ export class DefaultTutor implements Tutor {
     const grammarPerson: GrammarPerson = DefaultTutor.randomPerson(availablePersons);
 
     const availableForms =
-      DefaultTutor.availableFormsForPluralityAndPerson(persons, grammarPlurality, grammarPerson);
+            DefaultTutor.availableFormsForPluralityAndPerson(persons, grammarPlurality, grammarPerson);
 
     const grammarForm = (availableForms.length === 0 ? undefined : DefaultTutor.randomForm(availableForms));
     const exercisePerson = DefaultTutor.personForVerb(persons, grammarPerson, grammarPlurality, grammarForm);
@@ -525,6 +525,10 @@ export class DefaultTutor implements Tutor {
 
   get currentLesson() {
     return this.lesson.currentLesson;
+  }
+
+  get currentLessonHasSlevRules() {
+    return this.lesson.currentLesson === Lesson.NOUNS_DECLINATION;
   }
 
   observableCurrentLesson(): Observable<Lesson> {

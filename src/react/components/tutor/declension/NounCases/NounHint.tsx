@@ -38,41 +38,41 @@ const getCase = (cases: Case[], caseKey: string, p: GrammarPlurality): string =>
     .join(' | ');
 };
 
-const NounHint: React.FunctionComponent<{ exercise: CaseExercise }> =
-  ({exercise}): React.ReactElement => {
+const NounHint: React.FunctionComponent<{ exercise: CaseExercise, useSlev?: boolean }> =
+    ({exercise, useSlev}): React.ReactElement => {
 
-    const [cases, setCases] = useState<Case[] | null>(null);
+      const [cases, setCases] = useState<Case[] | null>(null);
 
-    useEffect(() => {
-      // TODO: add setting to filter
-      const gender = exercise.exerciseCase.gender;
-      exercise.noun.cases().then(cs => {
-        setCases(cs === null ? [] : cs.filter(c => !gender || c.gender === gender));
-      });
-    }, [exercise]);
+      useEffect(() => {
+        // TODO: add setting to filter
+        const gender = exercise.exerciseCase.gender;
+        exercise.noun.cases().then(cs => {
+          setCases(cs === null ? [] : cs.filter(c => !gender || c.gender === gender));
+        });
+      }, [exercise]);
 
-    return isSlevException(exercise.mainForm)
-      ? <Hint columnTitles={hintTitles} >
-        {cases !== null && Object.entries(GrammarCase).map(([key, value]) => <TableRow key={key} >
-          <TableCell align="right" sx={CSS_CAPITALIZE} >
-            {T`${value}`}
-          </TableCell >
+      return useSlev && !isSlevException(exercise.mainForm)
+        ? <SlevRules exercise={exercise} />
+        : <Hint columnTitles={hintTitles}>
+          {cases !== null && Object.entries(GrammarCase).map(([key, value]) => <TableRow key={key}>
+            <TableCell align="right" sx={CSS_CAPITALIZE}>
+              {T`${value}`}
+            </TableCell>
 
-          <TableCell >
-            {getCase(cases, key, GrammarPlurality.SINGULAR)}
-          </TableCell >
+            <TableCell>
+              {getCase(cases, key, GrammarPlurality.SINGULAR)}
+            </TableCell>
 
-          <TableCell >
-            {getCase(cases, key, GrammarPlurality.PLURAL)}
-          </TableCell >
+            <TableCell>
+              {getCase(cases, key, GrammarPlurality.PLURAL)}
+            </TableCell>
 
-        </TableRow >)}
-      </Hint >
+          </TableRow>)}
+        </Hint>;
 
-      : <SlevRules exercise={exercise} />;
 
-    /* exercise.noun.rules ? <Rules rules={exercise.noun.rules} /> : null */
+      /* exercise.noun.rules ? <Rules rules={exercise.noun.rules} /> : null */
 
-  };
+    };
 
 export default NounHint;

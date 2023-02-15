@@ -175,7 +175,8 @@ export interface LearningProgress {
 
 export interface Tutor {
   readonly currentLesson: Lesson
-  selectLesson(lesson: Lesson): Promise<Lesson>;
+  readonly currentLessonHasSlevRules?: boolean
+  selectLesson(lesson: Lesson): Promise<Lesson>
   observableCurrentLesson(): Observable<Lesson>
   nextCaseExercise(): Promise<CaseExercise>
   checkCaseExercise(answer: string, exercise: CaseExercise): Promise<boolean>;

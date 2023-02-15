@@ -102,7 +102,7 @@ const NounCases: React.FunctionComponent = (): React.ReactElement => {
       </IconButton >
     </Grid2 >
 
-    {help ? <NounHint exercise={currentExercise} /> : null}
+    {help ? <NounHint exercise={currentExercise} useSlev={tutor.currentLessonHasSlevRules} /> : null}
 
     <SlevPreps exercise={currentExercise} />
   </Container >
