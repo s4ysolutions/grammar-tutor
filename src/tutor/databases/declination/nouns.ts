@@ -215,6 +215,7 @@ const staticDb: Record<MainFormWord, {
       locative: 'дечацима',
     },
   },
+  /*
   'Енглеска': {
     rules: [30, 70, 120, 130, 230, 270, 340, 370, 450, 460, 510, 610, 620],
     gender: GrammarGender.FEMININE,
@@ -237,7 +238,7 @@ const staticDb: Record<MainFormWord, {
       instrumental: '-',
       locative: '-',
     },
-  },
+  },*/
   'жена': {
     rules: [30, 60, 120, 130, 220, 260, 330, 370, 440, 460, 500, 610, 620],
     gender: GrammarGender.FEMININE,
