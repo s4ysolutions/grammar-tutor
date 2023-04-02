@@ -45,7 +45,8 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
       route.is(RouteId.CASE_INTERROGATIVES_DECLENSION) && <InterrogativePronouns /> ||
       route.is(RouteId.VERBS_CONJUGATION) && <VerbConjugation key={route.id} /> ||
       route.is(RouteId.BITI_CONJUGATION) && <VerbConjugation key={route.id} /> ||
-      route.is(RouteId.HTETI_CONJUGATION) && <VerbConjugation key={route.id} />
+      route.is(RouteId.HTETI_CONJUGATION) && <VerbConjugation key={route.id} /> ||
+      route.is(RouteId.MOCI_CONJUGATION) && <VerbConjugation key={route.id} />
     }
   </Container >;
 };

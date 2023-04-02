@@ -16,23 +16,22 @@
 
 import React, {useMemo} from 'react';
 import {Box, Typography, useTheme} from '@mui/material';
-import {nesvrsheni, svrsheni} from '../../../tutor/databases/conjugation/verbs';
+import {SlevVerbRule} from '../../../tutor/databases/rules/slev-verbs';
 
 const topSpace = 2;
 
-const Rules: React.FunctionComponent<{ rules: string[] }> =
-  ({rules}): React.ReactElement => {
+const SlevVerbHint: React.FunctionComponent<{ rule: SlevVerbRule }> =
+  ({rule}): React.ReactElement => {
     const theme = useTheme();
     const sx = useMemo(() => ({
       mt: theme.spacing(topSpace),
     }), [theme]);
 
-    // filter for historical reason
     return <Box sx={sx} >
-      {rules.filter(it => it === svrsheni || it === nesvrsheni).map(rule => <Typography align="center" key={rule} variant="body1" >
-        {rule}
-      </Typography >)}
+      <Typography align="center" key={rule.description} variant="body1" >
+        {rule.description}
+      </Typography >
     </Box >;
   };
 
-export default Rules;
+export default SlevVerbHint;

@@ -16,7 +16,10 @@
 
 /* eslint-disable no-magic-numbers */
 import {GrammarPerson, GrammarPlurality, MainFormWord, Person, Verb, VerbsDb} from '../../index';
+import {SlevVerbPresentRuleId} from '../rules/slev-verbs';
 
+export const svrsheni = 'свршени';
+export const nesvrsheni = 'несвршени';
 const rules: Record<number, string> = {
   10: '-ати: 1st ➟ [ам], 3rd ➟ [а] / [аjу]',
   20: '-ити, -aти, -ети: 1st ➟ [им], 3rd ➟ [и] / [e]',
@@ -26,13 +29,14 @@ const rules: Record<number, string> = {
   100: 'к, ц ➟ ч',
   110: 'г, з ➟ ж',
   120: 'х, с ➟ ш',
-  200: 'svršeni',
-  210: 'nesvršeni',
+  200: svrsheni,
+  210: nesvrsheni,
 };
 
-const staticDb: Record<MainFormWord, { description?: string, rules: number[], persons: Person[]}> = {
+const staticDb: Record<MainFormWord, { description?: string, rules: number[], slevRule?: SlevVerbPresentRuleId, persons: Person[]}> = {
   'брисати': {
     rules: [30, 120],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'бришем',
@@ -68,6 +72,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'видети': {
     rules: [10],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'видим',
@@ -103,6 +108,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'волети': {
     rules: [20],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'волим',
@@ -138,6 +144,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'гледати': {
     rules: [10],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
     persons: [
       {
         word: 'гледам',
@@ -173,6 +180,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'говорити': {
     rules: [20],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'говорим',
@@ -208,6 +216,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'десити': {
     rules: [10],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'десим',
@@ -243,6 +252,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'дешавати': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
     persons: [
       {
         word: 'дешавам',
@@ -278,6 +288,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'доћи': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'дођем',
@@ -313,6 +324,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'звати': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'зовем',
@@ -348,6 +360,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'знати': {
     rules: [10],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
     persons: [
       {
         word: 'знам',
@@ -383,6 +396,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'живети': {
     rules: [20],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'живим',
@@ -418,6 +432,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'јахати': {
     rules: [30, 120],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'јашем',
@@ -453,6 +468,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'ићи': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'идем',
@@ -488,6 +504,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'казати': {
     rules: [30, 110],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'кажем',
@@ -523,6 +540,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'купити': {
     rules: [20],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'купим',
@@ -558,6 +576,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'куповати': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U_IVATI_OVATI,
     persons: [
       {
         word: 'купујем',
@@ -593,6 +612,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'лагати': {
     rules: [30, 110],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'лажем',
@@ -628,6 +648,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'лежати': {
     rules: [20],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'лежим',
@@ -663,6 +684,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'морати': {
     rules: [10],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
     persons: [
       {
         word: 'морам',
@@ -696,43 +718,9 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
       },
     ],
   },
-  'моћи': {
-    rules: [],
-    persons: [
-      {
-        word: 'могу',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'можеш',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'може',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.SINGULAR,
-      },
-      {
-        word: 'можемо',
-        person: GrammarPerson.FIRST,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'можете',
-        person: GrammarPerson.SECOND,
-        plurality: GrammarPlurality.PLURAL,
-      },
-      {
-        word: 'могу',
-        person: GrammarPerson.THIRD,
-        plurality: GrammarPlurality.PLURAL,
-      },
-    ],
-  },
   'остати': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'останем',
@@ -768,6 +756,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'писати': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'пишем',
@@ -803,6 +792,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'питати': {
     rules: [10],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
     persons: [
       {
         word: 'питам',
@@ -838,6 +828,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'пити': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
     persons: [
       {
         word: 'пи̏је̄м',
@@ -873,6 +864,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'постати': {
     rules: [30, 200],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
     persons: [
       {
         word: 'постанем',
@@ -908,6 +900,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'постојати': {
     rules: [10, 210],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'постојим',
@@ -943,6 +936,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'прати': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
     persons: [
       {
         word: 'перем',
@@ -978,6 +972,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'продавати': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U_AVATI,
     persons: [
       {
         word: 'продајем',
@@ -1013,6 +1008,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'путовати': {
     rules: [40],
+    slevRule: SlevVerbPresentRuleId.EM_U_IVATI_OVATI,
     persons: [
       {
         word: 'путујем',
@@ -1048,6 +1044,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'разговарати': {
     rules: [10],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
     persons: [
       {
         word: 'разговарам',
@@ -1083,6 +1080,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'разговорити': {
     rules: [20],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'разговорим',
@@ -1118,6 +1116,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'разумети': {
     rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'разумем',
@@ -1153,6 +1152,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'сећати се': {
     rules: [10, 210],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
     persons: [
       {
         word: 'сећам се',
@@ -1188,6 +1188,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'сетити се': {
     rules: [20, 200],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'сетим се',
@@ -1223,6 +1224,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'скакати': {
     rules: [30, 100],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'скачем',
@@ -1258,6 +1260,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'стварати': {
     rules: [10],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
     persons: [
       {
         word: 'стварам',
@@ -1293,6 +1296,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'створити': {
     rules: [20],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'створим',
@@ -1328,6 +1332,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'трчати': {
     rules: [20],
+    slevRule: SlevVerbPresentRuleId.IM_E,
     persons: [
       {
         word: 'трчим',
@@ -1363,6 +1368,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], pe
   },
   'утицати': {
     rules: [30, 100],
+    slevRule: SlevVerbPresentRuleId.EM_U,
     persons: [
       {
         word: 'утичем',
@@ -1403,11 +1409,15 @@ class StaticVerb implements Verb {
 
   description?: string;
 
+  slevRule?: SlevVerbPresentRuleId;
+
   private _rules: string[] | null;
 
   constructor(mainForm: string) {
     this.mainForm = mainForm;
-    this.description = staticDb[this.mainForm].description;
+    const entry = staticDb[this.mainForm];
+    this.description = entry.description;
+    this.slevRule = entry.slevRule;
     this._rules = null;
   }
 

@@ -47,6 +47,7 @@ const translation = {
     'Biti conjugation': 'Спряжение глагола "бити"',
     'Case interrogatives declension': 'Склонение падежных вопросов',
     'Hteti conjugation': 'Спряжение глагола "хтети"',
+    'Moći conjugation': 'Спряжение глагола "моћи"',
     'Verbs conjugation': 'Спряжение глаголов',
     'Interrogative pronouns declension': 'Склонение вопросительных местоимений',
     'Nouns declension': 'Склонение существительных',

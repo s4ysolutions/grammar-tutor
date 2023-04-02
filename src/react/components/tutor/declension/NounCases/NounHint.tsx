@@ -21,7 +21,7 @@ import T from '../../../../../l10n';
 import Hint from '../../Hint';
 import {CSS_CAPITALIZE} from '../../constants';
 import {TableCell, TableRow} from '@mui/material';
-import {isSlevException} from '../../../../../tutor/databases/rules/slev';
+import {isSlevException} from '../../../../../tutor/databases/rules/slev-nouns';
 
 const hintTitles = [T`${GrammarPlurality.SINGULAR}`, T`${GrammarPlurality.PLURAL}`];
 

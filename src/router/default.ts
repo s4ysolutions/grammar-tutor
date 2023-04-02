@@ -70,6 +70,12 @@ export class DefaultRouter implements Router {
     is: (id) => id === RouteId.HTETI_CONJUGATION,
   };
 
+  routeMociConjugation: Route = {
+    id: RouteId.MOCI_CONJUGATION,
+    title: T`Moći conjugation`,
+    is: (id) => id === RouteId.MOCI_CONJUGATION,
+  };
+
   routeVerbsConjugation: Route = {
     id: RouteId.VERBS_CONJUGATION,
     title: T`Verbs conjugation`,
@@ -106,6 +112,9 @@ export class DefaultRouter implements Router {
         break;
       case RouteId.HTETI_CONJUGATION:
         this.currentRoute = this.routeHtetiConjugation;
+        break;
+      case RouteId.MOCI_CONJUGATION:
+        this.currentRoute = this.routeMociConjugation;
         break;
       case RouteId.VERBS_CONJUGATION:
         this.currentRoute = this.routeVerbsConjugation;

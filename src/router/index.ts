@@ -25,6 +25,7 @@ export enum RouteId {
   CASE_INTERROGATIVES_DECLENSION,
   BITI_CONJUGATION,
   HTETI_CONJUGATION,
+  MOCI_CONJUGATION,
   VERBS_CONJUGATION,
 }
 
@@ -43,6 +44,7 @@ export interface Router {
   readonly routeInterrogativePronounsDeclension: Route;
   readonly routeBitiConjugation: Route;
   readonly routeHtetiConjugation: Route;
+  readonly routeMociConjugation: Route;
   readonly routeVerbsConjugation: Route;
 
   readonly currentRoute: Route;

@@ -18,7 +18,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {CaseExercise, GrammarAnimation} from '../../../../tutor';
 import diFactory from '../../../../di/default';
 import {Typography, useTheme} from '@mui/material';
-import {nounsSlevRules} from '../../../../tutor/databases/rules/slev';
+import {nounsSlevRules} from '../../../../tutor/databases/rules/slev-nouns';
 import './styles.scss';
 
 const {di} = diFactory;

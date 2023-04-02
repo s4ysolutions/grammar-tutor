@@ -15,7 +15,7 @@
  */
 
 import {expect} from 'chai';
-import {isSlevException} from '../../../src/tutor/databases/rules/slev';
+import {isSlevException} from '../../../src/tutor/databases/rules/slev-nouns';
 
 describe('Test slev rules database', () => {
   it('брат should be exception', () => {

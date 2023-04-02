@@ -34,6 +34,7 @@ import {DefaultHtetiDb} from '../tutor/databases/conjugation/hteti';
 import {DefaultVerbsDb} from '../tutor/databases/conjugation/verbs';
 import {DefaultReflexivePronounsDb} from '../tutor/databases/declination/reflexive-pronouns';
 import {DefaultPossessivePronounsDb} from '../tutor/databases/declination/possessive-pronouns';
+import {DefaultMociDb} from '../tutor/databases/conjugation/moci';
 
 export class DefaultDi implements Di {
   private readonly _kvPromise: KvPromise;
@@ -53,6 +54,8 @@ export class DefaultDi implements Di {
   private readonly _bitiDb: VerbsDb;
 
   private readonly _htetiDb: VerbsDb;
+
+  private readonly _mociDb: VerbsDb;
 
   private readonly _verbsDb: VerbsDb;
 
@@ -76,6 +79,7 @@ export class DefaultDi implements Di {
     this._nounsDb = new DefaultNounsDb();
     this._bitiDb = new DefaultBitiDb();
     this._htetiDb = new DefaultHtetiDb();
+    this._mociDb = new DefaultMociDb();
     this._verbsDb = new DefaultVerbsDb();
     this._learningProgress = new KvPromiseLearningDb(this._kvPromise, this._lesson.observableCurrentLesson());
     this._tutor = new DefaultTutor(
@@ -87,45 +91,46 @@ export class DefaultDi implements Di {
       this._nounsDb,
       this._bitiDb,
       this._htetiDb,
+      this._mociDb,
       this._verbsDb,
       this._learningProgress,
       this._lesson,
     );
   }
 
-  get learningProgress (): LearningProgress {
+  get learningProgress(): LearningProgress {
     return this._learningProgress;
   }
 
-  get personalPronounsDb (): NounsDb {
+  get personalPronounsDb(): NounsDb {
     return this._personalPronounsDb;
   }
 
-  get reflexivePronounsDb (): NounsDb {
+  get reflexivePronounsDb(): NounsDb {
     return this._reflexivePronounsDb;
   }
 
-  get possessivePronounsDb (): NounsDb {
+  get possessivePronounsDb(): NounsDb {
     return this._reflexivePronounsDb;
   }
 
-  get interrogativePronounsDb (): NounsDb {
+  get interrogativePronounsDb(): NounsDb {
     return this._interrogativePronounsDb;
   }
 
-  get caseInterrogativesDb (): CasesInterrogativesDb {
+  get caseInterrogativesDb(): CasesInterrogativesDb {
     return this._caseInterrogativesDb;
   }
 
-  get router (): Router {
+  get router(): Router {
     return this._router;
   }
 
-  get tutor (): Tutor {
+  get tutor(): Tutor {
     return this._tutor;
   }
 
-  get uiState (): UiState {
+  get uiState(): UiState {
     return this._uiState;
   }
 

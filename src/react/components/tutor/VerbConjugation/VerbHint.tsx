@@ -21,6 +21,8 @@ import T from '../../../../l10n';
 import Hint from '../Hint';
 import React, {useEffect, useState} from 'react';
 import Rules from '../Rules';
+import SlevVerbHint from '../SlevVerbHint';
+import {slevVerbRules} from '../../../../tutor/databases/rules/slev-verbs';
 
 const hintTitles = [T`${GrammarPlurality.SINGULAR}`, T`${GrammarPlurality.PLURAL}`];
 
@@ -49,6 +51,9 @@ const VerbHint: React.FunctionComponent<{ exercise: ConjugationExercise }> =
     }, [exercise]);
 
     return <React.Fragment >
+
+      {exercise.verb.slevRule ? <SlevVerbHint rule={slevVerbRules[exercise.verb.slevRule]} /> : null}
+
       <Hint columnTitles={hintTitles} >
         {persons !== null && Object.entries(GrammarPerson).map(([key, value]) => <TableRow key={key} >
           <TableCell align="right" sx={CSS_BOLD} >

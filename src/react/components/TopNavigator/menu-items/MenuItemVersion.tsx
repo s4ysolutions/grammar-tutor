@@ -19,7 +19,7 @@ import {Typography} from '@mui/material';
 
 const MenuItemVersion: React.FunctionComponent =
   (): React.ReactElement => <Typography align="center" variant="body2">
-    v20230215
+    v20230402
   </Typography >;
 
 export default MenuItemVersion;

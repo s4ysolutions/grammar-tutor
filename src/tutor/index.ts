@@ -15,6 +15,7 @@
  */
 
 import {Observable} from 'rxjs';
+import {SlevVerbPresentRuleId} from './databases/rules/slev-verbs';
 
 export type MainFormWord = string;
 export type CaseFormWord = string;
@@ -95,6 +96,7 @@ export interface Noun extends WithDescription, WithRules{
 
 export interface Verb extends WithDescription, WithRules{
   readonly mainForm: MainFormWord;
+  readonly slevRule?: SlevVerbPresentRuleId;
   persons(): Promise<Person[]>;
 }
 
@@ -156,6 +158,7 @@ export enum Lesson {
   CASES_INTERROGATIVES_DECLINATION,
   BITI_CONJUGATION,
   HTETI_CONJUGATION,
+  MOCI_CONJUGATION,
   VERBS_CONJUGATION,
 }
 

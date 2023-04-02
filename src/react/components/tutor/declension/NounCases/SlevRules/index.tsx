@@ -23,7 +23,7 @@ import {
   iDeclensionSlevRules,
   nounsSlevRules,
   slevNotes,
-} from '../../../../../../tutor/databases/rules/slev';
+} from '../../../../../../tutor/databases/rules/slev-nouns';
 import Hint from '../../../Hint';
 import {TableCell, Typography} from '@mui/material';
 import {CSS_CAPITALIZE} from '../../../constants';

@@ -17,7 +17,7 @@
 import React from 'react';
 import {CaseExercise} from '../../../../tutor';
 
-import {nounsSlevRules} from '../../../../tutor/databases/rules/slev';
+import {nounsSlevRules} from '../../../../tutor/databases/rules/slev-nouns';
 
 const SlevPreps: React.FunctionComponent<{exercise: CaseExercise}> = ({exercise}): React.ReactElement | null => {
   const preps = nounsSlevRules[exercise.exerciseCase.case]?.prepositions;
