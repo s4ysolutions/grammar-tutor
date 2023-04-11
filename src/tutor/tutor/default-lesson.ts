@@ -16,10 +16,18 @@
 
 import {Lesson} from '../index';
 import {Observable, Subject} from 'rxjs';
+import {KV} from '../../kv/sync';
 
 class DefaultLesson {
 
-  currentLesson: Lesson = Lesson.NOUNS_DECLINATION;
+  currentLesson: Lesson;
+
+  private readonly kv: KV;
+
+  constructor(kv: KV) {
+    this.kv = kv;
+    this.currentLesson = kv.get('lesson', Lesson.NOUNS_DECLINATION);
+  }
 
   private readonly subjectCurrentLesson = new Subject<Lesson>();
 
@@ -28,6 +36,7 @@ class DefaultLesson {
   }
 
   selectLesson(lesson: Lesson): Promise<Lesson> {
+    this.kv.set('lesson', lesson);
     this.currentLesson = lesson;
     this.subjectCurrentLesson.next(lesson);
     return Promise.resolve(lesson);

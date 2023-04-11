@@ -18,6 +18,7 @@
 import {Route, RouteId, Router} from './index';
 import {Subject} from 'rxjs';
 import T from '../l10n';
+import {KV} from '../kv/sync';
 
 const observableCurrentRouter = new Subject<Route>();
 
@@ -82,12 +83,19 @@ export class DefaultRouter implements Router {
     is: (id) => id === RouteId.VERBS_CONJUGATION,
   };
 
-  currentRoute: Route = this.routeNounsDeclension;
+  currentRoute: Route; // = this.routeNounsDeclension;
 
   readonly observableCurrentRoute = observableCurrentRouter;
 
-  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
-  go(routeId: RouteId): void {
+  private readonly kv: KV;
+
+  constructor(kv: KV) {
+    this.kv = kv;
+    const routeId = kv.get<RouteId>('route', RouteId.NOUNS_DECLENSION);
+    this.setRouteById(routeId);
+  }
+
+  private setRouteById(routeId: RouteId): void {
     switch (routeId) {
       case RouteId.NOUNS_DECLENSION:
         this.currentRoute = this.routeNounsDeclension;
@@ -122,6 +130,12 @@ export class DefaultRouter implements Router {
       default:
         throw Error(`Wrong routeId "${routeId}"`);
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
+  go(routeId: RouteId): void {
+    this.setRouteById(routeId);
+    this.kv.set('route', routeId);
     observableCurrentRouter.next(this.currentRoute);
   }
 }

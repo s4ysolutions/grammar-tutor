@@ -18,21 +18,22 @@ import {expect} from 'chai';
 import {Lesson} from '../../../src/tutor';
 import {first} from 'rxjs';
 import DefaultLesson from '../../../src/tutor/tutor/default-lesson';
+import memoryStorage from '../../mocks/kv/memoryStorage';
 
 describe('Lessons', () => {
   it('Default lesson should be Personal Pronouns', () => {
-    const lessonsDb = new DefaultLesson();
+    const lessonsDb = new DefaultLesson(memoryStorage());
     expect(lessonsDb.currentLesson).to.be.eq(Lesson.NOUNS_DECLINATION);
   });
 
   it('Lesson cab be changed to Interrogative Pronoun and back to Personal Pronouns', () => {
-    const lessonsDb = new DefaultLesson();
+    const lessonsDb = new DefaultLesson(memoryStorage());
     lessonsDb.selectLesson(Lesson.CASES_INTERROGATIVES_DECLINATION);
     expect(lessonsDb.currentLesson).to.be.eq(Lesson.CASES_INTERROGATIVES_DECLINATION);
   });
 
   it('Observe change current Lesson', async () => {
-    const lessonsDb = new DefaultLesson();
+    const lessonsDb = new DefaultLesson(memoryStorage());
 
     const observedLessonPromise = new Promise(rs => {
       lessonsDb.observableCurrentLesson().pipe(first())

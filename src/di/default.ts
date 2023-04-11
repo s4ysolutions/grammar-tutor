@@ -35,8 +35,12 @@ import {DefaultVerbsDb} from '../tutor/databases/conjugation/verbs';
 import {DefaultReflexivePronounsDb} from '../tutor/databases/declination/reflexive-pronouns';
 import {DefaultPossessivePronounsDb} from '../tutor/databases/declination/possessive-pronouns';
 import {DefaultMociDb} from '../tutor/databases/conjugation/moci';
+import localStorageFactory from '../kv/sync/localStorage';
 
 export class DefaultDi implements Di {
+
+  private readonly _kvSync = localStorageFactory();
+
   private readonly _kvPromise: KvPromise;
 
   private readonly _personalPronounsDb: NounsDb;
@@ -59,13 +63,13 @@ export class DefaultDi implements Di {
 
   private readonly _verbsDb: VerbsDb;
 
-  private readonly _lesson = new DefaultLesson();
+  private readonly _lesson = new DefaultLesson(this._kvSync);
 
   private readonly _learningProgress: LearningProgress;
 
   private readonly _tutor: Tutor;
 
-  private readonly _router = new DefaultRouter();
+  private readonly _router = new DefaultRouter(this._kvSync);
 
   private readonly _uiState = new DefaultUiState();
 
