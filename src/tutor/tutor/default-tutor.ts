@@ -124,6 +124,7 @@ export class DefaultTutor implements Tutor {
         ? animations[DefaultTutor.random(animations.length)]
         : null;
 
+  // noinspection JSUnusedLocalSymbols
   private static randomPerson =
     (persons: GrammarPerson[]): GrammarPerson | null =>
       persons.length > 0
@@ -216,6 +217,24 @@ export class DefaultTutor implements Tutor {
         set.add(verbPerson.person);
         return set;
       }, new Set()));
+  }
+
+  static availablePersonsForAllPluralities(persons: Person[]): Array<{ plurality: GrammarPlurality, person: GrammarPerson }> {
+    const availablePluralities = DefaultTutor.availablePluralities(persons);
+    return availablePluralities.map(grammarPlurality => {
+      const availablePersons = DefaultTutor.availablePersonsForPlurality(persons, grammarPlurality);
+      const ret = availablePersons.map(grammarPerson => ({plurality: grammarPlurality, person: grammarPerson}));
+      if (availablePersons.includes(GrammarPerson.THIRD) && grammarPlurality === GrammarPlurality.PLURAL) {
+        // increase probability of 3rd plural
+        return ret.concat([
+          {plurality: GrammarPlurality.PLURAL, person: GrammarPerson.THIRD},
+          {plurality: GrammarPlurality.PLURAL, person: GrammarPerson.THIRD},
+          {plurality: GrammarPlurality.PLURAL, person: GrammarPerson.THIRD},
+          {plurality: GrammarPlurality.PLURAL, person: GrammarPerson.THIRD},
+        ]);
+      }
+      return ret;
+    }).flat();
   }
 
   private static availableFormsForPluralityAndPerson(
@@ -487,11 +506,18 @@ export class DefaultTutor implements Tutor {
       return set;
     }, new Set()).keys());
 
-    const availablePluralities = DefaultTutor.availablePluralities(persons);
-    const grammarPlurality: GrammarPlurality = DefaultTutor.randomPlurality(availablePluralities);
+    const availablePluralitiesAndPersons = DefaultTutor.availablePersonsForAllPluralities(persons);
+    const pluralityAndPerson = availablePluralitiesAndPersons[DefaultTutor.random(availablePluralitiesAndPersons.length)];
 
-    const availablePersons = DefaultTutor.availablePersonsForPlurality(persons, grammarPlurality);
-    const grammarPerson: GrammarPerson = DefaultTutor.randomPerson(availablePersons);
+    const grammarPlurality: GrammarPlurality = pluralityAndPerson.plurality;
+    const grammarPerson: GrammarPerson = pluralityAndPerson.person;
+    /*
+       const availablePluralities = DefaultTutor.availablePluralities(persons);
+       const grammarPlurality: GrammarPlurality = DefaultTutor.randomPlurality(availablePluralities);
+
+       const availablePersons = DefaultTutor.availablePersonsForPlurality(persons, grammarPlurality);
+       const grammarPerson: GrammarPerson = DefaultTutor.randomPerson(availablePersons);
+         */
 
     const availableForms =
             DefaultTutor.availableFormsForPluralityAndPerson(persons, grammarPlurality, grammarPerson);

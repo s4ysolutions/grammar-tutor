@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import {Typography} from '@mui/material';
+import {use as chaiUse, expect} from 'chai';
+import chaiString from 'chai-string';
+import {DefaultVerbsDb} from '../../../src/tutor/databases/conjugation/verbs';
+import {DefaultTutor} from '../../../src/tutor/tutor/default-tutor';
 
-const MenuItemVersion: React.FunctionComponent =
-  (): React.ReactElement => <Typography align="center" variant="body2">
-    v20230412
-  </Typography >;
+chaiUse(chaiString);
 
-export default MenuItemVersion;
+describe('Tutor verbs', () => {
+
+  it('availablePersonsForAllPluralities', async () => {
+    const db = new DefaultVerbsDb();
+    const verb = await db.getVerbByMainForm('брисати');
+    const persons = DefaultTutor.availablePersonsForAllPluralities(await verb.persons());
+    expect(persons.length).to.be.eq(10);
+  });
+});
