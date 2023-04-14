@@ -754,6 +754,78 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
     ],
   },
+  'оце́нити': {
+    rules: [200],
+    slevRule: SlevVerbPresentRuleId.IM_E,
+    persons: [
+      {
+        word: 'оценим',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'оцениш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'оцени',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'оценимо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'оцените',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'оцене',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'оцењи́вати': {
+    rules: [210],
+    slevRule: SlevVerbPresentRuleId.EM_EJU,
+    persons: [
+      {
+        word: 'оцењујем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'оцењујеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'оцењује',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'оцењујемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'оцењујете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'оцењују',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
   'писати': {
     rules: [30],
     slevRule: SlevVerbPresentRuleId.EM_U,
