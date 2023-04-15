@@ -57,6 +57,7 @@ const translation = {
     'Personal pronouns declension': 'Склонение личных местоимений',
     'Possessive pronouns declension': 'Склонение притяжательных местоимений',
     'Reflexive pronouns declension': 'Склонение возвратных местоимений',
+    'Used materials': 'Использованные материалы',
 
     'Reset': 'Сбросить результаты',
 
