@@ -30,6 +30,7 @@ import MenuItemReflexivePronounsDeclension from './menu-items/MenuItemReflexiveP
 import MenuItemPossessivePronounsDeclension from './menu-items/MenuItemPossessivePronounsDeclension';
 import MenuItemVersion from './menu-items/MenuItemVersion';
 import MenuItemMociConjugation from './menu-items/MenuItemMociConjugation';
+import MenuItemVerbsConjugationForms from './menu-items/MenuItemVerbsConjugationForms';
 
 const {di} = diFactory;
 const uiState = di.uiState;
@@ -62,6 +63,8 @@ const MenuMain: React.FunctionComponent<{anchorEl: Element}> =
       <MenuItemInterrogativePronounsDeclension />
 
       <MenuItemCaseInterrogativesDeclension />
+
+      <MenuItemVerbsConjugationForms />
 
       <MenuItemVerbsConjugation />
 

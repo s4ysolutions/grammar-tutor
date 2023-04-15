@@ -38,6 +38,7 @@ import {
 } from '../index';
 import DefaultLesson from './default-lesson';
 import {Observable} from 'rxjs';
+import {slevVerbRulesMap} from '../databases/rules/slev-verbs';
 
 export class DefaultTutor implements Tutor {
   private readonly personalPronounsDb: NounsDb;
@@ -488,7 +489,7 @@ export class DefaultTutor implements Tutor {
                 ? this.htetiDb
                 : this.currentLesson === Lesson.MOCI_CONJUGATION
                   ? this.mociDb
-                  : this.currentLesson === Lesson.VERBS_CONJUGATION
+                  : this.currentLesson === Lesson.VERBS_CONJUGATION || this.currentLesson === Lesson.VERBS_CONJUGATION_FORMS
                     ? this.verbsDb
                     : null;
 
@@ -542,7 +543,7 @@ export class DefaultTutor implements Tutor {
   }
 
   private checkCaseAnswer(answer: string, exercise: CaseExercise): Promise<boolean> {
-    return this.updateLearning(answer === exercise.correctAnswer, answer);
+    return this.updateLearning(answer === exercise.correctAnswer, exercise.mainForm);
   }
 
   // question should be internal state?
@@ -552,7 +553,11 @@ export class DefaultTutor implements Tutor {
   }
 
   checkConjugationExercise(answer: string, exercise: ConjugationExercise): Promise<boolean> {
-    return this.updateLearning(answer === exercise.correctAnswer, answer);
+    return this.updateLearning(answer === exercise.correctAnswer, exercise.mainForm);
+  }
+
+  checkConjugationSlevFormExercise(answer: string, exercise: ConjugationExercise): Promise<boolean> {
+    return this.updateLearning(answer === slevVerbRulesMap[exercise.verb.slevRule].description, exercise.verb.mainForm);
   }
 
   get currentLesson() {

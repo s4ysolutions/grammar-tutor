@@ -287,8 +287,8 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
     ],
   },
   'доћи': {
-    rules: [30],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    rules: [],
+    slevRule: SlevVerbPresentRuleId.EM_U_CI,
     persons: [
       {
         word: 'дођем',
@@ -324,7 +324,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'звати': {
     rules: [30],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
     persons: [
       {
         word: 'зовем',
@@ -430,6 +430,42 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
     ],
   },
+  'ићи': {
+    rules: [30],
+    slevRule: SlevVerbPresentRuleId.EM_U_CI,
+    persons: [
+      {
+        word: 'идем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'идеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'иде',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'идемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'идете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'иду',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
   'јахати': {
     rules: [30, 120],
     slevRule: SlevVerbPresentRuleId.EM_U,
@@ -466,37 +502,37 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
     ],
   },
-  'ићи': {
-    rules: [30],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+  'је̏сти': {
+    rules: [210],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
     persons: [
       {
-        word: 'идем',
+        word: 'једем',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'идеш',
+        word: 'једеш',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'иде',
+        word: 'једе',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.SINGULAR,
       },
       {
-        word: 'идемо',
+        word: 'једемо',
         person: GrammarPerson.FIRST,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'идете',
+        word: 'једете',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.PLURAL,
       },
       {
-        word: 'иду',
+        word: 'једу',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.PLURAL,
       },
@@ -682,6 +718,42 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
     ],
   },
+  'лȅћи': {
+    rules: [200],
+    slevRule: SlevVerbPresentRuleId.EM_U_CI,
+    persons: [
+      {
+        word: 'легнем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'легнеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'легне',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'легнемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'легнете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'легну',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
   'морати': {
     rules: [10],
     slevRule: SlevVerbPresentRuleId.AM_AJU,
@@ -821,6 +893,114 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
       {
         word: 'оцењују',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'па̏дати': {
+    rules: [210],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
+    persons: [
+      {
+        word: 'падам',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'падаш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'пада',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'падамо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'падате',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'падају',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'па̏сти': {
+    rules: [200],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
+    persons: [
+      {
+        word: 'паднем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'паднеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'падне',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'паднемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'паднете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'падну',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'пе̏ћи': {
+    rules: [210],
+    slevRule: SlevVerbPresentRuleId.EM_U_CI,
+    persons: [
+      {
+        word: 'печем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'печеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'пече',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'печемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'печете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'пеку',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.PLURAL,
       },
@@ -1007,7 +1187,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
     ],
   },
   'прати': {
-    rules: [30],
+    rules: [210],
     slevRule: SlevVerbPresentRuleId.EM_U_TI,
     persons: [
       {
@@ -1296,7 +1476,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'скакати': {
     rules: [30, 100],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
     persons: [
       {
         word: 'скачем',
@@ -1325,6 +1505,42 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
       {
         word: 'скачу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'смѐјати се': {
+    rules: [],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
+    persons: [
+      {
+        word: 'смејем се',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'смејеш се',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'смеје се',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'смејемо се',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'смејете се',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'смеју се',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.PLURAL,
       },
@@ -1402,6 +1618,42 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
     ],
   },
+  'тре̑сти': {
+    rules: [],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
+    persons: [
+      {
+        word: 'тресем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'тресеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'тресе',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'тресемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'тресете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'тресу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
   'трчати': {
     rules: [20],
     slevRule: SlevVerbPresentRuleId.IM_E,
@@ -1438,6 +1690,42 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
     ],
   },
+  'чу̏ти': {
+    rules: [200, 210],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
+    persons: [
+      {
+        word: 'чујем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'чујеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'чује',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'чујемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'чујете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'чују',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
   'утицати': {
     rules: [30, 100],
     slevRule: SlevVerbPresentRuleId.EM_U,
@@ -1469,6 +1757,42 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
       {
         word: 'утичу',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'зва̏ти се': {
+    rules: [210],
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
+    persons: [
+      {
+        word: 'зовем се',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'зовеш се',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'зове се',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'зовемо се',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'зовете се',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'зову се',
         person: GrammarPerson.THIRD,
         plurality: GrammarPlurality.PLURAL,
       },

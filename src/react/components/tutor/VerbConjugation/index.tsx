@@ -21,7 +21,7 @@ import diFactory from '../../../../di/default';
 import QuizIcon from '@mui/icons-material/Quiz';
 import T from '../../../../l10n';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import {ConjugationExercise, GrammarForm, GrammarPlurality} from '../../../../tutor';
+import {ConjugationExercise, GrammarForm, GrammarPlurality, Lesson} from '../../../../tutor';
 import MainForm from '../MainForm';
 import PersonTitle from './PersonTitle';
 import VerbHint from './VerbHint';
@@ -29,6 +29,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faXmarksLines as faLong} from '@fortawesome/free-solid-svg-icons';
 import PersonIcon from './PersonIcon';
 import Pronoun from './Pronoun';
+import SlevVerbVariants from './SlevVerbVariants';
 
 const {di} = diFactory;
 const tutor = di.tutor;
@@ -84,12 +85,19 @@ const VerbConjugation: React.FunctionComponent = (): React.ReactElement => {
 
     <Pronoun exercise={currentExercise} />
 
+    {tutor.currentLesson === Lesson.VERBS_CONJUGATION_FORMS &&
+        <SlevVerbVariants
+          currentExercise={currentExercise}
+          key={currentExercise.exercisePerson.word + variantsKey++}
+          nextExercise={nextExercise} />}
+
+    {tutor.currentLesson !== Lesson.VERBS_CONJUGATION_FORMS &&
     <Variants
       checkVariant={checkVariant}
       correctVariant={currentExercise.exercisePerson.word}
       key={currentExercise.exercisePerson.word + variantsKey++}
       nextExercise={nextExercise}
-      possibleVariants={possibleVariant} />
+      possibleVariants={possibleVariant} />}
 
     <Grid2 container justifyContent="right" >
       <IconButton aria-label={T`Hint`} color="primary" onClick={toggleHelp} >

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 by s4y.solutions
+ * Copyright 2023 by s4y.solutions
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 import React, {useMemo} from 'react';
 import {Box, Typography, useTheme} from '@mui/material';
-import {SlevVerbRule} from '../../../tutor/databases/rules/slev-verbs';
+import {SlevVerbRule} from '../../../../tutor/databases/rules/slev-verbs';
 
 const topSpace = 2;
 

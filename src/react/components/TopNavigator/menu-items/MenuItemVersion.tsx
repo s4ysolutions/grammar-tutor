@@ -16,10 +16,17 @@
 
 import React from 'react';
 import {Typography} from '@mui/material';
+import T from '../../../../l10n';
 
 const MenuItemVersion: React.FunctionComponent =
-  (): React.ReactElement => <Typography align="center" variant="body2">
-    v20230412
-  </Typography >;
+  (): React.ReactElement => <div>
+    <Typography align="center" variant="body2">
+v20230415
+    </Typography >
+
+    <a href="https://slev.life">
+      {T`Used materials`}
+    </a>
+  </div>;
 
 export default MenuItemVersion;

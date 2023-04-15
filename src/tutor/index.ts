@@ -160,6 +160,7 @@ export enum Lesson {
   HTETI_CONJUGATION,
   MOCI_CONJUGATION,
   VERBS_CONJUGATION,
+  VERBS_CONJUGATION_FORMS,
 }
 
 export interface LessonStatistics {
@@ -185,4 +186,6 @@ export interface Tutor {
   checkCaseExercise(answer: string, exercise: CaseExercise): Promise<boolean>;
   nextConjugationExercise(): Promise<ConjugationExercise>
   checkConjugationExercise(answer: string, exercise: ConjugationExercise): Promise<boolean>;
+  // nextConjugationSlevFormExercise(): Promise<ConjugationSlevFormExercise>
+  checkConjugationSlevFormExercise(answer: string, exercise: ConjugationExercise): Promise<boolean>;
 }

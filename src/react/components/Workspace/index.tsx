@@ -24,6 +24,7 @@ import VerbConjugation from '../tutor/VerbConjugation';
 
 const topSpace = 2;
 
+// eslint-disable-next-line complexity
 const Workspace: React.FunctionComponent = (): React.ReactElement => {
   const theme = useTheme();
   const sx = useMemo(() => ({
@@ -44,6 +45,7 @@ const Workspace: React.FunctionComponent = (): React.ReactElement => {
       route.is(RouteId.INTERROGATIVE_PRONOUNS_DECLENSION) && <NounCases key={route.id} /> ||
       route.is(RouteId.CASE_INTERROGATIVES_DECLENSION) && <InterrogativePronouns /> ||
       route.is(RouteId.VERBS_CONJUGATION) && <VerbConjugation key={route.id} /> ||
+      route.is(RouteId.VERBS_CONJUGATION_FORMS) && <VerbConjugation key={route.id} /> ||
       route.is(RouteId.BITI_CONJUGATION) && <VerbConjugation key={route.id} /> ||
       route.is(RouteId.HTETI_CONJUGATION) && <VerbConjugation key={route.id} /> ||
       route.is(RouteId.MOCI_CONJUGATION) && <VerbConjugation key={route.id} />

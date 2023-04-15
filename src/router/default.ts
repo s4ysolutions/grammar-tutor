@@ -83,6 +83,12 @@ export class DefaultRouter implements Router {
     is: (id) => id === RouteId.VERBS_CONJUGATION,
   };
 
+  routeVerbsConjugationForms: Route = {
+    id: RouteId.VERBS_CONJUGATION_FORMS,
+    title: T`Verbs conjugation forms`,
+    is: (id) => id === RouteId.VERBS_CONJUGATION_FORMS,
+  };
+
   currentRoute: Route; // = this.routeNounsDeclension;
 
   readonly observableCurrentRoute = observableCurrentRouter;
@@ -126,6 +132,9 @@ export class DefaultRouter implements Router {
         break;
       case RouteId.VERBS_CONJUGATION:
         this.currentRoute = this.routeVerbsConjugation;
+        break;
+      case RouteId.VERBS_CONJUGATION_FORMS:
+        this.currentRoute = this.routeVerbsConjugationForms;
         break;
       default:
         throw Error(`Wrong routeId "${routeId}"`);

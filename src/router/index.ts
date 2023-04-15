@@ -27,6 +27,7 @@ export enum RouteId {
   HTETI_CONJUGATION,
   MOCI_CONJUGATION,
   VERBS_CONJUGATION,
+  VERBS_CONJUGATION_FORMS,
 }
 
 export interface Route {
@@ -46,6 +47,7 @@ export interface Router {
   readonly routeHtetiConjugation: Route;
   readonly routeMociConjugation: Route;
   readonly routeVerbsConjugation: Route;
+  readonly routeVerbsConjugationForms: Route;
 
   readonly currentRoute: Route;
   readonly observableCurrentRoute: Observable<Route>;

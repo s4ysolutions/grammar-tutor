@@ -1,3 +1,5 @@
+// noinspection JSNonASCIINames
+
 /*
  * Copyright 2023 by s4y.solutions
  *
@@ -49,6 +51,7 @@ const translation = {
     'Hteti conjugation': 'Спряжение глагола "хтети"',
     'Moći conjugation': 'Спряжение глагола "моћи"',
     'Verbs conjugation': 'Спряжение глаголов',
+    'Verbs conjugation forms': 'Формы спряжение глаголов',
     'Interrogative pronouns declension': 'Склонение вопросительных местоимений',
     'Nouns declension': 'Склонение существительных',
     'Personal pronouns declension': 'Склонение личных местоимений',

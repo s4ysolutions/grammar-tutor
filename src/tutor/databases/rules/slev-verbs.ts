@@ -30,44 +30,62 @@ export enum SlevVerbPresentRuleId {
 }
 
 export interface SlevVerbRule {
+  id: SlevVerbPresentRuleId,
   description: string
 }
 
-export const slevVerbRules: Record<SlevVerbPresentRuleId, SlevVerbRule> = {
-  [SlevVerbPresentRuleId.NONE]: {
+export const slevVerbRules: SlevVerbRule[] = [
+  {
+    id: SlevVerbPresentRuleId.NONE,
     description: '',
   },
-  [SlevVerbPresentRuleId.IM_E]: {
+  {
+    id: SlevVerbPresentRuleId.IM_E,
     description: '-им, -e',
   },
-  [SlevVerbPresentRuleId.AM_AJU]: {
+  {
+    id: SlevVerbPresentRuleId.AM_AJU,
     description: '-ам, -ajу',
   },
-  [SlevVerbPresentRuleId.EM_U]: {
+  {
+    id: SlevVerbPresentRuleId.EM_U,
     description: '-eм, -у',
   },
-  [SlevVerbPresentRuleId.EM_U_GATI_ZATI]: {
+  {
+    id: SlevVerbPresentRuleId.EM_U_GATI_ZATI,
     description: '-eм, -у; [г]ати, [з]ати ➟ ж',
   },
-  [SlevVerbPresentRuleId.EM_U_HATI_SATI]: {
+  {
+    id: SlevVerbPresentRuleId.EM_U_HATI_SATI,
     description: '-eм, -у; [х]ати, [c]ати ➟ ш',
   },
-  [SlevVerbPresentRuleId.EM_U_KATI]: {
+  {
+    id: SlevVerbPresentRuleId.EM_U_KATI,
     description: '-eм, -у; [к]ати ➟ ч',
   },
-  [SlevVerbPresentRuleId.EM_U_AVATI]: {
+  {
+    id: SlevVerbPresentRuleId.EM_U_AVATI,
     description: '-eм, -у; [ав]ати ➟ аj',
   },
-  [SlevVerbPresentRuleId.EM_U_IVATI_OVATI]: {
+  {
+    id: SlevVerbPresentRuleId.EM_U_IVATI_OVATI,
     description: '-eм, -у; [ив]ати, [ов]ати ➟ уj',
   },
-  [SlevVerbPresentRuleId.EM_U_TI]: {
-    description: '-eм, -у; !!!',
+  {
+    id: SlevVerbPresentRuleId.EM_U_TI,
+    description: '-eм, -у; [ти] ➟ ...',
   },
-  [SlevVerbPresentRuleId.EM_U_CI]: {
-    description: '-eм, -у; !!!',
+  {
+    id: SlevVerbPresentRuleId.EM_U_CI,
+    description: '-eм, -у; [ćи] ➟ ...',
   },
-  [SlevVerbPresentRuleId.EM_EJU]: {
+  {
+    id: SlevVerbPresentRuleId.EM_EJU,
     description: '-eм, -еjу',
   },
-};
+];
+
+export const slevVerbRulesMap = slevVerbRules.reduce((acc, it) => {
+  acc[it.id] = it;
+  return acc;
+}, {} as Record<SlevVerbPresentRuleId, SlevVerbRule>);
