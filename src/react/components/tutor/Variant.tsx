@@ -26,6 +26,8 @@ export enum Status {
   HINT
 }
 
+const font80 = {fontSize: '80%', fontStyle: 'italic'};
+const bold = {fontWeight: 'bold'};
 const Variant: React.FunctionComponent<{variant: string, onClick: (answer: string) => void, status: Status}> =
   ({onClick, variant, status}): React.ReactElement => {
 
@@ -42,6 +44,21 @@ const Variant: React.FunctionComponent<{variant: string, onClick: (answer: strin
       , [variant, onClick],
     );
 
+    const parts = variant.split(';');
+
+    const label = parts.length === 1 ? <span style={bold}>
+      {variant}
+    </span> : <React.Fragment>
+      <span style={bold}>
+        {parts[0]}
+      </span>
+&nbsp;&nbsp;
+
+      <span style={font80}>
+        {parts[1]}
+      </span>
+    </React.Fragment>;
+
     return <Button
       color={status === Status.CORRECT ? 'success' : status === Status.WRONG ? 'error' : 'primary'}
       onClick={handleClick}
@@ -49,7 +66,7 @@ const Variant: React.FunctionComponent<{variant: string, onClick: (answer: strin
       variant={status === Status.NONE ? 'outlined' : 'contained'}
     >
 
-      {variant}
+      {label}
     </Button >;
   };
 
