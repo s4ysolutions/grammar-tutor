@@ -21,7 +21,7 @@ import T from '../../../../l10n';
 const MenuItemVersion: React.FunctionComponent =
   (): React.ReactElement => <div>
     <Typography align="center" variant="body2">
-v20230415-2
+v20230415-3
       <br />
 
       <Link href="https://slev.life" target="_blank" variant="body2">

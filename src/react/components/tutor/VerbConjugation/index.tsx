@@ -66,24 +66,26 @@ const VerbConjugation: React.FunctionComponent = (): React.ReactElement => {
   return currentExercise ? <Container >
     <MainForm mainForm={currentExercise.mainForm} />
 
-    <PersonTitle exercisePerson={currentExercise.exercisePerson} >
+    {tutor.currentLesson !== Lesson.VERBS_CONJUGATION_FORMS && <React.Fragment>
+      <PersonTitle exercisePerson={currentExercise.exercisePerson} >
 
-      <PersonIcon />
+        <PersonIcon />
 
-      {currentExercise.exercisePerson.plurality === GrammarPlurality.PLURAL
-        ? <PersonIcon plural />
-        : null}
+        {currentExercise.exercisePerson.plurality === GrammarPlurality.PLURAL
+          ? <PersonIcon plural />
+          : null}
 
-      {currentExercise.exercisePerson.form === GrammarForm.LONG
-        ? <span>
+        {currentExercise.exercisePerson.form === GrammarForm.LONG
+          ? <span>
 &nbsp;
-        </span> : null}
+          </span> : null}
 
-      {currentExercise.exercisePerson.form === GrammarForm.LONG
-        ? <FontAwesomeIcon icon={faLong} /> : null}
-    </PersonTitle>
+        {currentExercise.exercisePerson.form === GrammarForm.LONG
+          ? <FontAwesomeIcon icon={faLong} /> : null}
+      </PersonTitle>
 
-    <Pronoun exercise={currentExercise} />
+      <Pronoun exercise={currentExercise} />
+    </React.Fragment>}
 
     {tutor.currentLesson === Lesson.VERBS_CONJUGATION_FORMS &&
         <SlevVerbVariants

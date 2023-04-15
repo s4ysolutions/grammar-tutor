@@ -864,7 +864,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'оцењи́вати': {
     rules: [210],
-    slevRule: SlevVerbPresentRuleId.EM_EJU,
+    slevRule: SlevVerbPresentRuleId.EM_U_IVATI_OVATI,
     persons: [
       {
         word: 'оцењујем',
@@ -1223,7 +1223,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
     ],
   },
   'продавати': {
-    rules: [30],
+    rules: [210],
     slevRule: SlevVerbPresentRuleId.EM_U_AVATI,
     persons: [
       {
@@ -1248,6 +1248,42 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
       {
         word: 'продајете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'продају',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
+  'продати': {
+    rules: [200],
+    slevRule: SlevVerbPresentRuleId.AM_AJU,
+    persons: [
+      {
+        word: 'продам',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'продаш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'прода',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'продамо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'продате',
         person: GrammarPerson.SECOND,
         plurality: GrammarPlurality.PLURAL,
       },
