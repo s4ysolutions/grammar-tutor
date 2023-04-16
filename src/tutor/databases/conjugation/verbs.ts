@@ -648,7 +648,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'лагати': {
     rules: [30, 110],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    slevRule: SlevVerbPresentRuleId.EM_U_TI,
     persons: [
       {
         word: 'лажем',
@@ -1404,7 +1404,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'разумети': {
     rules: [30],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    slevRule: SlevVerbPresentRuleId.EM_EJU,
     persons: [
       {
         word: 'разумем',
