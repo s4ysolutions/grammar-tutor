@@ -36,7 +36,7 @@ const rules: Record<number, string> = {
 const staticDb: Record<MainFormWord, { description?: string, rules: number[], slevRule?: SlevVerbPresentRuleId, persons: Person[]}> = {
   'брисати': {
     rules: [30, 120],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    slevRule: SlevVerbPresentRuleId.EM_U_HATI_SATI,
     persons: [
       {
         word: 'бришем',
@@ -468,7 +468,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'јахати': {
     rules: [30, 120],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    slevRule: SlevVerbPresentRuleId.EM_U_HATI_SATI,
     persons: [
       {
         word: 'јашем',
@@ -540,7 +540,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'казати': {
     rules: [30, 110],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    slevRule: SlevVerbPresentRuleId.EM_U_GATI_ZATI,
     persons: [
       {
         word: 'кажем',
@@ -1008,7 +1008,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'писати': {
     rules: [30],
-    slevRule: SlevVerbPresentRuleId.EM_U,
+    slevRule: SlevVerbPresentRuleId.EM_U_HATI_SATI,
     persons: [
       {
         word: 'пишем',
@@ -1512,7 +1512,7 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
   },
   'скакати': {
     rules: [30, 100],
-    slevRule: SlevVerbPresentRuleId.EM_U_TI,
+    slevRule: SlevVerbPresentRuleId.EM_U_KATI,
     persons: [
       {
         word: 'скачем',
