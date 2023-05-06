@@ -1114,6 +1114,42 @@ const staticDb: Record<MainFormWord, { description?: string, rules: number[], sl
       },
     ],
   },
+  'повући': {
+    rules: [200],
+    slevRule: SlevVerbPresentRuleId.EM_U_CI,
+    persons: [
+      {
+        word: 'повучем',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'повучеш',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'повуче',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.SINGULAR,
+      },
+      {
+        word: 'повучемо',
+        person: GrammarPerson.FIRST,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'повучете',
+        person: GrammarPerson.SECOND,
+        plurality: GrammarPlurality.PLURAL,
+      },
+      {
+        word: 'повуку',
+        person: GrammarPerson.THIRD,
+        plurality: GrammarPlurality.PLURAL,
+      },
+    ],
+  },
   'постати': {
     rules: [30, 200],
     slevRule: SlevVerbPresentRuleId.EM_U_TI,
