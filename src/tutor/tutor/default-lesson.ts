@@ -18,6 +18,7 @@ import {Lesson} from '../index';
 import {Observable, Subject} from 'rxjs';
 import {KV} from '../../kv/sync';
 
+// TODO: should implement interface
 class DefaultLesson {
 
   currentLesson: Lesson;

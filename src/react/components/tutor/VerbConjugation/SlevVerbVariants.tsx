@@ -16,11 +16,11 @@
 
 import React, {useCallback} from 'react';
 import Variants from '../Variants';
-import diFactory from '../../../../di/default';
 import {ConjugationExercise} from '../../../../tutor';
 import {SlevVerbPresentRuleId, slevVerbRules, slevVerbRulesMap} from '../../../../tutor/databases/rules/slev-verbs';
+import {getDi} from '../../../../di';
 
-const {di} = diFactory;
+const di = getDi();
 const tutor = di.tutor;
 
 const variants = slevVerbRules.filter(r => r.id !== SlevVerbPresentRuleId.NONE).map(r => r.description);

@@ -17,7 +17,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Container, IconButton} from '@mui/material';
 import Variants from '../Variants';
-import diFactory from '../../../../di/default';
 import QuizIcon from '@mui/icons-material/Quiz';
 import T from '../../../../l10n';
 import Grid2 from '@mui/material/Unstable_Grid2';
@@ -30,8 +29,9 @@ import {faXmarksLines as faLong} from '@fortawesome/free-solid-svg-icons';
 import PersonIcon from './PersonIcon';
 import Pronoun from './Pronoun';
 import SlevVerbVariants from './SlevVerbVariants';
+import {getDi} from '../../../../di';
 
-const {di} = diFactory;
+const di = getDi();
 const tutor = di.tutor;
 
 let variantsKey = 1;

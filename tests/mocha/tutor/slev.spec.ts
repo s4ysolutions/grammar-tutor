@@ -29,9 +29,9 @@ describe('Slev rules', () => {
   });
 
   it('array of verb rules ids', () => {
-    const slevVerbRulesWithKeys = Object.entries(SlevVerbPresentRuleId);
+    const slevVerbIds = Object.entries(SlevVerbPresentRuleId);
     // .filter(entry => entry[0] !== SlevVerbPresentRuleId.NONE.toString());
 
-    expect(slevVerbRulesWithKeys).to.be.ofSize(Object.entries(slevVerbRules).length - 1);
+    expect(slevVerbIds).to.be.ofSize(Object.entries(slevVerbRules).length * 2);
   });
 });

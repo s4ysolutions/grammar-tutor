@@ -15,17 +15,18 @@
  */
 
 import React from 'react';
-import diFactory, {DefaultDi} from '../../../../di/default';
-import {Di} from '../../../../di';
+import { initDi} from '../../../../di';
 import memoryStoragePromiseFactory from '../../../../../tests/mocks/kv-promice/memoryStorage';
 import renderer from 'react-test-renderer';
 import CaseIcon from '../declension/CaseIcon';
 import {Case, GrammarAnimation, GrammarCase, GrammarGender, GrammarPlurality} from '../../../../tutor';
+import memoryStorage from '../../../../../tests/mocks/kv/memoryStorage';
+import DefaultDi from '../../../../di/default';
 
 describe('<CaseIcon>', () => {
 
   beforeEach(() => {
-    (diFactory as { di: Di }).di = new DefaultDi(memoryStoragePromiseFactory({}));
+    initDi(new DefaultDi(memoryStorage({}), memoryStoragePromiseFactory({})));
   });
 
   describe('Empty', () => {

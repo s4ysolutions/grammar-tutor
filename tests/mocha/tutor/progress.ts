@@ -20,15 +20,16 @@ import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
 import {expect} from 'chai';
 import {concat, first} from 'rxjs';
 import {fromPromise} from 'rxjs/internal/observable/innerFrom';
-import {DefaultDi} from '../../../src/di/default';
+import DefaultDi from '../../../src/di/default';
 import log from '../../../src/log';
+import memoryStorage from '../../mocks/kv/memoryStorage';
 
 describe('Progress', () => {
   let progress: LearningProgress = null as LearningProgress;
   let tutor: Tutor = null as Tutor;
 
   beforeEach(() => {
-    const di = new DefaultDi(memoryStoragePromiseFactory({}));
+    const di = new DefaultDi(memoryStorage({}), memoryStoragePromiseFactory({}));
     progress = di.learningProgress;
     tutor = di.tutor;
   });

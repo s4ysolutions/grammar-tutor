@@ -17,7 +17,6 @@
 import React from 'react';
 import {Divider, Menu} from '@mui/material';
 import useObservable from '../../hooks/useObservable';
-import diFactory from '../../../di/default';
 import MenuItemReset from './menu-items/MenuItemReset';
 import MenuItemPersonalPronounsDeclension from './menu-items/MenuItemPersonalPronounsDeclension';
 import MenuItemInterrogativePronounsDeclension from './menu-items/MenuItemInterrogativePronounsDeclension';
@@ -31,8 +30,9 @@ import MenuItemPossessivePronounsDeclension from './menu-items/MenuItemPossessiv
 import MenuItemVersion from './menu-items/MenuItemVersion';
 import MenuItemMociConjugation from './menu-items/MenuItemMociConjugation';
 import MenuItemVerbsConjugationForms from './menu-items/MenuItemVerbsConjugationForms';
+import {getDi} from '../../../di';
 
-const {di} = diFactory;
+const di = getDi();
 const uiState = di.uiState;
 
 const menuListProps = {'aria-labelledby': 'main-menu-button'};

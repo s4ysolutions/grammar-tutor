@@ -16,11 +16,20 @@
 
 import {use as chaiUse, expect} from 'chai';
 import chaiString from 'chai-string';
-import {GrammarCase, GrammarForm, GrammarGender, GrammarPlurality, Lesson, Tutor} from '../../../src/tutor';
+import {
+  GrammarAnimation,
+  GrammarCase,
+  GrammarForm,
+  GrammarGender,
+  GrammarPlurality,
+  Lesson,
+  Tutor,
+} from '../../../src/tutor';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
 import sinonApi, {SinonSandbox} from 'sinon';
-import {DefaultDi} from '../../../src/di/default';
 import {DefaultTutor} from '../../../src/tutor/tutor/default-tutor';
+import memoryStorage from '../../mocks/kv/memoryStorage';
+import DefaultDi from '../../../src/di/default';
 
 chaiUse(chaiString);
 
@@ -30,7 +39,7 @@ describe('Tutor Personal Pronouns', () => {
 
   beforeEach(async () => {
     sinon = sinonApi.createSandbox();
-    const di = new DefaultDi(memoryStoragePromiseFactory({}));
+    const di = new DefaultDi(memoryStorage({}), memoryStoragePromiseFactory({}));
     tutor = di.tutor;
     await tutor.selectLesson(Lesson.PERSONAL_PRONOUNS_DECLINATION);
   });
@@ -102,31 +111,33 @@ describe('Tutor Personal Pronouns', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.INSTRUMENTAL));
+    // this random must be ignored because "on" is alway MASCULINE
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomGender', sinon.fake.returns(GrammarGender.FEMININE));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'getWeightedArray', sinon.fake.returns(['ја', 'ти', 'он, она, оно']));
+    sinon.replace(DefaultTutor, 'getWeightedArray', sinon.fake.returns(['ја', 'ти', 'он', 'она', 'оно']));
 
     const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
-    expect(exercise).to.has.property('mainForm', 'он, она, оно');
+    expect(exercise).to.has.property('mainForm', 'он');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'њо̑м, њо́ме');
+    expect(exercise.exerciseCase).to.has.property('word', 'њи̑м, њи́ме');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
     expect(exercise.exerciseCase).to.has.property('case', GrammarCase.INSTRUMENTAL);
     expect(exercise.exerciseCase).to.not.has.property('form');
-    expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
+    // requested FEMAIL is ignored because "on" is alway MASCULINE
+    expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.MASCULINE);
 
-    expect(await tutor.checkCaseExercise('њо̑м, њо́ме', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('њи̑м, њи́ме', exercise)).to.be.true;
     expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 
   it('nextPronounQuestion with form and gender', async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'random', sinon.fake.returns(2));
+    sinon.replace(DefaultTutor, 'random', sinon.fake.returns(0));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.SINGULAR));
@@ -135,25 +146,26 @@ describe('Tutor Personal Pronouns', () => {
     sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.GENITIVE));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomForm', sinon.fake.returns(GrammarForm.LONG));
+    sinon.replace(DefaultTutor, 'randomForm', sinon.fake.returns(GrammarForm.SHORT));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomGender', sinon.fake.returns(GrammarGender.FEMININE));
+    sinon.replace(DefaultTutor, 'randomAnimation', sinon.fake.returns(null));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'getWeightedArray', sinon.fake.returns(['ја', 'ти', 'он, она, оно']));
+    sinon.replace(DefaultTutor, 'getWeightedArray', sinon.fake.returns(['он']));
 
     const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
-    expect(exercise).to.has.property('mainForm', 'он, она, оно');
+    expect(exercise).to.has.property('mainForm', 'он');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'ње̑');
+    expect(exercise.exerciseCase).to.has.property('word', 'га');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
     expect(exercise.exerciseCase).to.has.property('case', GrammarCase.GENITIVE);
-    expect(exercise.exerciseCase).to.has.property('form', GrammarForm.LONG);
-    expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
+    expect(exercise.exerciseCase).to.has.property('form', GrammarForm.SHORT);
+    expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.MASCULINE);
+    expect(exercise.exerciseCase).to.not.has.property('animation', GrammarAnimation.ANIMATE);
 
-    expect(await tutor.checkCaseExercise('ње̑', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('га', exercise)).to.be.true;
     expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 });

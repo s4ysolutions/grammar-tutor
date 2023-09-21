@@ -33,3 +33,18 @@ export interface Di {
 export interface DiFactory {
   readonly di: Di;
 }
+
+let _di: Di = null;
+
+export const initDi = (di: Di): void => {
+  _di = di;
+};
+
+export const getDi = (): Di => {
+  if (_di === null) {
+    throw Error('Di is not initialized, call `initDi` firs');
+  }
+  return _di;
+};
+
+// default implem

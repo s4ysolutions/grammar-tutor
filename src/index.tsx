@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import './di-app';
 import React from 'react';
 import {createRoot} from 'react-dom/client';
+
 import App from './react/components/App';
 import './array/shuffle';
 import log from './log';
@@ -46,6 +48,7 @@ if (!(location.hostname === 'localhost' || location.hostname === '127.0.0.1') &&
     }
   });
 }
+
 
 const container = document.getElementById('reactMount');
 const root = createRoot(container);

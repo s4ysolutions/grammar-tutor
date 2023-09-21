@@ -19,8 +19,9 @@ import chaiString from 'chai-string';
 import {GrammarForm, GrammarPerson, GrammarPlurality, Lesson, Tutor} from '../../../src/tutor';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
 import sinonApi, {SinonSandbox} from 'sinon';
-import {DefaultDi} from '../../../src/di/default';
 import {DefaultTutor} from '../../../src/tutor/tutor/default-tutor';
+import memoryStorage from '../../mocks/kv/memoryStorage';
+import DefaultDi from '../../../src/di/default';
 
 chaiUse(chaiString);
 
@@ -30,7 +31,7 @@ describe('Tutor verb Biti', () => {
 
   beforeEach(async () => {
     sinon = sinonApi.createSandbox();
-    const di = new DefaultDi(memoryStoragePromiseFactory({}));
+    const di = new DefaultDi(memoryStorage({}), memoryStoragePromiseFactory({}));
     tutor = di.tutor;
     await tutor.selectLesson(Lesson.BITI_CONJUGATION);
   });

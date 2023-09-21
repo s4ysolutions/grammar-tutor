@@ -19,8 +19,9 @@ import chaiString from 'chai-string';
 import {GrammarCase, GrammarGender, GrammarPlurality, Lesson, Tutor} from '../../../src/tutor';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
 import sinonApi, {SinonSandbox} from 'sinon';
-import {DefaultDi} from '../../../src/di/default';
 import {DefaultTutor} from '../../../src/tutor/tutor/default-tutor';
+import DefaultDi from '../../../src/di/default';
+import memoryStorage from '../../mocks/kv/memoryStorage';
 
 chaiUse(chaiString);
 
@@ -30,7 +31,7 @@ describe('Tutor Nouns', () => {
 
   beforeEach(async () => {
     sinon = sinonApi.createSandbox();
-    const di = new DefaultDi(memoryStoragePromiseFactory({}));
+    const di = new DefaultDi(memoryStorage({}), memoryStoragePromiseFactory({}));
     tutor = di.tutor;
     await tutor.selectLesson(Lesson.NOUNS_DECLINATION);
   });
@@ -52,15 +53,15 @@ describe('Tutor Nouns', () => {
 
     const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
-    expect(exercise).to.has.property('mainForm', 'хотел');
+    expect(exercise).to.has.property('mainForm', 'господин');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'хотелом');
+    expect(exercise.exerciseCase).to.has.property('word', 'господином');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.SINGULAR);
     expect(exercise.exerciseCase).to.has.property('case', GrammarCase.INSTRUMENTAL);
     expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.MASCULINE);
     expect(exercise.exerciseCase).to.not.has.property('form');
 
-    expect(await tutor.checkCaseExercise('хотелом', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('господином', exercise)).to.be.true;
     expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 
@@ -83,15 +84,15 @@ describe('Tutor Nouns', () => {
 
     const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
-    expect(exercise).to.has.property('mainForm', 'путник');
+    expect(exercise).to.has.property('mainForm', 'жена');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'путницима');
+    expect(exercise.exerciseCase).to.has.property('word', 'женама');
     expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.PLURAL);
     expect(exercise.exerciseCase).to.has.property('case', GrammarCase.INSTRUMENTAL);
-    expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.MASCULINE);
+    expect(exercise.exerciseCase).to.has.property('gender', GrammarGender.FEMININE);
     expect(exercise.exerciseCase).to.not.has.property('form');
 
-    expect(await tutor.checkCaseExercise('путницима', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('женама', exercise)).to.be.true;
     expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 

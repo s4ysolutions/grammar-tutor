@@ -17,10 +17,10 @@
 import React from 'react';
 import T from '../../../../l10n';
 import {MenuItem} from '@mui/material';
-import diFactory from '../../../../di/default';
+import {getDi} from '../../../../di';
 
 const handleClick = (): void => {
-  const di = diFactory.di;
+  const di = getDi();
   di.learningProgress.reset().then();
   di.uiState.mainMenuOpen = false;
 };

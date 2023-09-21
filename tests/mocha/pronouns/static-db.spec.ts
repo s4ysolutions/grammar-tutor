@@ -30,7 +30,7 @@ describe('Test static data implementation of pronouns db', () => {
     const db = new DefaultPersonalPronounsDb();
     const words = await db.mainForms;
     expect(words).to.be.array;
-    expect(words).to.be.eql(['ја', 'ти', 'он, она, оно']);
+    expect(words).to.be.eql(['ја', 'ти', 'он', 'она', 'оно']);
   });
   it('jа attributes', async () => {
     const word = 'ја';

@@ -20,15 +20,17 @@ import renderer from 'react-test-renderer';
 import T from '../../../../l10n';
 import memoryStoragePromiseFactory from '../../../../../tests/mocks/kv-promice/memoryStorage';
 import MenuItemReset from '../menu-items/MenuItemReset';
-import diFactory, {DefaultDi} from '../../../../di/default';
-import {Di} from '../../../../di';
+import {getDi, initDi} from '../../../../di';
 import {first} from 'rxjs';
+import memoryStorage from '../../../../../tests/mocks/kv/memoryStorage';
+import DefaultDi from '../../../../di/default';
 
 
 describe('<MenuItemReset>', () => {
 
   beforeEach(() => {
-    (diFactory as {di: Di}).di = new DefaultDi(memoryStoragePromiseFactory({}));
+    const di = new DefaultDi(memoryStorage({}), memoryStoragePromiseFactory({}));
+    initDi(di);
   });
 
   test('snapshot & observing', (done) => {
@@ -37,7 +39,7 @@ describe('<MenuItemReset>', () => {
     expect(tree).toMatchSnapshot();
     expect(tree).toHaveProperty('props');
 
-    diFactory.di.learningProgress.observableLessonStatistics()
+    getDi().learningProgress.observableLessonStatistics()
       .pipe(first())
       .subscribe(statistics => {
         expect(statistics).toEqual({total: 0, wrong: 0});
@@ -57,7 +59,7 @@ describe('<MenuItemReset>', () => {
 
     expect(menuItem).not.toBeNull();
 
-    diFactory.di.learningProgress.observableLessonStatistics()
+    getDi().learningProgress.observableLessonStatistics()
       .pipe(first())
       .subscribe(statistics => {
         expect(statistics).toEqual({total: 0, wrong: 0});

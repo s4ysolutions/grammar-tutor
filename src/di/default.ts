@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import indexedDbFactory from '../kv/promise/indexedDB';
 import {CasesInterrogativesDb, LearningProgress, NounsDb, Tutor, VerbsDb} from '../tutor';
 import {DefaultRouter} from '../router/default';
 import {Router} from '../router';
 import {DefaultUiState} from '../ui-state/default';
 import {UiState} from '../ui-state';
-import {Di, DiFactory} from './index';
+import {Di} from './index';
 import {DefaultPersonalPronounsDb} from '../tutor/databases/declination/personal-pronouns';
 import DefaultLesson from '../tutor/tutor/default-lesson';
 import {KvPromiseLearningDb} from '../tutor/progress/kv-promise-progress-db';
@@ -35,11 +34,11 @@ import {DefaultVerbsDb} from '../tutor/databases/conjugation/verbs';
 import {DefaultReflexivePronounsDb} from '../tutor/databases/declination/reflexive-pronouns';
 import {DefaultPossessivePronounsDb} from '../tutor/databases/declination/possessive-pronouns';
 import {DefaultMociDb} from '../tutor/databases/conjugation/moci';
-import localStorageFactory from '../kv/sync/localStorage';
+import {KV} from '../kv/sync';
 
-export class DefaultDi implements Di {
+class DefaultDi implements Di {
 
-  private readonly _kvSync = localStorageFactory();
+  private readonly _kvSync: KV;
 
   private readonly _kvPromise: KvPromise;
 
@@ -63,18 +62,22 @@ export class DefaultDi implements Di {
 
   private readonly _verbsDb: VerbsDb;
 
-  private readonly _lesson = new DefaultLesson(this._kvSync);
+  // TODO: default must not be there
+  private readonly _lesson: DefaultLesson;
 
   private readonly _learningProgress: LearningProgress;
 
   private readonly _tutor: Tutor;
 
-  private readonly _router = new DefaultRouter(this._kvSync);
+  private readonly _router: Router;
 
   private readonly _uiState = new DefaultUiState();
 
-  constructor(kvPromise: KvPromise) {
+  constructor(kv: KV, kvPromise: KvPromise) {
+    this._kvSync = kv;
     this._kvPromise = kvPromise;
+    this._router = new DefaultRouter(this._kvSync);
+    this._lesson = new DefaultLesson(this._kvSync);
     this._personalPronounsDb = new DefaultPersonalPronounsDb();
     this._reflexivePronounsDb = new DefaultReflexivePronounsDb();
     this._possessivePronounsDb = new DefaultPossessivePronounsDb();
@@ -140,10 +143,5 @@ export class DefaultDi implements Di {
 
 }
 
-const singletonDi = new DefaultDi(indexedDbFactory('srpska-gramatika'));
 
-const diFactory: DiFactory = {
-  di: singletonDi as Di,
-};
-
-export default diFactory;
+export default DefaultDi;

@@ -16,11 +16,21 @@
 
 import {use as chaiUse, expect} from 'chai';
 import chaiString from 'chai-string';
-import {GrammarAnimation, GrammarCase, Lesson, Tutor} from '../../../src/tutor';
+import {
+  GrammarAnimation,
+  GrammarCase,
+  GrammarForm,
+  GrammarPlurality,
+  Lesson,
+  Tutor,
+} from '../../../src/tutor';
 import sinonApi, {SinonSandbox} from 'sinon';
-import {DefaultDi} from '../../../src/di/default';
 import memoryStoragePromiseFactory from '../../mocks/kv-promice/memoryStorage';
 import {DefaultTutor} from '../../../src/tutor/tutor/default-tutor';
+import {DefaultInterrogativePronounsDb} from '../../../src/tutor/databases/declination/interrogative-pronouns';
+import DefaultDi from '../../../src/di/default';
+import {initDi} from '../../../src/di';
+import memoryStorage from '../../mocks/kv/memoryStorage';
 
 chaiUse(chaiString);
 
@@ -30,73 +40,102 @@ describe('Tutor Interrogative Pronouns', () => {
 
   beforeEach(async () => {
     sinon = sinonApi.createSandbox();
-    const di = new DefaultDi(memoryStoragePromiseFactory({}));
+    const di = new DefaultDi(memoryStorage({}), memoryStoragePromiseFactory({}));
+    initDi(di);
     tutor = di.tutor;
-    await tutor.selectLesson(Lesson.CASES_INTERROGATIVES_DECLINATION);
+    await tutor.selectLesson(Lesson.INTERROGATIVE_PRONOUNS_DECLINATION);
   });
 
   afterEach(() => {
     sinon.restore();
   });
 
-  it('nextInterrogativePronounExerciseSelectWord', async () => {
+  it('ко,што should have a case', async () => {
+    const db = new DefaultInterrogativePronounsDb();
+    const word = 'ко,што';
+    const entry = await db.getNounByMainForm(word);
+    const cases = await entry.cases();
+    const c = await DefaultTutor.caseForInterrogativePronounTestWrapper(cases, GrammarCase.GENITIVE, GrammarPlurality.SINGULAR, GrammarAnimation.ANIMATE, GrammarForm.SHORT);
+    expect(c).has.property('animation', GrammarAnimation.ANIMATE);
+    expect(c).has.property('case', GrammarCase.GENITIVE);
+    expect(c).has.property('form', GrammarForm.SHORT);
+    expect(c).has.property('plurality', GrammarPlurality.SINGULAR);
+    expect(c).has.property('word', 'ко̏г');
+  });
+
+  it('ко,што should provide excercise', async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'random', sinon.fake.returns(0));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.INSTRUMENTAL));
+    sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.PLURAL));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.GENITIVE));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    sinon.replace(DefaultTutor, 'randomForm', sinon.fake.returns(GrammarForm.LONG));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // sinon.replace(DefaultTutor, 'randomGender', sinon.fake.returns(GrammarGender.FEMININE));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'randomAnimation', sinon.fake.returns(GrammarAnimation.ANIMATE));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    sinon.replace(DefaultTutor, 'getWeightedArray', sinon.fake.returns(['ко,што']));
 
     const exercise = await tutor.nextCaseExercise();
     expect(exercise).is.not.null;
-    expect(exercise).to.has.property('mainForm', 'Упитне заменице');
+    expect(exercise).to.has.property('mainForm', 'ко,што');
     expect(exercise).to.has.property('exerciseCase');
-    expect(exercise.exerciseCase).to.has.property('word', 'ки́ме');
+    expect(exercise.exerciseCase).to.has.property('word', 'ко̀га');
+    expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.PLURAL);
+    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.GENITIVE);
+    expect(exercise.exerciseCase).to.has.property('form', GrammarForm.LONG);
+    expect(exercise.exerciseCase).to.not.has.property('gender');
     expect(exercise.exerciseCase).to.has.property('animation', GrammarAnimation.ANIMATE);
 
-    expect(await tutor.checkCaseExercise('ки́ме', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('ко̀га', exercise)).to.be.true;
     expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 
-  it('one case should not cause endless loop', async () => {
+  it('ко,што should provide excercise for Plural Nominative Inanimate Short', async () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     sinon.replace(DefaultTutor, 'random', sinon.fake.returns(0));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.INSTRUMENTAL));
+    sinon.replace(DefaultTutor, 'randomPlurality', sinon.fake.returns(GrammarPlurality.PLURAL));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomAnimation', sinon.fake.returns(GrammarAnimation.ANIMATE));
-
-    const exercise1 = await tutor.nextCaseExercise();
-    expect(exercise1).is.not.null;
-    expect(exercise1).to.has.property('mainForm', 'Упитне заменице');
-
-    const exercise2 = await tutor.nextCaseExercise();
-    expect(exercise2).is.not.null;
-    expect(exercise2).to.has.property('mainForm', 'Упитне заменице');
-  });
-
-  it('one case should not call random', async () => {
-    const randomFake = sinon.fake();
+    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.NOMINATIVE));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'random', randomFake);
+    sinon.replace(DefaultTutor, 'randomForm', sinon.fake.returns(GrammarForm.SHORT));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomCase', sinon.fake.returns(GrammarCase.INSTRUMENTAL));
+    // sinon.replace(DefaultTutor, 'availableGendersForPluralityAndCase', sinon.fake.returns([]));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    sinon.replace(DefaultTutor, 'randomAnimation', sinon.fake.returns(GrammarAnimation.ANIMATE));
+    sinon.replace(DefaultTutor, 'randomAnimation', sinon.fake.returns(GrammarAnimation.INANIMATE));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    sinon.replace(DefaultTutor, 'getWeightedArray', sinon.fake.returns(['ко,што']));
 
-    await tutor.nextCaseExercise();
-    expect(randomFake.called).to.be.false;
+    const exercise = await tutor.nextCaseExercise();
+    expect(exercise).is.not.null;
+    expect(exercise).to.has.property('mainForm', 'ко,што');
+    expect(exercise).to.has.property('exerciseCase');
+    expect(exercise.exerciseCase).to.has.property('word', 'што̏, шта̏');
+    expect(exercise.exerciseCase).to.has.property('plurality', GrammarPlurality.PLURAL);
+    expect(exercise.exerciseCase).to.has.property('case', GrammarCase.NOMINATIVE);
+    expect(exercise.exerciseCase).to.not.has.property('form');
+    expect(exercise.exerciseCase).to.not.has.property('gender');
+    expect(exercise.exerciseCase).to.has.property('animation', GrammarAnimation.INANIMATE);
 
-    await tutor.nextCaseExercise();
-    expect(randomFake.called).to.be.false;
+    expect(await tutor.checkCaseExercise('што̏, шта̏', exercise)).to.be.true;
+    expect(await tutor.checkCaseExercise('nnn', exercise)).to.be.false;
   });
 });

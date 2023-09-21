@@ -20,10 +20,10 @@ import useObservable from '../../hooks/useObservable';
 import MenuIcon from '@mui/icons-material/Menu';
 import Statistics from './Statistics';
 import MenuMain from './MenuMain';
-import diFactory from '../../../di/default';
 import AppTitle from './AppTitle';
+import {getDi} from '../../../di';
 
-const di = diFactory.di;
+const di = getDi();
 const uiState = di.uiState;
 
 const flexGrow1 = {flexGrow: 1};

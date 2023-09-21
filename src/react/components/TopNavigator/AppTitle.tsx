@@ -17,12 +17,12 @@
 import React from 'react';
 import {Typography, useMediaQuery} from '@mui/material';
 import T from '../../../l10n';
-import diFactory from '../../../di/default';
 import useObservable from '../../hooks/useObservable';
 import {Route} from '../../../router';
 import {map} from 'rxjs/operators';
+import {getDi} from '../../../di';
 
-const di = diFactory.di;
+const di = getDi();
 const router = di.router;
 
 const appTitle = T`App title`;

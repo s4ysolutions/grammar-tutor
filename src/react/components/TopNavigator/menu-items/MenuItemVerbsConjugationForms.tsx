@@ -16,11 +16,11 @@
 
 import React from 'react';
 import {MenuItem} from '@mui/material';
-import diFactory from '../../../../di/default';
 import {Lesson} from '../../../../tutor';
 import {RouteId} from '../../../../router';
+import {getDi} from '../../../../di';
 
-const {di} = diFactory;
+const di = getDi();
 
 const handleClick = (): void => {
   di.tutor.selectLesson(Lesson.VERBS_CONJUGATION_FORMS).then(() =>

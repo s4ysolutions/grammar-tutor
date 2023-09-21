@@ -16,12 +16,12 @@
 
 import React, {useEffect, useMemo, useState} from 'react';
 import {CaseExercise, GrammarAnimation} from '../../../../tutor';
-import diFactory from '../../../../di/default';
 import {Typography, useTheme} from '@mui/material';
 import {nounsSlevRules} from '../../../../tutor/databases/rules/slev-nouns';
 import './styles.scss';
+import {getDi} from '../../../../di';
 
-const {di} = diFactory;
+const di = getDi();
 const interrogativePronounsDb = di.caseInterrogativesDb;
 
 const Interrogative: React.FunctionComponent<{ exercise: CaseExercise | null }> =

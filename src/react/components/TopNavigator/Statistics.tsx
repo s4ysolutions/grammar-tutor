@@ -20,9 +20,9 @@ import PercentIcon from '@mui/icons-material/Percent';
 import {LessonStatistics} from '../../../tutor';
 import useObservable from '../../hooks/useObservable';
 import React, {useEffect} from 'react';
-import diFactory from '../../../di/default';
+import {getDi} from '../../../di';
 
-const {di} = diFactory;
+const di = getDi();
 const learningProgress = di.learningProgress;
 const tutor = di.tutor;
 

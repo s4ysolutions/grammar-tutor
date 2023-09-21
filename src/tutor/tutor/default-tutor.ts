@@ -143,15 +143,29 @@ export class DefaultTutor implements Tutor {
   private static availablePluralities(cases: WithPlurality[]): GrammarPlurality[] {
     return Array.from<GrammarPlurality>(cases
       .reduce((set: Set<GrammarPlurality>, nounCase: Case) => {
-        set.add(nounCase.plurality);
+        if (nounCase.plurality !== undefined) {
+          set.add(nounCase.plurality);
+        }
         return set;
       }, new Set()));
   }
 
   private static availableAnimations(cases: Case[]): GrammarAnimation[] {
     return Array.from<GrammarAnimation>(cases
-      .reduce((set: Set<GrammarAnimation>, pronounCase: Case) => {
-        set.add(pronounCase.animation);
+      .reduce((set: Set<GrammarAnimation>, nounCase: Case) => {
+        if (nounCase.animation !== undefined) {
+          set.add(nounCase.animation);
+        }
+        return set;
+      }, new Set()));
+  }
+
+  private static availableForms(cases: Case[]): GrammarForm[] {
+    return Array.from<GrammarForm>(cases
+      .reduce((set: Set<GrammarForm>, nounCase: Case) => {
+        if (nounCase.form !== undefined) {
+          set.add(nounCase.form);
+        }
         return set;
       }, new Set()));
   }
@@ -176,7 +190,9 @@ export class DefaultTutor implements Tutor {
     return Array.from<GrammarGender>(cases
       .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase)
       .reduce((set: Set<GrammarGender>, nounCase: Case) => {
-        set.add(nounCase.gender);
+        if (nounCase.gender !== undefined) {
+          set.add(nounCase.gender);
+        }
         return set;
       }, new Set()));
   }
@@ -189,7 +205,24 @@ export class DefaultTutor implements Tutor {
     return Array.from<GrammarForm>(cases
       .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase)
       .reduce((set: Set<GrammarForm>, nounCase: Case) => {
-        set.add(nounCase.form);
+        if (nounCase.form !== undefined) {
+          set.add(nounCase.form);
+        }
+        return set;
+      }, new Set()));
+  }
+
+  private static availableAnimationsForPluralityAndCase(
+    cases: Case[],
+    grammarPlurality: GrammarPlurality,
+    grammarCase: GrammarCase,
+  ): GrammarAnimation[] {
+    return Array.from<GrammarAnimation>(cases
+      .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase)
+      .reduce((set: Set<GrammarAnimation>, nounCase: Case) => {
+        if (nounCase.animation !== undefined) {
+          set.add(nounCase.animation);
+        }
         return set;
       }, new Set()));
   }
@@ -204,6 +237,22 @@ export class DefaultTutor implements Tutor {
       .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase && noun.gender === grammarGender)
       .reduce((set: Set<GrammarForm>, nounCase: Case) => {
         set.add(nounCase.form);
+        return set;
+      }, new Set()));
+  }
+
+  private static availableAnimationsForPluralityAndCaseAndGender(
+    cases: Case[],
+    grammarPlurality: GrammarPlurality,
+    grammarCase: GrammarCase,
+    grammarGender: GrammarGender,
+  ): GrammarAnimation[] {
+    return Array.from<GrammarAnimation>(cases
+      .filter(noun => noun.plurality === grammarPlurality && noun.case === grammarCase && noun.gender === grammarGender)
+      .reduce((set: Set<GrammarAnimation>, nounCase: Case) => {
+        if (nounCase.animation !== undefined) {
+          set.add(nounCase.animation);
+        }
         return set;
       }, new Set()));
   }
@@ -251,12 +300,24 @@ export class DefaultTutor implements Tutor {
       }, new Set()));
   }
 
+  public static caseForNounTestWrapper(
+    nounCases: Case[],
+    grammarPlurality: GrammarPlurality,
+    grammarCase: GrammarCase,
+    grammarGender: GrammarGender | null,
+    grammarAnimation: GrammarAnimation | null,
+    grammarForm: GrammarForm | null,
+  ): Case | null {
+    return this.caseForNoun(nounCases, grammarPlurality, grammarCase, grammarGender, grammarAnimation, grammarForm);
+  }
+
   private static caseForNoun(
     nounCases: Case[],
     grammarPlurality: GrammarPlurality,
     grammarCase: GrammarCase,
-    grammarGender?: GrammarGender,
-    grammarForm?: GrammarForm,
+    grammarGender: GrammarGender | null,
+    grammarAnimation: GrammarAnimation | null,
+    grammarForm: GrammarForm | null,
   ): Case | null {
     const cases = nounCases
       .filter((nounCase: Case) => nounCase.case === grammarCase && nounCase.plurality === grammarPlurality);
@@ -269,16 +330,19 @@ export class DefaultTutor implements Tutor {
     }
 
     const filtered = cases.filter(c => {
-      if (grammarGender !== c.gender) {
+      // TODO: optimise
+      if (grammarGender !== null && (grammarGender !== c.gender && c.gender !== undefined)) {
+        return false;
+      }
+      if (grammarAnimation !== null && (grammarAnimation !== c.animation && c.animation !== undefined)) {
         return false;
       }
       // noinspection RedundantIfStatementJS
-      if (grammarForm !== c.form) {
+      if (grammarForm !== null && (grammarForm !== c.form && c.form !== undefined)) {
         return false;
       }
       return true;
     });
-
     if (filtered.length === 0) {
       return null;
     }
@@ -287,13 +351,25 @@ export class DefaultTutor implements Tutor {
       return filtered[0];
     }
 
-    throw Error(`Too many variants (${filtered.join(',')}) for ${grammarPlurality}, ${grammarCase}, ${grammarGender}, ${grammarForm}`);
+    throw Error(`Too many variants (${cases.map(cas => cas.word).join(';')}) => (${filtered.map(cas => cas.word).join(';')}) for ${grammarPlurality}, ${grammarCase}, ${grammarGender}, ${grammarForm}`);
+  }
+
+  public static caseForInterrogativePronounTestWrapper(
+    nounCases: Case[],
+    grammarCase: GrammarCase,
+    grammarPlurality: GrammarPlurality | null,
+    grammarAnimation: GrammarAnimation | null,
+    grammarForm: GrammarForm | null,
+  ): Case | null {
+    return this.caseForInterrogativePronoun(nounCases, grammarCase, grammarPlurality, grammarAnimation, grammarForm);
   }
 
   private static caseForInterrogativePronoun(
     pronounCases: Case[],
     grammarCase: GrammarCase,
-    grammarAnimation: GrammarAnimation,
+    grammarPlurality: GrammarPlurality | null,
+    grammarAnimation: GrammarAnimation | null,
+    grammarForm: GrammarForm | null,
   ): Case | null {
     const cases = pronounCases
       .filter((pronounCase: Case) => pronounCase.case === grammarCase);
@@ -305,8 +381,19 @@ export class DefaultTutor implements Tutor {
       return cases[0]; // assumes the source is correct
     }
 
-    const filtered = cases.filter(c => grammarAnimation === c.animation);
-
+    const filtered = cases.filter(c => {
+      if (grammarAnimation !== null && (grammarAnimation !== c.animation && c.animation !== undefined)) {
+        return false;
+      }
+      if (grammarForm !== null && (grammarForm !== c.form && c.form !== undefined)) {
+        return false;
+      }
+      // noinspection RedundantIfStatementJS
+      if (grammarPlurality !== null && (grammarPlurality !== c.plurality && c.plurality !== undefined)) {
+        return false;
+      }
+      return true;
+    });
     if (filtered.length === 0) {
       return null;
     }
@@ -315,7 +402,7 @@ export class DefaultTutor implements Tutor {
       return filtered[0];
     }
 
-    throw Error(`Too many variants (${filtered.join(',')}) for ${grammarCase}, ${grammarAnimation}`);
+    throw Error(`Too many variants (${cases.map(c => c.word).join(';')}) => (${filtered.map(c => c.word).join(';')}) for ${grammarCase}, ${grammarAnimation}, ${grammarForm}`);
   }
 
   private static personForVerb(
@@ -372,6 +459,7 @@ export class DefaultTutor implements Tutor {
     return word;
   }
 
+  // TODO: should be combined with nextCaseWithAnimationExercise
   private static async nextCaseWithPluralExercise(noun: Noun): Promise<CaseExercise> {
     const cases: Case[] = await noun.cases();
 
@@ -390,18 +478,13 @@ export class DefaultTutor implements Tutor {
 
     if (availableGenders.length === 0) {
       const availableForms = DefaultTutor.availableFormsForPluralityAndCase(cases, grammarPlurality, grammarCase);
-      if (availableForms.length === 0) {
-        const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase);
-        return {
-          mainForm: noun.mainForm,
-          exerciseCase,
-          possibleVariants,
-          correctAnswer: exerciseCase.word,
-          noun,
-        };
-      }
       const grammarForm: GrammarForm = DefaultTutor.randomForm(availableForms);
-      const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase, undefined, grammarForm);
+      const availableAnimations = DefaultTutor.availableAnimationsForPluralityAndCase(cases, grammarPlurality, grammarCase);
+      const grammarAnimation: GrammarAnimation = DefaultTutor.randomAnimation(availableAnimations);
+      const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase, null, grammarAnimation, grammarForm);
+      if (exerciseCase === null) {
+        throw Error(`Can't find an exerces for ${noun.mainForm} [${cases.map(c => c.word).join(';')}] ${grammarPlurality} ${grammarCase} ${grammarAnimation} ${grammarForm}`);
+      }
       return {
         mainForm: noun.mainForm,
         exerciseCase,
@@ -409,24 +492,28 @@ export class DefaultTutor implements Tutor {
         correctAnswer: exerciseCase.word,
         noun,
       };
-
+      // eslint-disable-next-line no-else-return
+    } else {
+      const grammarGender: GrammarGender = DefaultTutor.randomGender(availableGenders);
+      const availableForms = DefaultTutor.availableFormsForPluralityAndCaseAndGender(cases, grammarPlurality, grammarCase, grammarGender);
+      const grammarForm: GrammarForm = DefaultTutor.randomForm(availableForms);
+      const availableAnimations = DefaultTutor.availableAnimationsForPluralityAndCaseAndGender(cases, grammarPlurality, grammarCase, grammarGender);
+      const grammarAnimation: GrammarAnimation = DefaultTutor.randomAnimation(availableAnimations);
+      const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase, grammarGender, grammarAnimation, grammarForm);
+      if (exerciseCase === null) {
+        throw Error(`Can't find an exerces for ${noun.mainForm} [${cases.map(c => c.word).join(';')}] ${grammarPlurality} ${grammarCase} ${grammarGender} ${grammarAnimation} ${grammarForm}`);
+      }
+      return {
+        mainForm: noun.mainForm,
+        exerciseCase,
+        possibleVariants,
+        correctAnswer: exerciseCase.word,
+        noun,
+      };
     }
-    const grammarGender: GrammarGender = DefaultTutor.randomGender(availableGenders);
-    const availableForms =
-            DefaultTutor.availableFormsForPluralityAndCaseAndGender(cases, grammarPlurality, grammarCase, grammarGender);
-
-    const grammarForm: GrammarForm = availableForms.length === 0 ? undefined : DefaultTutor.randomForm(availableForms);
-
-    const exerciseCase = DefaultTutor.caseForNoun(cases, grammarPlurality, grammarCase, grammarGender, grammarForm);
-    return {
-      mainForm: noun.mainForm,
-      exerciseCase,
-      possibleVariants,
-      correctAnswer: exerciseCase.word,
-      noun,
-    };
   }
 
+  // TODO: should be combined with nextCaseWithPluralExercise
   private static async nextCaseWithAnimationExercise(noun: Noun): Promise<CaseExercise> {
 
     const cases: Case[] = await noun.cases();
@@ -439,10 +526,16 @@ export class DefaultTutor implements Tutor {
     const availableCases = DefaultTutor.availableGrammarCases(cases);
     const grammarCase: GrammarCase = DefaultTutor.randomCase(availableCases);
 
+    const availablePluralities = DefaultTutor.availablePluralities(cases);
+    const grammarPlurality: GrammarPlurality = DefaultTutor.randomPlurality(availablePluralities);
+
     const availableAnimations = DefaultTutor.availableAnimations(cases);
     const grammarAnimation: GrammarAnimation = DefaultTutor.randomAnimation(availableAnimations);
 
-    const exerciseCase = DefaultTutor.caseForInterrogativePronoun(cases, grammarCase, grammarAnimation);
+    const availableForms = DefaultTutor.availableForms(cases);
+    const grammarForm: GrammarForm = DefaultTutor.randomForm(availableForms);
+
+    const exerciseCase = DefaultTutor.caseForInterrogativePronoun(cases, grammarCase, grammarPlurality, grammarAnimation, grammarForm);
     return {
       mainForm: noun.mainForm,
       exerciseCase,
